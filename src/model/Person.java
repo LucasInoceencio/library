@@ -19,6 +19,7 @@ public class Person {
 	private User userWhoChanged;
 	private User userWhoDeleted;
 	private boolean excluded;
+	private List<Book> borrowedBooks = new ArrayList<>();
 	
 	public Person() {}
 	
@@ -146,6 +147,18 @@ public class Person {
 
 	public void setExcluded(boolean excluded) {
 		this.excluded = excluded;
+	}
+	
+	public List<Book> getBorrowedBooks() {
+		return borrowedBooks;
+	}
+
+	public void addBorrowedBook(Book book) {
+		borrowedBooks.add(book);
+	}
+	
+	public void removeBorrowedBook(Book book) {
+		borrowedBooks.remove(book);
 	}
 
 }
