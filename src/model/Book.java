@@ -16,12 +16,12 @@ public class Book extends Entity {
 	private String isbn13;
 	private Date datePublication;
 	private List<Genre> genre;
-	private int quantity;
+	private int availableQuantity;
 	
 	public Book() {}
 	
 	public Book(String name, Author author, Publisher publisher, Language language, String isbn10, String isbn13,
-			Date datePublication, List<Genre> genre, int quantity) {
+			Date datePublication, List<Genre> genre, int availableQuantity) {
 		super();
 		this.name = name;
 		this.author = author;
@@ -31,7 +31,7 @@ public class Book extends Entity {
 		this.isbn13 = isbn13;
 		this.datePublication = datePublication;
 		this.genre = genre;
-		this.quantity = quantity;
+		this.availableQuantity = availableQuantity;
 	}
 
 	public String getName() {
@@ -99,11 +99,19 @@ public class Book extends Entity {
 	}
 
 	public int getQuantity() {
-		return quantity;
+		return availableQuantity;
 	}
 
 	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+		this.availableQuantity = quantity;
+	}
+
+	public int getAvailableQuantity() {
+		return availableQuantity;
+	}
+
+	public void setAvailableQuantity(int availableQuantity) {
+		this.availableQuantity = availableQuantity;
 	}
 	
 }
