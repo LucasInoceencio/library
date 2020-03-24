@@ -6,8 +6,8 @@ public class Author extends Person {
 		super();
 	}
 
-	public Author(String name, String cpf, Adress adress, String email) {
-		super(name, cpf, adress, email);
+	public Author(String name) {
+		super(name);
 	}
 	
 }

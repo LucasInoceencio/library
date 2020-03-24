@@ -21,6 +21,11 @@ public class Person extends Entity {
 		this.adress = adress;
 		this.email = email;
 	}
+	
+	public Person(String name) {
+		super();
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;

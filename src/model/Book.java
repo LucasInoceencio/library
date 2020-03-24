@@ -114,4 +114,12 @@ public class Book extends Entity {
 		this.availableQuantity = availableQuantity;
 	}
 	
+	public void increaseAvailableQuantity() {
+		this.availableQuantity++;
+	}
+	
+	public void decreaseAvailableQuantity() {
+		this.availableQuantity--;
+	}
+	
 }
