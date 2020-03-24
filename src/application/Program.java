@@ -17,12 +17,11 @@ public class Program {
 		
 		l.calcDeliveryDate();
 		
-		System.out.println(l.getStatus());
+		System.out.println("Status inicial: " + l.getStatus());
+		System.out.println("Encerrando emprestimo");
+		System.out.println(l.endLoan());
+		System.out.println("Status apos encerrado: " + l.getStatus());
+		System.out.println(l.endLoan());
 		
-		l.endLoan();
-		
-		System.out.println(l.getStatus());
-		System.out.println(l.getLateFee());
 	}
-
 }

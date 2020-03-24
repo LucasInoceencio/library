@@ -17,6 +17,13 @@ public class Loan extends Entity {
 	private Double lateFee;
 	private LoanStatus status;
 	
+	public Loan() {
+		super();
+		this.numberRenewals = 0;
+		this.deliveryDate = calcDeliveryDate();
+		this.status = LoanStatus.ATIVO;
+	}
+	
 	public Loan(Person person) {
 		super();
 		this.person = person;
@@ -90,7 +97,7 @@ public class Loan extends Entity {
 	}
 	
 	public boolean renewLoan() {
-		if (this.numberRenewals <= 2) {
+		if (this.numberRenewals <= 2 && status.toString().equalsIgnoreCase("ATIVO")) {
 			this.numberRenewals++;
 			this.deliveryDate = calcDeliveryDate();
 			return true;
