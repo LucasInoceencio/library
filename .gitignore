@@ -1,6 +1,9 @@
 .metadata
 bin/
 tmp/
+nbproject/
+*.xml
+*.mf
 *.tmp
 *.bak
 *.swp
@@ -15,3 +18,4 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
+/build/
