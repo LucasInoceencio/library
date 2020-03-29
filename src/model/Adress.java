@@ -7,17 +7,32 @@ public class Adress extends Entity {
     private String neighborhood;
     private String complement;
     private String cep;
+    private String city;
+    private String state;
 
     public Adress() {
     }
 
-    public Adress(int idAdress, String publicPlace, int number, String neighborhood, String complement, String cep) {
+    public Adress(int idAdress, String publicPlace, int number, String neighborhood, String complement, String cep, String city, String state) {
         super(idAdress);
         this.publicPlace = publicPlace;
         this.number = number;
         this.neighborhood = neighborhood;
         this.complement = complement;
         this.cep = cep;
+        this.city = city;
+        this.state = state;
+    }
+    
+    public Adress(String publicPlace, int number, String neighborhood, String complement, String cep, String city, String state) {
+        super();
+        this.publicPlace = publicPlace;
+        this.number = number;
+        this.neighborhood = neighborhood;
+        this.complement = complement;
+        this.cep = cep;
+        this.city = city;
+        this.state = state;
     }
 
     public String getPublicPlace() {
@@ -58,6 +73,22 @@ public class Adress extends Entity {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
 }

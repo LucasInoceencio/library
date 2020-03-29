@@ -5,15 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import model.Adress;
 import model.dao.DBConfig;
+import static model.dao.DBConfig.tzUTC;
 import model.dao.DBConnection;
 
 public class AdressDAO {
 
     public static int create(Adress adress) throws SQLException {
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO adresses "
                 + "(public_place, "
@@ -21,10 +20,12 @@ public class AdressDAO {
                 + "neighborhood, "
                 + "complement, "
                 + "cep, "
+                + "city, "
+                + "state, "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
                 + "excluded) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         stm.setString(1, adress.getPublicPlace());
@@ -32,9 +33,11 @@ public class AdressDAO {
         stm.setString(3, adress.getNeighborhood());
         stm.setString(4, adress.getComplement());
         stm.setString(5, adress.getCep());
-        stm.setDate(6, (java.sql.Date) d);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setBoolean(8, adress.isExcluded());
+        stm.setString(6, adress.getCity());
+        stm.setString(7, adress.getState());
+        stm.setTimestamp(8, DBConfig.now(), tzUTC);
+        stm.setInt(9, DBConfig.idUserLogged);
+        stm.setBoolean(10, adress.isExcluded());
         stm.execute();
 
         ResultSet rs = stm.getGeneratedKeys();
@@ -59,7 +62,9 @@ public class AdressDAO {
                 rs.getInt("number_adress"),
                 rs.getString("neighborhood"),
                 rs.getString("complement"),
-                rs.getString("cep")
+                rs.getString("cep"),
+                rs.getString("city"),
+                rs.getString("state")
         );
     }
 
@@ -75,7 +80,9 @@ public class AdressDAO {
                     rs.getInt("number_adress"),
                     rs.getString("neighborhood"),
                     rs.getString("complement"),
-                    rs.getString("cep")
+                    rs.getString("cep"),
+                    rs.getString("city"),
+                    rs.getString("state")
             ));
         }
         return aux;
@@ -85,7 +92,6 @@ public class AdressDAO {
         if (adress.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE adress SET "
                 + "public_place=?, "
@@ -93,15 +99,19 @@ public class AdressDAO {
                 + "neighborhood=?, "
                 + "complement=?, "
                 + "cep=?, "
+                + "city=?, "
+                + "state=?, "
                 + "date_hour_alteration=?, "
-                + "fk_user_who_altered");
+                + "fk_user_who_altered=?");
         stm.setString(1, adress.getPublicPlace());
         stm.setInt(2, adress.getNumber());
         stm.setString(3, adress.getNeighborhood());
         stm.setString(4, adress.getComplement());
         stm.setString(5, adress.getCep());
-        stm.setDate(6, (java.sql.Date) d);
-        stm.setInt(7, DBConfig.idUserLogged);
+        stm.setString(6, adress.getCity());
+        stm.setString(7, adress.getState());
+        stm.setTimestamp(8, DBConfig.now(), tzUTC);
+        stm.setInt(9, DBConfig.idUserLogged);
         stm.execute();
         stm.close();
     }
@@ -110,7 +120,6 @@ public class AdressDAO {
         if (adress.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE adresses SET "
                 + "excluded=?, "
@@ -118,7 +127,7 @@ public class AdressDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_adress=?");
         stm.setBoolean(1, true);
-        stm.setDate(2, (java.sql.Date) d);
+        stm.setTimestamp(2, DBConfig.now(), tzUTC);
         stm.setInt(3, DBConfig.idUserLogged);
         stm.setInt(4, adress.getId());
         stm.execute();

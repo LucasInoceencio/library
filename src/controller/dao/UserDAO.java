@@ -5,15 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import model.User;
 import model.dao.DBConfig;
+import static model.dao.DBConfig.tzUTC;
 import model.dao.DBConnection;
 
 public class UserDAO {
 
     public static int create(User user) throws SQLException {
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO users "
                 + "(username, "
@@ -22,13 +21,13 @@ public class UserDAO {
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
                 + "excluded) "
-                + "VALUES(?,?,?)",
+                + "VALUES(?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPassword());
         stm.setInt(3, user.getPersonId());
-        stm.setDate(4, (java.sql.Date) d);
+        stm.setTimestamp(4, DBConfig.now(), tzUTC);
         stm.setInt(5, DBConfig.idUserLogged);
         stm.setBoolean(6, user.isExcluded());
         stm.execute();
@@ -41,7 +40,6 @@ public class UserDAO {
 
     public static User retrieve(int pkUser, boolean excluded) throws SQLException {
         Connection conn = DBConnection.getConnection();
-
         PreparedStatement stm = conn.prepareStatement("SELECT * FROM users WHERE pk_user=? AND excluded=?");
         stm.setInt(1, pkUser);
         stm.setBoolean(2, excluded);
@@ -74,7 +72,6 @@ public class UserDAO {
         if (user.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE users SET "
                 + "username=?, "
@@ -86,7 +83,7 @@ public class UserDAO {
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPassword());
         stm.setInt(3, user.getPersonId());
-        stm.setDate(4, (java.sql.Date) d);
+        stm.setTimestamp(4, DBConfig.now(), tzUTC);
         stm.setInt(5, DBConfig.idUserLogged);
         stm.setInt(6, user.getId());
         stm.execute();
@@ -97,7 +94,6 @@ public class UserDAO {
         if (user.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Date d = new Date();
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE users SET "
                 + "excluded=?, "
@@ -105,7 +101,7 @@ public class UserDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_user=?");
         stm.setBoolean(1, true);
-        stm.setDate(2, (java.sql.Date) d);
+        stm.setTimestamp(2, DBConfig.now(), tzUTC);
         stm.setInt(3, DBConfig.idUserLogged);
         stm.setInt(4, user.getId());
         stm.execute();

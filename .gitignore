@@ -8,6 +8,7 @@ nbproject/
 *.bak
 *.swp
 *~.nib
+postgresql-42.2.11.jar
 local.properties
 .settings/
 .loadpath
