@@ -41,6 +41,10 @@ public class User extends Entity {
     public Person getPerson() {
         return person;
     }
+    
+    public long getPersonID(){
+        return getPerson().getId();
+    }
 
     public void setPerson(Person person) {
         this.person = person;

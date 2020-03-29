@@ -4,7 +4,7 @@ import java.util.Date;
 
 public abstract class Entity {
 
-    private Long id;
+    private int id;
     private Date dateHourInclusion;
     private Date dateHourChange;
     private Date dateHourDeletion;
@@ -13,11 +13,11 @@ public abstract class Entity {
     private User userWhoDeleted;
     private boolean excluded;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
