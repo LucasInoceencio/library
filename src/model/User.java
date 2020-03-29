@@ -2,32 +2,36 @@ package model;
 
 public class User extends Entity {
 
-    private String user;
+    private String username;
     private String password;
     private Person person;
 
     public User() {
     }
-
-    public User(String user, String password, Person person) {
-        super();
-        this.user = user;
-        this.password = password;
+    
+    public User(int idUser, String username, Person person) {
+        super(idUser);
+        this.username = username;
         this.person = person;
     }
 
-    public User(String user, String password) {
-        super();
-        this.user = user;
+    public User(int idUser, String username, String password) {
+        super(idUser);
+        this.username = username;
         this.password = password;
     }
 
-    public String getUser() {
-        return user;
+    public User(int pkUser, String username) {
+        super(pkUser);
+        this.username = username;
+    }
+    
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String user) {
+        this.username = user;
     }
 
     public String getPassword() {
@@ -42,7 +46,7 @@ public class User extends Entity {
         return person;
     }
     
-    public long getPersonID(){
+    public int getPersonID(){
         return getPerson().getId();
     }
 

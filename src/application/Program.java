@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.TimeZone;
 
 import model.Loan;
@@ -23,5 +24,7 @@ public class Program {
         System.out.println("Status apos encerrado: " + l.getStatus());
         System.out.println(l.endLoan());
 
+        Date d = new Date();
+        System.out.println(d);
     }
 }
