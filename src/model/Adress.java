@@ -11,8 +11,8 @@ public class Adress extends Entity {
     public Adress() {
     }
 
-    public Adress(String publicPlace, int number, String neighborhood, String complement, String cep) {
-        super();
+    public Adress(int idAdress, String publicPlace, int number, String neighborhood, String complement, String cep) {
+        super(idAdress);
         this.publicPlace = publicPlace;
         this.number = number;
         this.neighborhood = neighborhood;

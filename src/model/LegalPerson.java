@@ -63,7 +63,7 @@ public class LegalPerson extends Entity {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
-
+    
     public String getEmail() {
         return email;
     }

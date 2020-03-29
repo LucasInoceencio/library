@@ -1,4 +1,3 @@
-
 package model.dao;
 
 import java.sql.Connection;
@@ -8,11 +7,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBConnection {
-    
+
     private static Connection connection;
-    
-    private DBConnection() {}
-    
+
+    private DBConnection() {
+    }
+
     public static Connection getConnection() {
         if (connection != null) {
             return connection;
@@ -29,4 +29,5 @@ public class DBConnection {
         }
         return null;
     }
+
 }

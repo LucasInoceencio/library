@@ -12,11 +12,13 @@ public abstract class Entity {
     private User userWhoChanged;
     private User userWhoDeleted;
     private boolean excluded;
-    
-    public Entity() {}
-    
-    public Entity(int id){
+
+    public Entity() {
+    }
+
+    public Entity(int id) {
         this.id = id;
+        this.excluded = false;
     }
 
     public int getId() {

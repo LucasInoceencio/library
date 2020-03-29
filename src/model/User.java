@@ -8,7 +8,7 @@ public class User extends Entity {
 
     public User() {
     }
-    
+
     public User(int idUser, String username, Person person) {
         super(idUser);
         this.username = username;
@@ -25,7 +25,7 @@ public class User extends Entity {
         super(pkUser);
         this.username = username;
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -45,8 +45,8 @@ public class User extends Entity {
     public Person getPerson() {
         return person;
     }
-    
-    public int getPersonID(){
+
+    public int getPersonId() {
         return getPerson().getId();
     }
 
