@@ -1,9 +1,9 @@
 package model.enums;
 
 public enum Language {
-	INGLES,
-	PORTUGUES,
-	CHINES,
-	ESPANHOL,
-	FRANCES;
+    INGLES,
+    PORTUGUES,
+    CHINES,
+    ESPANHOL,
+    FRANCES;
 }

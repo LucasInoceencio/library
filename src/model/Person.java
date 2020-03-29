@@ -4,83 +4,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Person extends Entity {
-	
-	private String name;
-	private String cpf;
-	private List<String> phones = new ArrayList<>();
-	private Adress adress;
-	private String email;
-	private List<Book> borrowedBooks = new ArrayList<>();
-	
-	public Person() {}
-	
-	public Person(String name, String cpf, Adress adress, String email) {
-		super();
-		this.name = name;
-		this.cpf = cpf;
-		this.adress = adress;
-		this.email = email;
-	}
-	
-	public Person(String name) {
-		super();
-		this.name = name;
-	}
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private String cpf;
+    private List<String> phones = new ArrayList<>();
+    private Adress adress;
+    private String email;
+    private List<Book> borrowedBooks = new ArrayList<>();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Person() {
+    }
 
-	public String getCpf() {
-		return cpf;
-	}
+    public Person(String name, String cpf, Adress adress, String email) {
+        super();
+        this.name = name;
+        this.cpf = cpf;
+        this.adress = adress;
+        this.email = email;
+    }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public Person(String name) {
+        super();
+        this.name = name;
+    }
 
-	public List<String> getPhones() {
-		return phones;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Adress getAdress() {
-		return adress;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setAdress(Adress adress) {
-		this.adress = adress;
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public void addPhone(String phone) {
-		phones.add(phone);
-	}
-	
-	public void removePhone(String phone) {
-		phones.remove(phone);
-	}
-	
-	public List<Book> getBorrowedBooks() {
-		return borrowedBooks;
-	}
+    public List<String> getPhones() {
+        return phones;
+    }
 
-	public void addBorrowedBook(Book book) {
-		borrowedBooks.add(book);
-	}
-	
-	public void removeBorrowedBook(Book book) {
-		borrowedBooks.remove(book);
-	}
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void addPhone(String phone) {
+        phones.add(phone);
+    }
+
+    public void removePhone(String phone) {
+        phones.remove(phone);
+    }
+
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void addBorrowedBook(Book book) {
+        borrowedBooks.add(book);
+    }
+
+    public void removeBorrowedBook(Book book) {
+        borrowedBooks.remove(book);
+    }
 
 }

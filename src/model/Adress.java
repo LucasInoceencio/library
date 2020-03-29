@@ -2,61 +2,62 @@ package model;
 
 public class Adress extends Entity {
 
-	private String publicPlace;
-	private int number;
-	private String neighborhood;
-	private String complement;
-	private String cep;
-	
-	public Adress() {}
-	
-	public Adress(String publicPlace, int number, String neighborhood, String complement, String cep) {
-		super();
-		this.publicPlace = publicPlace;
-		this.number = number;
-		this.neighborhood = neighborhood;
-		this.complement = complement;
-		this.cep = cep;
-	}
+    private String publicPlace;
+    private int number;
+    private String neighborhood;
+    private String complement;
+    private String cep;
 
-	public String getPublicPlace() {
-		return publicPlace;
-	}
+    public Adress() {
+    }
 
-	public void setPublicPlace(String publicPlace) {
-		this.publicPlace = publicPlace;
-	}
+    public Adress(String publicPlace, int number, String neighborhood, String complement, String cep) {
+        super();
+        this.publicPlace = publicPlace;
+        this.number = number;
+        this.neighborhood = neighborhood;
+        this.complement = complement;
+        this.cep = cep;
+    }
 
-	public int getNumber() {
-		return number;
-	}
+    public String getPublicPlace() {
+        return publicPlace;
+    }
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public void setPublicPlace(String publicPlace) {
+        this.publicPlace = publicPlace;
+    }
 
-	public String getNeighborhood() {
-		return neighborhood;
-	}
+    public int getNumber() {
+        return number;
+    }
 
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	public String getComplement() {
-		return complement;
-	}
+    public String getNeighborhood() {
+        return neighborhood;
+    }
 
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
 
-	public String getCep() {
-		return cep;
-	}
+    public String getComplement() {
+        return complement;
+    }
 
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-	
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
 }
