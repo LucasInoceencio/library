@@ -161,7 +161,7 @@ public class LegalPersonDAO {
                 + "excluded=?, "
                 + "date_hour_deletion=?, "
                 + "fk_user_who_deleted=?, "
-                + "WHERE pk_legal_person");
+                + "WHERE pk_legal_person=?");
        stm.setBoolean(1, true);
        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
        stm.setInt(3, DBConfig.idUserLogged);
