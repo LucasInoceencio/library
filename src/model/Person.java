@@ -83,5 +83,10 @@ public class Person extends Entity {
     public void removeBorrowedBook(Book book) {
         borrowedBooks.remove(book);
     }
-
+    
+    public void removeAllBorrowedBook() {
+        for (Book books : borrowedBooks) {
+            borrowedBooks.remove(books);
+        }
+    }
 }

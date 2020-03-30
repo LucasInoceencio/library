@@ -15,12 +15,20 @@ public class LegalPerson extends Entity {
     public LegalPerson() {
     }
 
-    public LegalPerson(String companyName, String tradingName, String cnpj, Adress adress, String email) {
-        super();
+    public LegalPerson(int idLegalPerson, String companyName, String tradingName, String cnpj, Adress adress, String email) {
+        super(idLegalPerson);
         this.companyName = companyName;
         this.tradingName = tradingName;
         this.cnpj = cnpj;
         this.adress = adress;
+        this.email = email;
+    }
+    
+    public LegalPerson(int idLegalPerson, String companyName, String tradingName, String cnpj, String email) {
+        super(idLegalPerson);
+        this.companyName = companyName;
+        this.tradingName = tradingName;
+        this.cnpj = cnpj;
         this.email = email;
     }
 

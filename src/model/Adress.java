@@ -91,4 +91,8 @@ public class Adress extends Entity {
         this.state = state;
     }
 
+    @Override
+    public String toString() {
+        return "Adress{" + "publicPlace=" + publicPlace + ", number=" + number + ", neighborhood=" + neighborhood + ", complement=" + complement + ", cep=" + cep + ", city=" + city + ", state=" + state + '}';
+    }
 }

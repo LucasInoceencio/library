@@ -126,6 +126,7 @@ public class Loan extends Entity {
             verifyDeliveryDate();
             increaseAllAvailableQuantity();
             setStatus(LoanStatus.ENCERRADO);
+            person.removeAllBorrowedBook();
             return true;
         }
     }
