@@ -107,9 +107,9 @@ public class Loan extends Entity {
     }
 
     public void increaseAllAvailableQuantity() {
-        for (Book item : books) {
+        books.forEach((item) -> {
             item.increaseAvailableQuantity();
-        }
+        });
     }
 
     public void verifyDeliveryDate() {

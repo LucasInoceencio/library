@@ -1,16 +1,15 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Person extends Entity {
 
     private String name;
     private String cpf;
-    private List<String> phones = new ArrayList<>();
+    private ArrayList<Phone> phones = new ArrayList<>();
     private Adress adress;
     private String email;
-    private List<Book> borrowedBooks = new ArrayList<>();
+    private ArrayList<Book> borrowedBooks = new ArrayList<>();
 
     public Person() {
     }
@@ -44,7 +43,7 @@ public class Person extends Entity {
         this.cpf = cpf;
     }
 
-    public List<String> getPhones() {
+    public ArrayList<Phone> getPhones() {
         return phones;
     }
 
@@ -64,15 +63,15 @@ public class Person extends Entity {
         this.email = email;
     }
 
-    public void addPhone(String phone) {
+    public void addPhone(Phone phone) {
         phones.add(phone);
     }
 
-    public void removePhone(String phone) {
+    public void removePhone(Phone phone) {
         phones.remove(phone);
     }
 
-    public List<Book> getBorrowedBooks() {
+    public ArrayList<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
 
@@ -85,8 +84,8 @@ public class Person extends Entity {
     }
     
     public void removeAllBorrowedBook() {
-        for (Book books : borrowedBooks) {
+        borrowedBooks.forEach((books) -> {
             borrowedBooks.remove(books);
-        }
+        });
     }
 }

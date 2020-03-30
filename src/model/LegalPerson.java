@@ -8,7 +8,7 @@ public class LegalPerson extends Entity {
     private String companyName;
     private String tradingName;
     private String cnpj;
-    private List<String> phones = new ArrayList<>();
+    private ArrayList<Phone> phones = new ArrayList<>();
     private Adress adress;
     private String email;
 
@@ -56,12 +56,8 @@ public class LegalPerson extends Entity {
         this.cnpj = cnpj;
     }
 
-    public List<String> getPhones() {
+    public ArrayList<Phone> getPhones() {
         return phones;
-    }
-
-    public void setPhones(List<String> phones) {
-        this.phones = phones;
     }
 
     public Adress getAdress() {
@@ -80,11 +76,11 @@ public class LegalPerson extends Entity {
         this.email = email;
     }
 
-    public void addPhone(String phone) {
+    public void addPhone(Phone phone) {
         phones.add(phone);
     }
 
-    public void removePhone(String phone) {
+    public void removePhone(Phone phone) {
         phones.remove(phone);
     }
 
