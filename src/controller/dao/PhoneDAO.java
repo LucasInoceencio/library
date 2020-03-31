@@ -16,7 +16,7 @@ public class PhoneDAO {
     
     private static String[] valuesForConsultInDB(int table){
         // Array Auxiliar
-        String[] values = {};
+        String[] values = {"","",""};
         switch (table) {
             case 1:
                 values[0] = "pk_author_phone";
@@ -114,13 +114,13 @@ public class PhoneDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new Phone(
                     rs.getInt(finalValues[0]),
                     rs.getString("ddd"),
                     rs.getString("phone")
             ));
-        }
+        } while (rs.next());
         return aux;
     }
     
@@ -132,13 +132,13 @@ public class PhoneDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new Phone(
                     rs.getInt(finalValues[0]),
                     rs.getString("ddd"),
                     rs.getString("phone")
             ));
-        }
+        } while (rs.next());
         return aux;
     }
     
@@ -150,13 +150,13 @@ public class PhoneDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new Phone(
                     rs.getInt(finalValues[0]),
                     rs.getString("ddd"),
                     rs.getString("phone")
             ));
-        }
+        } while (rs.next());
         return aux;
     }
     

@@ -32,6 +32,14 @@ public class LegalPerson extends Entity {
         this.email = email;
         this.phones = new ArrayList<>();
     }
+    
+    public LegalPerson(String companyName, String tradingName, String cnpj, String email) {
+        this.companyName = companyName;
+        this.tradingName = tradingName;
+        this.cnpj = cnpj;
+        this.email = email;
+        this.phones = new ArrayList<>();
+    }
 
     public String getCompanyName() {
         return companyName;
@@ -83,6 +91,11 @@ public class LegalPerson extends Entity {
 
     public void removePhone(Phone phone) {
         phones.remove(phone);
+    }
+
+    @Override
+    public String toString() {
+        return "LegalPerson{" + "companyName=" + companyName + ", tradingName=" + tradingName + ", cnpj=" + cnpj + ", phones=" + phones + ", adress=" + adress + ", email=" + email + '}';
     }
 
 }

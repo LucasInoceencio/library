@@ -109,7 +109,7 @@ public class LegalPersonDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             LegalPerson temp = new LegalPerson(
                     rs.getInt("pk_legal_person"),
                     rs.getString("company_name"),
@@ -124,7 +124,7 @@ public class LegalPersonDAO {
                 temp.addPhone(phone);
             });
             aux.add(temp);
-        }
+        } while (rs.next());
         return aux;
     }
 
@@ -135,7 +135,7 @@ public class LegalPersonDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             LegalPerson temp = new LegalPerson(
                     rs.getInt("pk_legal_person"),
                     rs.getString("company_name"),
@@ -150,7 +150,7 @@ public class LegalPersonDAO {
                 temp.addPhone(phone);
             });
             aux.add(temp);
-        }
+        } while (rs.next());
         return aux;
     }
 

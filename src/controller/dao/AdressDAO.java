@@ -94,7 +94,7 @@ public class AdressDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new Adress(
                     rs.getInt("pk_adress"),
                     rs.getString("public_place"),
@@ -105,7 +105,7 @@ public class AdressDAO {
                     rs.getString("city"),
                     rs.getString("state")
             ));
-        }
+        } while (rs.next());
         return aux;
     }
 
@@ -116,7 +116,7 @@ public class AdressDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new Adress(
                     rs.getInt("pk_adress"),
                     rs.getString("public_place"),
@@ -127,7 +127,7 @@ public class AdressDAO {
                     rs.getString("city"),
                     rs.getString("state")
             ));
-        }
+        } while (rs.next());
         return aux;
     }
 

@@ -109,7 +109,7 @@ public class PublisherDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             Publisher temp = new Publisher(
                     rs.getInt("pk_publisher"),
                     rs.getString("company_name"),
@@ -124,7 +124,7 @@ public class PublisherDAO {
                 temp.addPhone(phone);
             });
             aux.add(temp);
-        }
+        } while (rs.next());
         return aux;
     }
 
@@ -135,7 +135,7 @@ public class PublisherDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             Publisher temp = new Publisher(
                     rs.getInt("pk_publisher"),
                     rs.getString("company_name"),
@@ -150,7 +150,7 @@ public class PublisherDAO {
                 temp.addPhone(phone);
             });
             aux.add(temp);
-        }
+        } while (rs.next());
         return aux;
     }
 
