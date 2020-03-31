@@ -10,4 +10,8 @@ public class Publisher extends LegalPerson {
         super(idPublisher, companyName, tradingName, cnpj, email);
     }
     
+    public Publisher(String companyName, String tradingName, String cnpj, String email) {
+        super(companyName, tradingName, cnpj, email);
+    }
+    
 }

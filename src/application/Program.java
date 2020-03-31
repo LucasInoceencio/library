@@ -1,10 +1,12 @@
 package application;
 
 import controller.dao.LegalPersonDAO;
+import controller.dao.PublisherDAO;
 import java.sql.SQLException;
 import model.Adress;
 import model.LegalPerson;
 import model.Phone;
+import model.Publisher;
 
 public class Program {
 
@@ -15,21 +17,22 @@ public class Program {
 //        
 //        Adress a1 = new Adress("Alameda das Acacias", 523, "Centro", "Portao de madeira", "75690000", "Caldas Novas", "Goias");
 //        
-//        LegalPerson lp = new LegalPerson("Editora Cerrado LTDA", "Editora Cerrado", "12589652000185", "contato@editoracerrado.com.br");
-//        lp.setAdress(a1);
+//        Publisher lp = new Publisher("Editora Cerrado LTDA", "Editora Cerrado", "12589652000185", "contato@editoracerrado.com.br");
+//        lp.addAdress(a1);
 //        lp.addPhone(p1);
 //        lp.addPhone(p2);
 //        
-//        LegalPersonDAO.create(lp);
+//        PublisherDAO.create(lp);
+//        System.out.println(lp);
 
-        LegalPerson lp = LegalPersonDAO.retrieve(4);
-        LegalPersonDAO.updateExcluded(lp);
+        Publisher lp = PublisherDAO.retrieve(2);
+        PublisherDAO.updateExcluded(lp);
 //        System.out.println(lp);
 //        lp.getAdresses().forEach(adress -> {
 //            System.out.println(adress.getId());
 //        });
-//        lp.setCompanyName("Cerrado, Ipe, Mata burros e Cia LTDA");
-//        LegalPersonDAO.update(lp);
+//        lp.setCompanyName("Cerrado, Ipe e Cia LTDA");
+//        PublisherDAO.update(lp);
 //        lp = LegalPersonDAO.retrieve(4);
 //        System.out.println(lp);
     }

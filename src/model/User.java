@@ -54,4 +54,9 @@ public class User extends Entity {
         this.person = person;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "username=" + username + ", password=" + password + ", person=" + person + '}';
+    }
+
 }

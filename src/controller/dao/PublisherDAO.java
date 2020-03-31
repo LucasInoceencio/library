@@ -41,7 +41,7 @@ public class PublisherDAO {
         publisher.setId(rs.getInt("pk_publisher"));
         publisher.getAdresses().forEach(adress -> {
             try {
-                AdressDAO.create(adress, publisher.getId(), 2);
+                AdressDAO.create(adress, publisher.getId(), 4);
             } catch (SQLException ex) {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -74,7 +74,7 @@ public class PublisherDAO {
                 rs.getString("email")
         );
         ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 2);
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 4);
         auxAdresses.forEach(adress -> {
             aux.addAdress(adress);
         });
@@ -104,7 +104,7 @@ public class PublisherDAO {
                 rs.getString("email")
         );
         ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 2);
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 4);
         auxAdresses.forEach(adress -> {
             aux.addAdress(adress);
         });
@@ -133,7 +133,7 @@ public class PublisherDAO {
                     rs.getString("email")
             );
             ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 4);
             auxAdresses.forEach(adress -> {
                 temp.addAdress(adress);
             });
@@ -164,7 +164,7 @@ public class PublisherDAO {
                     rs.getString("email")
             );
             ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 4);
             auxAdresses.forEach(adress -> {
                 temp.addAdress(adress);
             });
@@ -230,7 +230,7 @@ public class PublisherDAO {
         });
         publisher.getAdresses().forEach(adress -> {
             try {
-                AdressDAO.updateExcluded(adress, 2);
+                AdressDAO.updateExcluded(adress, 4);
             } catch (SQLException ex) {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -239,7 +239,7 @@ public class PublisherDAO {
         PreparedStatement stm = conn.prepareStatement("UPDATE publishers SET "
                 + "excluded=?, "
                 + "date_hour_deletion=?, "
-                + "fk_user_who_deleted=?, "
+                + "fk_user_who_deleted=? "
                 + "WHERE pk_publisher=?");
         stm.setBoolean(1, true);
         stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
@@ -263,7 +263,7 @@ public class PublisherDAO {
         });
         publisher.getAdresses().forEach(adress -> {
             try {
-                AdressDAO.delete(adress, 2);
+                AdressDAO.delete(adress, 4);
             } catch (SQLException ex) {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
