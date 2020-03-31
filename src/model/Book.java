@@ -15,14 +15,28 @@ public class Book extends Entity {
     private String isbn10;
     private String isbn13;
     private Date datePublication;
-    private List<Genre> genre;
+    private Genre genre;
     private int availableQuantity;
 
     public Book() {
     }
+    
+    public Book(int idBook, String name, Author author, Publisher publisher, Language language, String isbn10, String isbn13,
+            Date datePublication, Genre genre, int availableQuantity) {
+        super(idBook);
+        this.name = name;
+        this.author = author;
+        this.publisher = publisher;
+        this.language = language;
+        this.isbn10 = isbn10;
+        this.isbn13 = isbn13;
+        this.datePublication = datePublication;
+        this.genre = genre;
+        this.availableQuantity = availableQuantity;
+    }
 
     public Book(String name, Author author, Publisher publisher, Language language, String isbn10, String isbn13,
-            Date datePublication, List<Genre> genre, int availableQuantity) {
+            Date datePublication, Genre genre, int availableQuantity) {
         super();
         this.name = name;
         this.author = author;
@@ -91,11 +105,11 @@ public class Book extends Entity {
         this.datePublication = datePublication;
     }
 
-    public List<Genre> getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(List<Genre> genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 

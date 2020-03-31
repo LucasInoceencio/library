@@ -76,12 +76,12 @@ public class UserDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new User(
                     rs.getInt("pk_user"),
                     rs.getString("username"),
                     rs.getString("password_user")));
-        }
+        } while (rs.next());
         return aux;
     }
 
@@ -92,12 +92,12 @@ public class UserDAO {
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        while (rs.next()) {
+        do {
             aux.add(new User(
                     rs.getInt("pk_user"),
                     rs.getString("username"),
                     rs.getString("password_user")));
-        }
+        } while (rs.next());
         return aux;
     }
 

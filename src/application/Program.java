@@ -7,6 +7,7 @@ import model.Adress;
 import model.LegalPerson;
 import model.Phone;
 import model.Publisher;
+import model.enums.Language;
 
 public class Program {
 
@@ -24,9 +25,8 @@ public class Program {
 //        
 //        PublisherDAO.create(lp);
 //        System.out.println(lp);
-
-        Publisher lp = PublisherDAO.retrieve(2);
-        PublisherDAO.updateExcluded(lp);
+//        Publisher lp = PublisherDAO.retrieve(2);
+//        PublisherDAO.updateExcluded(lp);
 //        System.out.println(lp);
 //        lp.getAdresses().forEach(adress -> {
 //            System.out.println(adress.getId());
@@ -35,5 +35,9 @@ public class Program {
 //        PublisherDAO.update(lp);
 //        lp = LegalPersonDAO.retrieve(4);
 //        System.out.println(lp);
+        System.out.println(Language.INGLES.getId());
+        System.out.println(Language.PORTUGUES.getId());
+        System.out.println(Language.CHINES.getId());
+        System.out.println(Language.getById(1));
     }
 }
