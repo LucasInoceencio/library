@@ -12,8 +12,6 @@ import model.dao.DBConnection;
 
 public class PhoneDAO {
     
-   // Tentar fazer uma única implementação para todos os DAO de telefone.
-    
     private static String[] valuesForConsultInDB(int table){
         // Array Auxiliar
         String[] values = {"","",""};
@@ -74,7 +72,7 @@ public class PhoneDAO {
     public static Phone retrieveExcluded(int pkPhone, int table, boolean excluded) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("SELECT * FROM " + finalValues[2] + "WHERE " + finalValues[0] + "=? AND excluded=?");
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM " + finalValues[2] + " WHERE " + finalValues[0] + "=? AND excluded=?");
         stm.setInt(1, pkPhone);
         stm.setBoolean(2, excluded);
         stm.execute();
@@ -92,7 +90,7 @@ public class PhoneDAO {
     public static Phone retrieve(int pkPhone, int table) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("SELECT * FROM " + finalValues[2] + "WHERE " + finalValues[0] + "=?");
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM " + finalValues[2] + " WHERE " + finalValues[0] + "=?");
         stm.setInt(1, pkPhone);
         stm.execute();
         ResultSet rs = stm.getResultSet();
