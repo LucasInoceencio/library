@@ -157,6 +157,8 @@ public class AdressDAO {
         stm.setTimestamp(8, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(9, DBConfig.idUserLogged);
         stm.setInt(10, adress.getId());
+        System.out.println(adress.getId());
+        System.out.println(stm);
         stm.execute();
         stm.close();
     }

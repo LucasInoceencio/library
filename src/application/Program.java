@@ -24,8 +24,9 @@ public class Program {
 
         LegalPerson lp = LegalPersonDAO.retrieve(3);
         System.out.println(lp);
-        lp.getPhones().forEach(phone -> {
-            System.out.println(phone);
-        });
+        lp.setCompanyName("Cerrado e Cia LTDA");
+        LegalPersonDAO.update(lp);
+        lp = LegalPersonDAO.retrieve(3);
+        System.out.println(lp);
     }
 }

@@ -169,18 +169,20 @@ public class PhoneDAO {
         PreparedStatement stm = conn.prepareStatement("UPDATE "
                 + finalValues[2]
                 + " SET "
-                + "ddd=? "
-                + "phone=? "
-                + "fk_author=? "
-                + "date_hour_alteration=? "
+                + "ddd=?, "
+                + "phone=?, "
+                + finalValues[1]
+                + "=?, "
+                + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE "
-                + finalValues[0]);
+                + finalValues[0] + "=?");
         stm.setString(1, phone.getDdd());
         stm.setString(2, phone.getNumber());
         stm.setInt(3, fkEntityPerson);
         stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(5, DBConfig.idUserLogged);
+        stm.setInt(6, phone.getId());
         stm.execute();
         stm.close();
     }
@@ -198,10 +200,11 @@ public class PhoneDAO {
                 + "date_hour_deletion=?, "
                 + "fk_user_who_deleted=? "
                 + "WHERE "
-                + finalValues[0]);
+                + finalValues[0] + "=?");
         stm.setBoolean(1, true);
         stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(3, DBConfig.idUserLogged);
+        stm.setInt(4, phone.getId());
         stm.execute();
         stm.close();
         phone.setExcluded(true);
