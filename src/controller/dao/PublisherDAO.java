@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Adress;
 import model.Phone;
 import model.Publisher;
 import model.dao.DBConfig;
@@ -15,32 +16,36 @@ import model.dao.DBConnection;
 public class PublisherDAO {
 
     public static int create(Publisher publisher) throws SQLException {
-        int fkAdress = AdressDAO.create(publisher.getAdress());
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO publishers "
                 + "(company_name, "
                 + "trading_name, "
                 + "cnpj, "
-                + "fk_adress, "
                 + "email, "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
                 + "excluded) "
-                + "VALUES(?,?,?,?,?,?,?,?)",
+                + "VALUES(?,?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         stm.setString(1, publisher.getCompanyName());
         stm.setString(2, publisher.getTradingName());
         stm.setString(3, publisher.getCnpj());
-        stm.setInt(4, fkAdress);
-        stm.setString(5, publisher.getEmail());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setBoolean(8, publisher.isExcluded());
+        stm.setString(4, publisher.getEmail());
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setBoolean(7, publisher.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         publisher.setId(rs.getInt("pk_publisher"));
+        publisher.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.create(adress, publisher.getId(), 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         publisher.getPhones().forEach(phone -> {
             try {
                 PhoneDAO.create(phone, publisher.getId(), 4);
@@ -68,7 +73,12 @@ public class PublisherDAO {
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieveExcluded(pkPublisher, excluded));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 2);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
+
         ArrayList<Phone> auxPhones = new ArrayList<>();
         auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkPublisher, 4);
         auxPhones.forEach(phone -> {
@@ -93,7 +103,12 @@ public class PublisherDAO {
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieve(pkPublisher));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 2);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
+
         ArrayList<Phone> auxPhones = new ArrayList<>();
         auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkPublisher, 4);
         auxPhones.forEach(phone -> {
@@ -117,7 +132,12 @@ public class PublisherDAO {
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieve(rs.getInt("pk_publisher")));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
+
             ArrayList<Phone> auxPhones = new ArrayList<>();
             auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 4);
             auxPhones.forEach(phone -> {
@@ -143,7 +163,12 @@ public class PublisherDAO {
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieve(rs.getInt("pk_publisher")));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
+
             ArrayList<Phone> auxPhones = new ArrayList<>();
             auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 4);
             auxPhones.forEach(phone -> {
@@ -165,13 +190,18 @@ public class PublisherDAO {
                 Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        AdressDAO.update(publisher.getAdress());
+        publisher.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.update(adress, publisher.getId(), 4);
+            } catch (SQLException ex) {
+                Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE publishers SET "
                 + "company_name=?, "
                 + "trading_name=?, "
                 + "cnpj=?, "
-                + "fk_adress=?, "
                 + "email=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
@@ -179,11 +209,10 @@ public class PublisherDAO {
         stm.setString(1, publisher.getCompanyName());
         stm.setString(2, publisher.getTradingName());
         stm.setString(3, publisher.getCnpj());
-        stm.setInt(4, publisher.getAdress().getId());
-        stm.setString(5, publisher.getEmail());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setInt(8, publisher.getId());
+        stm.setString(4, publisher.getEmail());
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setInt(7, publisher.getId());
         stm.execute();
         stm.close();
     }
@@ -199,7 +228,13 @@ public class PublisherDAO {
                 Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        AdressDAO.updateExcluded(publisher.getAdress());
+        publisher.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.updateExcluded(adress, 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE publishers SET "
                 + "excluded=?, "
@@ -224,6 +259,13 @@ public class PublisherDAO {
                 PhoneDAO.delete(phone, 4);
             } catch (SQLException ex) {
                 Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        publisher.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.delete(adress, 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         Connection conn = DBConnection.getConnection();

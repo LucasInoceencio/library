@@ -23,13 +23,14 @@ public class Program {
 //        LegalPersonDAO.create(lp);
 
         LegalPerson lp = LegalPersonDAO.retrieve(4);
-        System.out.println(lp);
+        LegalPersonDAO.updateExcluded(lp);
+//        System.out.println(lp);
 //        lp.getAdresses().forEach(adress -> {
 //            System.out.println(adress.getId());
 //        });
-        lp.setCompanyName("Cerrado, Ipe, Mata burros e Cia LTDA");
-        LegalPersonDAO.update(lp);
-        lp = LegalPersonDAO.retrieve(4);
-        System.out.println(lp);
+//        lp.setCompanyName("Cerrado, Ipe, Mata burros e Cia LTDA");
+//        LegalPersonDAO.update(lp);
+//        lp = LegalPersonDAO.retrieve(4);
+//        System.out.println(lp);
     }
 }

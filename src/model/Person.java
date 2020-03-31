@@ -9,7 +9,6 @@ public class Person extends Entity {
     private ArrayList<Phone> phones;
     private Adress adress;
     private String email;
-    private ArrayList<Book> borrowedBooks;
 
     public Person() {
     }
@@ -21,7 +20,6 @@ public class Person extends Entity {
         this.adress = adress;
         this.email = email;
         this.phones = new ArrayList<>();
-        this.borrowedBooks = new ArrayList<>();
     }
 
     public Person(String name) {
@@ -71,23 +69,5 @@ public class Person extends Entity {
 
     public void removePhone(Phone phone) {
         phones.remove(phone);
-    }
-
-    public ArrayList<Book> getBorrowedBooks() {
-        return borrowedBooks;
-    }
-
-    public void addBorrowedBook(Book book) {
-        borrowedBooks.add(book);
-    }
-
-    public void removeBorrowedBook(Book book) {
-        borrowedBooks.remove(book);
-    }
-
-    public void removeAllBorrowedBook() {
-        borrowedBooks.forEach((books) -> {
-            borrowedBooks.remove(books);
-        });
     }
 }

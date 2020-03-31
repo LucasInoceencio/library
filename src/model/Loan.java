@@ -11,7 +11,7 @@ public class Loan extends Entity {
 
     private static int deliveryTime = 72;
     private Person person;
-    private List<Book> books = new ArrayList<>();
+    private ArrayList<Book> books;
     private int numberRenewals;
     private Date deliveryDate;
     private Double lateFee;
@@ -19,6 +19,7 @@ public class Loan extends Entity {
 
     public Loan() {
         super();
+        this.books = new ArrayList<>();
         this.numberRenewals = 0;
         this.deliveryDate = calcDeliveryDate();
         this.status = LoanStatus.ATIVO;
@@ -26,6 +27,7 @@ public class Loan extends Entity {
 
     public Loan(Person person) {
         super();
+        this.books = new ArrayList<>();
         this.person = person;
         this.numberRenewals = 0;
         this.deliveryDate = calcDeliveryDate();
@@ -126,7 +128,6 @@ public class Loan extends Entity {
             verifyDeliveryDate();
             increaseAllAvailableQuantity();
             setStatus(LoanStatus.ENCERRADO);
-            person.removeAllBorrowedBook();
             return true;
         }
     }

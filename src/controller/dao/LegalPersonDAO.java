@@ -239,7 +239,7 @@ public class LegalPersonDAO {
         PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "excluded=?, "
                 + "date_hour_deletion=?, "
-                + "fk_user_who_deleted=?, "
+                + "fk_user_who_deleted=? "
                 + "WHERE pk_legal_person=?");
         stm.setBoolean(1, true);
         stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
