@@ -8,37 +8,29 @@ public class LegalPerson extends Entity {
     private String tradingName;
     private String cnpj;
     private ArrayList<Phone> phones;
-    private Adress adress;
+    private ArrayList<Adress> adresses;
     private String email;
 
     public LegalPerson() {
     }
 
-    public LegalPerson(int idLegalPerson, String companyName, String tradingName, String cnpj, Adress adress, String email) {
-        super(idLegalPerson);
-        this.companyName = companyName;
-        this.tradingName = tradingName;
-        this.cnpj = cnpj;
-        this.adress = adress;
-        this.email = email;
-        this.phones = new ArrayList<>();
-    }
-    
     public LegalPerson(int idLegalPerson, String companyName, String tradingName, String cnpj, String email) {
         super(idLegalPerson);
         this.companyName = companyName;
         this.tradingName = tradingName;
         this.cnpj = cnpj;
+        this.adresses = new ArrayList<>();
         this.email = email;
         this.phones = new ArrayList<>();
     }
-    
+
     public LegalPerson(String companyName, String tradingName, String cnpj, String email) {
         this.companyName = companyName;
         this.tradingName = tradingName;
         this.cnpj = cnpj;
         this.email = email;
         this.phones = new ArrayList<>();
+        this.adresses = new ArrayList<>();
     }
 
     public String getCompanyName() {
@@ -69,14 +61,10 @@ public class LegalPerson extends Entity {
         return phones;
     }
 
-    public Adress getAdress() {
-        return adress;
+    public ArrayList<Adress> getAdresses() {
+        return adresses;
     }
 
-    public void setAdress(Adress adress) {
-        this.adress = adress;
-    }
-    
     public String getEmail() {
         return email;
     }
@@ -93,9 +81,17 @@ public class LegalPerson extends Entity {
         phones.remove(phone);
     }
 
+    public void addAdress(Adress adress) {
+        adresses.add(adress);
+    }
+
+    public void removeAdress(Adress adress) {
+        adresses.remove(adress);
+    }
+
     @Override
     public String toString() {
-        return "LegalPerson{" + "companyName=" + companyName + ", tradingName=" + tradingName + ", cnpj=" + cnpj + ", phones=" + phones + ", adress=" + adress + ", email=" + email + '}';
+        return "LegalPerson{" + "companyName=" + companyName + ", tradingName=" + tradingName + ", cnpj=" + cnpj + ", phones=" + phones + ", adresses=" + adresses + ", email=" + email + '}';
     }
 
 }

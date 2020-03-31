@@ -22,11 +22,14 @@ public class Program {
 //        
 //        LegalPersonDAO.create(lp);
 
-        LegalPerson lp = LegalPersonDAO.retrieve(3);
+        LegalPerson lp = LegalPersonDAO.retrieve(4);
         System.out.println(lp);
-        lp.setCompanyName("Cerrado e Cia LTDA");
+//        lp.getAdresses().forEach(adress -> {
+//            System.out.println(adress.getId());
+//        });
+        lp.setCompanyName("Cerrado, Ipe, Mata burros e Cia LTDA");
         LegalPersonDAO.update(lp);
-        lp = LegalPersonDAO.retrieve(3);
+        lp = LegalPersonDAO.retrieve(4);
         System.out.println(lp);
     }
 }

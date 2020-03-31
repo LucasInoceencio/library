@@ -1,4 +1,3 @@
-
 package controller.dao;
 
 import java.sql.Connection;
@@ -11,10 +10,10 @@ import model.dao.DBConfig;
 import model.dao.DBConnection;
 
 public class PhoneDAO {
-    
-    private static String[] valuesForConsultInDB(int table){
+
+    private static String[] valuesForConsultInDB(int table) {
         // Array Auxiliar
-        String[] values = {"","",""};
+        String[] values = {"", "", ""};
         switch (table) {
             case 1:
                 values[0] = "pk_author_phone";
@@ -41,14 +40,14 @@ public class PhoneDAO {
         }
         return values;
     }
-    
+
     public static int create(Phone phone, int fkEntityPerson, int table) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO " + finalValues[2] + " "
                 + "(ddd, "
                 + "phone, "
-                + finalValues[1] 
+                + finalValues[1]
                 + ", "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
@@ -68,7 +67,7 @@ public class PhoneDAO {
         phone.setId(rs.getInt(finalValues[0]));
         return phone.getId();
     }
-    
+
     public static Phone retrieveExcluded(int pkPhone, int table, boolean excluded) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
@@ -86,7 +85,7 @@ public class PhoneDAO {
                 rs.getString("phone")
         );
     }
-    
+
     public static Phone retrieve(int pkPhone, int table) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
@@ -103,7 +102,7 @@ public class PhoneDAO {
                 rs.getString("phone")
         );
     }
-    
+
     public static ArrayList<Phone> retrieveAllExcluded(int table, boolean excluded) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         ArrayList<Phone> aux = new ArrayList<>();
@@ -121,7 +120,7 @@ public class PhoneDAO {
         } while (rs.next());
         return aux;
     }
-    
+
     public static ArrayList<Phone> retrieveAll(int table) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         ArrayList<Phone> aux = new ArrayList<>();
@@ -139,7 +138,7 @@ public class PhoneDAO {
         } while (rs.next());
         return aux;
     }
-    
+
     public static ArrayList<Phone> retrieveAllForEntityPerson(int fkEntityPerson, int table) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         ArrayList<Phone> aux = new ArrayList<>();
@@ -157,7 +156,7 @@ public class PhoneDAO {
         } while (rs.next());
         return aux;
     }
-    
+
     public static void update(Phone phone, int fkEntityPerson, int table) throws SQLException {
         if (phone.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
@@ -184,9 +183,9 @@ public class PhoneDAO {
         stm.execute();
         stm.close();
     }
-    
+
     public static void updateExcluded(Phone phone, int table) throws SQLException {
-        if (phone.getId() == 0){
+        if (phone.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         String[] finalValues = valuesForConsultInDB(table);
@@ -207,9 +206,9 @@ public class PhoneDAO {
         stm.close();
         phone.setExcluded(true);
     }
-    
+
     public static void delete(Phone phone, int table) throws SQLException {
-        if (phone.getId() == 0){
+        if (phone.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         String[] finalValues = valuesForConsultInDB(table);

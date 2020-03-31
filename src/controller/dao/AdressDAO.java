@@ -179,7 +179,7 @@ public class AdressDAO {
         }
         do {
             aux.add(new Adress(
-                    rs.getInt("pk_adress"),
+                    rs.getInt(finalValues[0]),
                     rs.getString("public_place"),
                     rs.getInt("number"),
                     rs.getString("neighborhood"),
@@ -198,7 +198,9 @@ public class AdressDAO {
         }
         String[] finalValues = valuesForConsultInDB(table);
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("UPDATE adresses SET "
+        PreparedStatement stm = conn.prepareStatement("UPDATE "
+                + finalValues[2]
+                + " SET "
                 + "public_place=?, "
                 + "number=?, "
                 + "neighborhood=?, "
@@ -207,6 +209,7 @@ public class AdressDAO {
                 + "city=?, "
                 + "state=?, "
                 + finalValues[1]
+                + "=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE "
@@ -222,8 +225,6 @@ public class AdressDAO {
         stm.setTimestamp(9, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(10, DBConfig.idUserLogged);
         stm.setInt(11, adress.getId());
-        System.out.println(adress.getId());
-        System.out.println(stm);
         stm.execute();
         stm.close();
     }

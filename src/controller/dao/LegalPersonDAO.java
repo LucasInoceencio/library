@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Adress;
 import model.LegalPerson;
 import model.Phone;
 import model.dao.DBConfig;
@@ -15,36 +16,40 @@ import model.dao.DBConnection;
 public class LegalPersonDAO {
 
     public static int create(LegalPerson legalPerson) throws SQLException {
-        int fkAdress = AdressDAO.create(legalPerson.getAdress());
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO legal_persons "
                 + "(company_name, "
                 + "trading_name, "
                 + "cnpj, "
-                + "fk_adress, "
                 + "email, "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
                 + "excluded) "
-                + "VALUES(?,?,?,?,?,?,?,?)",
+                + "VALUES(?,?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         stm.setString(1, legalPerson.getCompanyName());
         stm.setString(2, legalPerson.getTradingName());
         stm.setString(3, legalPerson.getCnpj());
-        stm.setInt(4, fkAdress);
-        stm.setString(5, legalPerson.getEmail());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setBoolean(8, legalPerson.isExcluded());
+        stm.setString(4, legalPerson.getEmail());
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setBoolean(7, legalPerson.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         legalPerson.setId(rs.getInt("pk_legal_person"));
+        legalPerson.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.create(adress, legalPerson.getId(), 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         legalPerson.getPhones().forEach(phone -> {
             try {
                 PhoneDAO.create(phone, legalPerson.getId(), 2);
-                        } catch (SQLException ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -68,7 +73,12 @@ public class LegalPersonDAO {
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieveExcluded(pkLegalPerson, excluded));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
+
         ArrayList<Phone> auxPhones = new ArrayList<>();
         auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxPhones.forEach(phone -> {
@@ -93,7 +103,12 @@ public class LegalPersonDAO {
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieve(pkLegalPerson));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
+
         ArrayList<Phone> auxPhones = new ArrayList<>();
         auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxPhones.forEach(phone -> {
@@ -117,7 +132,12 @@ public class LegalPersonDAO {
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieve(rs.getInt("pk_legal_person")));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
+
             ArrayList<Phone> auxPhones = new ArrayList<>();
             auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxPhones.forEach(phone -> {
@@ -143,7 +163,12 @@ public class LegalPersonDAO {
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieve(rs.getInt("pk_legal_person")));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
+
             ArrayList<Phone> auxPhones = new ArrayList<>();
             auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxPhones.forEach(phone -> {
@@ -165,13 +190,18 @@ public class LegalPersonDAO {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        AdressDAO.update(legalPerson.getAdress());
+        legalPerson.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.update(adress, legalPerson.getId(), 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "company_name=?, "
                 + "trading_name=?, "
                 + "cnpj=?, "
-                + "fk_adress=?, "
                 + "email=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
@@ -179,11 +209,10 @@ public class LegalPersonDAO {
         stm.setString(1, legalPerson.getCompanyName());
         stm.setString(2, legalPerson.getTradingName());
         stm.setString(3, legalPerson.getCnpj());
-        stm.setInt(4, legalPerson.getAdress().getId());
-        stm.setString(5, legalPerson.getEmail());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setInt(8, legalPerson.getId());
+        stm.setString(4, legalPerson.getEmail());
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setInt(7, legalPerson.getId());
         stm.execute();
         stm.close();
     }
@@ -199,7 +228,13 @@ public class LegalPersonDAO {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        AdressDAO.updateExcluded(legalPerson.getAdress());
+        legalPerson.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.updateExcluded(adress, 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "excluded=?, "
@@ -222,6 +257,13 @@ public class LegalPersonDAO {
         legalPerson.getPhones().forEach(phone -> {
             try {
                 PhoneDAO.delete(phone, 2);
+            } catch (SQLException ex) {
+                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        legalPerson.getAdresses().forEach(adress -> {
+            try {
+                AdressDAO.delete(adress, 2);
             } catch (SQLException ex) {
                 Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
