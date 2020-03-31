@@ -1,14 +1,13 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LegalPerson extends Entity {
 
     private String companyName;
     private String tradingName;
     private String cnpj;
-    private ArrayList<Phone> phones = new ArrayList<>();
+    private ArrayList<Phone> phones;
     private Adress adress;
     private String email;
 
@@ -22,6 +21,7 @@ public class LegalPerson extends Entity {
         this.cnpj = cnpj;
         this.adress = adress;
         this.email = email;
+        this.phones = new ArrayList<>();
     }
     
     public LegalPerson(int idLegalPerson, String companyName, String tradingName, String cnpj, String email) {
@@ -30,6 +30,7 @@ public class LegalPerson extends Entity {
         this.tradingName = tradingName;
         this.cnpj = cnpj;
         this.email = email;
+        this.phones = new ArrayList<>();
     }
 
     public String getCompanyName() {

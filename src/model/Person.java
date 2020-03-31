@@ -6,10 +6,10 @@ public class Person extends Entity {
 
     private String name;
     private String cpf;
-    private ArrayList<Phone> phones = new ArrayList<>();
+    private ArrayList<Phone> phones;
     private Adress adress;
     private String email;
-    private ArrayList<Book> borrowedBooks = new ArrayList<>();
+    private ArrayList<Book> borrowedBooks;
 
     public Person() {
     }
@@ -20,6 +20,8 @@ public class Person extends Entity {
         this.cpf = cpf;
         this.adress = adress;
         this.email = email;
+        this.phones = new ArrayList<>();
+        this.borrowedBooks = new ArrayList<>();
     }
 
     public Person(String name) {
@@ -82,7 +84,7 @@ public class Person extends Entity {
     public void removeBorrowedBook(Book book) {
         borrowedBooks.remove(book);
     }
-    
+
     public void removeAllBorrowedBook() {
         borrowedBooks.forEach((books) -> {
             borrowedBooks.remove(books);
