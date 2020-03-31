@@ -23,7 +23,7 @@ public class Adress extends Entity {
         this.city = city;
         this.state = state;
     }
-    
+
     public Adress(String publicPlace, int number, String neighborhood, String complement, String cep, String city, String state) {
         super();
         this.publicPlace = publicPlace;

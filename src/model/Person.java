@@ -30,6 +30,11 @@ public class Person extends Entity {
         this.email = email;
         this.phones = new ArrayList<>();
     }
+    
+    public Person(int idPerson, String name) {
+        super(idPerson);
+        this.name = name;
+    }
 
     public Person(String name) {
         super();

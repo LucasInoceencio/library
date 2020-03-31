@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.User;
 import model.dao.DBConfig;
-import static model.dao.DBConfig.tzUTC;
 import model.dao.DBConnection;
 
 public class UserDAO {
