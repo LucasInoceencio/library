@@ -14,7 +14,7 @@ import model.enums.Language;
 public class BookDAO {
 
     public static int create(Book book) throws SQLException {
-        java.sql.Date dataSql = new java.sql.Date(book.getDatePublication().getTime());
+        java.sql.Date dateSql = new java.sql.Date(book.getDatePublication().getTime());
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO books "
                 + "(name, "
@@ -38,7 +38,7 @@ public class BookDAO {
         stm.setInt(4, book.getLanguage().getId());
         stm.setString(5, book.getIsbn10());
         stm.setString(6, book.getIsbn13());
-        stm.setDate(7, dataSql);
+        stm.setDate(7, dateSql);
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
         stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
