@@ -24,7 +24,7 @@ public class Loan extends Entity {
         this.status = status;
         this.books = new ArrayList<>();
     }
-    
+
     public Loan(int numberRenewals, Date deliveryDate, LoanStatus status) {
         super();
         this.numberRenewals = numberRenewals;
@@ -32,12 +32,13 @@ public class Loan extends Entity {
         this.status = status;
         this.books = new ArrayList<>();
     }
-    
-    public Loan(int idLoan, Person person, int numberRenewals, Date deliveryDate, LoanStatus status) {
+
+    public Loan(int idLoan, Person person, int numberRenewals, Date deliveryDate, Double lateFee, LoanStatus status) {
         super(idLoan);
         this.person = person;
         this.numberRenewals = numberRenewals;
         this.deliveryDate = deliveryDate;
+        this.lateFee = lateFee;
         this.status = status;
         this.books = new ArrayList<>();
     }
@@ -49,6 +50,16 @@ public class Loan extends Entity {
         this.deliveryDate = deliveryDate;
         this.status = status;
         this.books = new ArrayList<>();
+    }
+
+    public Loan(Person person) {
+        super();
+        this.person = person;
+        this.numberRenewals = 0;
+        this.deliveryDate = this.calcDeliveryDate();
+        this.status = LoanStatus.ATIVO;
+        this.books = new ArrayList<>();
+        this.lateFee = 0.0;
     }
 
     public Person getPerson() {
@@ -146,6 +157,11 @@ public class Loan extends Entity {
             setStatus(LoanStatus.ENCERRADO);
             return true;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Loan{" + "person=" + person + ", books=" + books + ", numberRenewals=" + numberRenewals + ", deliveryDate=" + deliveryDate + ", lateFee=" + lateFee + ", status=" + status + '}';
     }
 
 }

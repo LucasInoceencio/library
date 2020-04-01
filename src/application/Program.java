@@ -1,10 +1,11 @@
 package application;
 
-import controller.dao.AuthorDAO;
-import controller.dao.BookDAO;
-import controller.dao.LegalPersonDAO;
-import controller.dao.PersonDAO;
-import controller.dao.PublisherDAO;
+import dao.AuthorDAO;
+import dao.BookDAO;
+import dao.LegalPersonDAO;
+import dao.LoanDAO;
+import dao.PersonDAO;
+import dao.PublisherDAO;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
@@ -12,6 +13,7 @@ import model.Adress;
 import model.Author;
 import model.Book;
 import model.LegalPerson;
+import model.Loan;
 import model.Person;
 import model.Phone;
 import model.Publisher;
@@ -40,6 +42,13 @@ public class Program {
 //        System.out.println(b1);
 
 //        Book b = BookDAO.retrieve(2);
+//        Person p = PersonDAO.retrieve(1);
+//        Loan l = new Loan(p);
+//        l.addBook(b);
+//        LoanDAO.create(l);
 //        BookDAO.updateExcluded(b);
+
+        Loan l = LoanDAO.retrieve(3);
+        System.out.println(l);
     }
 }

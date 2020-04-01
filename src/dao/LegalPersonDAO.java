@@ -1,4 +1,4 @@
-package controller.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Adress;
+import model.LegalPerson;
 import model.Phone;
-import model.Publisher;
-import model.dao.DBConfig;
-import model.dao.DBConnection;
+import jdbc.DBConfig;
+import jdbc.DBConnection;
 
-public class PublisherDAO {
+public class LegalPersonDAO {
 
-    public static int create(Publisher publisher) throws SQLException {
+    public static int create(LegalPerson legalPerson) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("INSERT INTO publishers "
+        PreparedStatement stm = conn.prepareStatement("INSERT INTO legal_persons "
                 + "(company_name, "
                 + "trading_name, "
                 + "cnpj, "
@@ -28,122 +28,122 @@ public class PublisherDAO {
                 + "VALUES(?,?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
-        stm.setString(1, publisher.getCompanyName());
-        stm.setString(2, publisher.getTradingName());
-        stm.setString(3, publisher.getCnpj());
-        stm.setString(4, publisher.getEmail());
+        stm.setString(1, legalPerson.getCompanyName());
+        stm.setString(2, legalPerson.getTradingName());
+        stm.setString(3, legalPerson.getCnpj());
+        stm.setString(4, legalPerson.getEmail());
         stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(6, DBConfig.idUserLogged);
-        stm.setBoolean(7, publisher.isExcluded());
+        stm.setBoolean(7, legalPerson.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
-        publisher.setId(rs.getInt("pk_publisher"));
-        if (!publisher.getAdresses().isEmpty()) {
-            publisher.getAdresses().forEach(adress -> {
+        legalPerson.setId(rs.getInt("pk_legal_person"));
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
                 try {
-                    AdressDAO.create(adress, publisher.getId(), 4);
+                    AdressDAO.create(adress, legalPerson.getId(), 2);
                 } catch (SQLException ex) {
                     Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
-        if (!publisher.getPhones().isEmpty()) {
-            publisher.getPhones().forEach(phone -> {
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
                 try {
-                    PhoneDAO.create(phone, publisher.getId(), 4);
+                    PhoneDAO.create(phone, legalPerson.getId(), 2);
                 } catch (SQLException ex) {
-                    Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
-        return publisher.getId();
+        return legalPerson.getId();
     }
 
-    public static Publisher retrieveExcluded(int pkPublisher, boolean excluded) throws SQLException {
+    public static LegalPerson retrieveExcluded(int pkLegalPerson, boolean excluded) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("SELECT * FROM publishers WHERE pk_publisher=? AND excluded=?");
-        stm.setInt(1, pkPublisher);
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM legal_persons WHERE pk_legal_person=? AND excluded=?");
+        stm.setInt(1, pkLegalPerson);
         stm.setBoolean(2, excluded);
         stm.execute();
         ResultSet rs = stm.getResultSet();
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Publisher aux = new Publisher(
-                rs.getInt("pk_publisher"),
+        LegalPerson aux = new LegalPerson(
+                rs.getInt("pk_legal_person"),
                 rs.getString("company_name"),
                 rs.getString("trading_name"),
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
         ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 4);
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxAdresses.forEach(adress -> {
             aux.addAdress(adress);
         });
 
         ArrayList<Phone> auxPhones = new ArrayList<>();
-        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkPublisher, 4);
+        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxPhones.forEach(phone -> {
             aux.addPhone(phone);
         });
         return aux;
     }
 
-    public static Publisher retrieve(int pkPublisher) throws SQLException {
+    public static LegalPerson retrieve(int pkLegalPerson) throws SQLException {
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("SELECT * FROM publishers WHERE pk_publisher=?");
-        stm.setInt(1, pkPublisher);
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM legal_persons WHERE pk_legal_person=?");
+        stm.setInt(1, pkLegalPerson);
         stm.execute();
         ResultSet rs = stm.getResultSet();
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        Publisher aux = new Publisher(
-                rs.getInt("pk_publisher"),
+        LegalPerson aux = new LegalPerson(
+                rs.getInt("pk_legal_person"),
                 rs.getString("company_name"),
                 rs.getString("trading_name"),
                 rs.getString("cnpj"),
                 rs.getString("email")
         );
         ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPublisher, 4);
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxAdresses.forEach(adress -> {
             aux.addAdress(adress);
         });
 
         ArrayList<Phone> auxPhones = new ArrayList<>();
-        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkPublisher, 4);
+        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkLegalPerson, 2);
         auxPhones.forEach(phone -> {
             aux.addPhone(phone);
         });
         return aux;
     }
 
-    public static ArrayList<Publisher> retrieveAllExcluded(boolean excluded) throws SQLException {
-        ArrayList<Publisher> aux = new ArrayList<>();
+    public static ArrayList<LegalPerson> retrieveAllExcluded(boolean excluded) throws SQLException {
+        ArrayList<LegalPerson> aux = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM publishers WHERE excluded=" + excluded);
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM legal_persons WHERE excluded=" + excluded);
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         do {
-            Publisher temp = new Publisher(
-                    rs.getInt("pk_publisher"),
+            LegalPerson temp = new LegalPerson(
+                    rs.getInt("pk_legal_person"),
                     rs.getString("company_name"),
                     rs.getString("trading_name"),
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
             ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 4);
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxAdresses.forEach(adress -> {
                 temp.addAdress(adress);
             });
 
             ArrayList<Phone> auxPhones = new ArrayList<>();
-            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 4);
+            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxPhones.forEach(phone -> {
                 temp.addPhone(phone);
             });
@@ -152,29 +152,29 @@ public class PublisherDAO {
         return aux;
     }
 
-    public static ArrayList<Publisher> retrieveAll() throws SQLException {
-        ArrayList<Publisher> aux = new ArrayList<>();
+    public static ArrayList<LegalPerson> retrieveAll() throws SQLException {
+        ArrayList<LegalPerson> aux = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM publishers");
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM legal_persons");
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         do {
-            Publisher temp = new Publisher(
-                    rs.getInt("pk_publisher"),
+            LegalPerson temp = new LegalPerson(
+                    rs.getInt("pk_legal_person"),
                     rs.getString("company_name"),
                     rs.getString("trading_name"),
                     rs.getString("cnpj"),
                     rs.getString("email")
             );
             ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 4);
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxAdresses.forEach(adress -> {
                 temp.addAdress(adress);
             });
 
             ArrayList<Phone> auxPhones = new ArrayList<>();
-            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 4);
+            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 2);
             auxPhones.forEach(phone -> {
                 temp.addPhone(phone);
             });
@@ -183,110 +183,110 @@ public class PublisherDAO {
         return aux;
     }
 
-    public static void update(Publisher publisher) throws SQLException {
-        if (publisher.getId() == 0) {
+    public static void update(LegalPerson legalPerson) throws SQLException {
+        if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        if (!publisher.getPhones().isEmpty()) {
-            publisher.getPhones().forEach(phone -> {
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
                 try {
-                    PhoneDAO.update(phone, publisher.getId(), 4);
+                    PhoneDAO.update(phone, legalPerson.getId(), 2);
                 } catch (SQLException ex) {
-                    Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
-        if (!publisher.getAdresses().isEmpty()) {
-            publisher.getAdresses().forEach(adress -> {
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
                 try {
-                    AdressDAO.update(adress, publisher.getId(), 4);
+                    AdressDAO.update(adress, legalPerson.getId(), 2);
                 } catch (SQLException ex) {
-                    Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("UPDATE publishers SET "
+        PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "company_name=?, "
                 + "trading_name=?, "
                 + "cnpj=?, "
                 + "email=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
-                + "WHERE pk_publisher=?");
-        stm.setString(1, publisher.getCompanyName());
-        stm.setString(2, publisher.getTradingName());
-        stm.setString(3, publisher.getCnpj());
-        stm.setString(4, publisher.getEmail());
+                + "WHERE pk_legal_person=?");
+        stm.setString(1, legalPerson.getCompanyName());
+        stm.setString(2, legalPerson.getTradingName());
+        stm.setString(3, legalPerson.getCnpj());
+        stm.setString(4, legalPerson.getEmail());
         stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(6, DBConfig.idUserLogged);
-        stm.setInt(7, publisher.getId());
+        stm.setInt(7, legalPerson.getId());
         stm.execute();
         stm.close();
     }
 
-    public static void updateExcluded(Publisher publisher) throws SQLException {
-        if (publisher.getId() == 0) {
+    public static void updateExcluded(LegalPerson legalPerson) throws SQLException {
+        if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        if (!publisher.getPhones().isEmpty()) {
-            publisher.getPhones().forEach(phone -> {
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
                 try {
-                    PhoneDAO.updateExcluded(phone, 4);
+                    PhoneDAO.updateExcluded(phone, 2);
                 } catch (SQLException ex) {
-                    Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
-        if (!publisher.getAdresses().isEmpty()) {
-            publisher.getAdresses().forEach(adress -> {
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
                 try {
-                    AdressDAO.updateExcluded(adress, 4);
+                    AdressDAO.updateExcluded(adress, 2);
                 } catch (SQLException ex) {
                     Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("UPDATE publishers SET "
+        PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "excluded=?, "
                 + "date_hour_deletion=?, "
                 + "fk_user_who_deleted=? "
-                + "WHERE pk_publisher=?");
+                + "WHERE pk_legal_person=?");
         stm.setBoolean(1, true);
         stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(3, DBConfig.idUserLogged);
-        stm.setInt(4, publisher.getId());
+        stm.setInt(4, legalPerson.getId());
         stm.execute();
         stm.close();
-        publisher.setExcluded(true);
+        legalPerson.setExcluded(true);
     }
 
-    public static void delete(Publisher publisher) throws SQLException {
-        if (publisher.getId() == 0) {
+    public static void delete(LegalPerson legalPerson) throws SQLException {
+        if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        if (!publisher.getPhones().isEmpty()) {
-            publisher.getPhones().forEach(phone -> {
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
                 try {
-                    PhoneDAO.delete(phone, 4);
+                    PhoneDAO.delete(phone, 2);
                 } catch (SQLException ex) {
-                    Logger.getLogger(PublisherDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
-        if (!publisher.getAdresses().isEmpty()) {
-            publisher.getAdresses().forEach(adress -> {
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
                 try {
-                    AdressDAO.delete(adress, 4);
+                    AdressDAO.delete(adress, 2);
                 } catch (SQLException ex) {
                     Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("DELETE FROM publishers WHERE pk_publisher=?");
-        stm.setInt(1, publisher.getId());
+        PreparedStatement stm = conn.prepareStatement("DELETE FROM legal_persons WHERE pk_legal_person=?");
+        stm.setInt(1, legalPerson.getId());
         stm.execute();
         stm.close();
     }

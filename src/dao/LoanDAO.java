@@ -1,4 +1,4 @@
-package controller.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Loan;
-import model.dao.DBConfig;
-import model.dao.DBConnection;
+import jdbc.DBConfig;
+import jdbc.DBConnection;
 import model.enums.LoanStatus;
 
 public class LoanDAO {
@@ -28,8 +28,9 @@ public class LoanDAO {
                 + "status, "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
-                + "excluded "
-                + "VALUES(?,?,?,?,?,?,?,?)");
+                + "excluded) "
+                + "VALUES(?,?,?,?,?,?,?,?)",
+                PreparedStatement.RETURN_GENERATED_KEYS);
         stm.setInt(1, loan.getPerson().getId());
         stm.setInt(2, loan.getNumberRenewals());
         stm.setDate(3, dateSql);
@@ -69,6 +70,7 @@ public class LoanDAO {
                 PersonDAO.retrieve(rs.getInt("fk_person")),
                 rs.getInt("number_renewals"),
                 rs.getDate("delivery_date"),
+                rs.getDouble("late_fee"),
                 LoanStatus.getById(rs.getInt("status"))
         );
         ArrayList<Integer> arrayAux = BorrowedBooksDAO.retrieveAllForEntityPerson(PkLoan);
@@ -98,6 +100,7 @@ public class LoanDAO {
                 PersonDAO.retrieve(rs.getInt("fk_person")),
                 rs.getInt("number_renewals"),
                 rs.getDate("delivery_date"),
+                rs.getDouble("late_fee"),
                 LoanStatus.getById(rs.getInt("status"))
         );
         ArrayList<Integer> arrayAux = BorrowedBooksDAO.retrieveAllForEntityPerson(PkLoan);
@@ -126,6 +129,7 @@ public class LoanDAO {
                     PersonDAO.retrieve(rs.getInt("fk_person")),
                     rs.getInt("number_renewals"),
                     rs.getDate("delivery_date"),
+                    rs.getDouble("late_fee"),
                     LoanStatus.getById(rs.getInt("status"))
             );
             ArrayList<Integer> arrayAux = BorrowedBooksDAO.retrieveAllForEntityPerson(temp.getId());
@@ -156,6 +160,7 @@ public class LoanDAO {
                     PersonDAO.retrieve(rs.getInt("fk_person")),
                     rs.getInt("number_renewals"),
                     rs.getDate("delivery_date"),
+                    rs.getDouble("late_fee"),
                     LoanStatus.getById(rs.getInt("status"))
             );
             ArrayList<Integer> arrayAux = BorrowedBooksDAO.retrieveAllForEntityPerson(temp.getId());
@@ -216,7 +221,7 @@ public class LoanDAO {
         stm.close();
         loan.setExcluded(true);
     }
-    
+
     public static void delete(Loan loan) throws SQLException {
         if (loan.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");

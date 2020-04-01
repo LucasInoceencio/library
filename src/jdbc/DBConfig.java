@@ -1,4 +1,4 @@
-package model.dao;
+package jdbc;
 
 import java.sql.Timestamp;
 import java.time.Instant;

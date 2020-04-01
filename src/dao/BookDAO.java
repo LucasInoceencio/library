@@ -1,4 +1,4 @@
-package controller.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Book;
-import model.dao.DBConfig;
-import model.dao.DBConnection;
+import jdbc.DBConfig;
+import jdbc.DBConnection;
 import model.enums.Genre;
 import model.enums.Language;
 

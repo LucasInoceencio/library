@@ -1,4 +1,4 @@
-package controller.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 import model.Adress;
 import model.Author;
 import model.Phone;
-import model.dao.DBConfig;
-import model.dao.DBConnection;
+import jdbc.DBConfig;
+import jdbc.DBConnection;
 
 public class AuthorDAO {
 

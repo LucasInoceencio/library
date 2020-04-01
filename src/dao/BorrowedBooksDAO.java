@@ -1,5 +1,5 @@
 
-package controller.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Book;
 import model.Loan;
-import model.dao.DBConfig;
-import model.dao.DBConnection;
+import jdbc.DBConfig;
+import jdbc.DBConnection;
 
 public class BorrowedBooksDAO {
     
