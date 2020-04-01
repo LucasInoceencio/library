@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Date;
-import java.util.List;
 
 import model.enums.Genre;
 import model.enums.Language;
@@ -20,7 +19,7 @@ public class Book extends Entity {
 
     public Book() {
     }
-    
+
     public Book(int idBook, String name, Author author, Publisher publisher, Language language, String isbn10, String isbn13,
             Date datePublication, Genre genre, int availableQuantity) {
         super(idBook);
@@ -135,6 +134,11 @@ public class Book extends Entity {
 
     public void decreaseAvailableQuantity() {
         this.availableQuantity--;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" + "name=" + name + ", author=" + author + ", publisher=" + publisher + ", language=" + language + ", isbn10=" + isbn10 + ", isbn13=" + isbn13 + ", datePublication=" + datePublication + ", genre=" + genre + ", availableQuantity=" + availableQuantity + '}';
     }
 
 }

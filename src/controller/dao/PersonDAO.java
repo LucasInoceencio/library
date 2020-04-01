@@ -22,7 +22,7 @@ public class PersonDAO {
                 + "cpf, "
                 + "email, "
                 + "date_hour_inclusion, "
-                + "fk_use_who_included, "
+                + "fk_user_who_included, "
                 + "excluded) "
                 + "VALUES(?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
@@ -37,20 +37,24 @@ public class PersonDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         person.setId(rs.getInt("pk_person"));
-        person.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.create(adress, person.getId(), 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        person.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.create(phone, person.getId(), 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.create(adress, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!person.getPhones().isEmpty()) {
+            person.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.create(phone, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         return person.getId();
     }
 
@@ -141,7 +145,7 @@ public class PersonDAO {
         } while (rs.next());
         return aux;
     }
-    
+
     public static ArrayList<Person> retrieveAll() throws SQLException {
         ArrayList<Person> aux = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
@@ -170,30 +174,34 @@ public class PersonDAO {
         } while (rs.next());
         return aux;
     }
-    
+
     public static void update(Person person) throws SQLException {
         if (person.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        person.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.update(phone, person.getId(), 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        person.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.update(adress, person.getId(), 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (person.getPhones().isEmpty()) {
+            person.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.update(phone, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.update(adress, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
-        PreparedStatement stm = conn.prepareStatement("UDPATE persons SET "
+        PreparedStatement stm = conn.prepareStatement("UPDATE persons SET "
                 + "name=?, "
                 + "cpf=?, "
-                + "email=? "
+                + "email=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE pk_person=?");
@@ -206,25 +214,29 @@ public class PersonDAO {
         stm.execute();
         stm.close();
     }
-    
+
     public static void updateExcluded(Person person) throws SQLException {
         if (person.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        person.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.updateExcluded(phone, 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        person.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.updateExcluded(adress, 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!person.getPhones().isEmpty()) {
+            person.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.updateExcluded(phone, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.updateExcluded(adress, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE persons SET "
                 + "excluded=?, "
@@ -239,25 +251,29 @@ public class PersonDAO {
         stm.close();
         person.setExcluded(true);
     }
-    
+
     public static void delete(Person person) throws SQLException {
         if (person.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        person.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.delete(phone, 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        person.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.delete(adress, 3);
-            } catch (SQLException ex) {
-                Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!person.getPhones().isEmpty()) {
+            person.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.delete(phone, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.delete(adress, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("DELETE FROM persons WHERE pk_person=?");
         stm.setInt(1, person.getId());

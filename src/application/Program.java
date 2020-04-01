@@ -1,43 +1,45 @@
 package application;
 
+import controller.dao.AuthorDAO;
+import controller.dao.BookDAO;
 import controller.dao.LegalPersonDAO;
+import controller.dao.PersonDAO;
 import controller.dao.PublisherDAO;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.Date;
 import model.Adress;
+import model.Author;
+import model.Book;
 import model.LegalPerson;
+import model.Person;
 import model.Phone;
 import model.Publisher;
+import model.enums.Genre;
 import model.enums.Language;
 
 public class Program {
 
     public static void main(String[] args) throws SQLException {
+//        Date d1 = Date.from(Instant.parse("2012-06-01T00:00:00Z"));
+//        Phone p1 = new Phone("64", "990907656");
+//        Adress a1 = new Adress("Av Cirilo Lopes de Morais", 15, "Centro", "Shopping Tropical", "75680001", "Caldas Novas", "Goias");
+//        Author at1 = new Author("Ray Bradbury");
+//        at1.addAdress(a1);
+//        at1.addPhone(p1);
+//        
+//        Phone p2 = new Phone("64", "35658978");
+//        Adress a2 = new Adress("Av das Nacoes", 1002, "Itaguai III", "Piso 5", "75690000", "Caldas Novas", "Goias");
+//        Publisher pu1 = new Publisher("Biblioteca Azul LTDA", "Biblioteca Azul", "25369865000125", "contato@bibliotecaazul.com.br");
+//        pu1.addAdress(a2);
+//        pu1.addPhone(p2);
+//        
+//        Book b1 = new Book("Fahrenheit 451", at1, pu1, Language.PORTUGUES, "8525052248", "9788525052247", d1, Genre.FICCAO_CIENTIFICA, 3);
+//
+//        BookDAO.create(b1);
+//        System.out.println(b1);
 
-//        Phone p1 = new Phone("64", "999807645");
-//        Phone p2 = new Phone("62", "34534044");
-//        
-//        Adress a1 = new Adress("Alameda das Acacias", 523, "Centro", "Portao de madeira", "75690000", "Caldas Novas", "Goias");
-//        
-//        Publisher lp = new Publisher("Editora Cerrado LTDA", "Editora Cerrado", "12589652000185", "contato@editoracerrado.com.br");
-//        lp.addAdress(a1);
-//        lp.addPhone(p1);
-//        lp.addPhone(p2);
-//        
-//        PublisherDAO.create(lp);
-//        System.out.println(lp);
-//        Publisher lp = PublisherDAO.retrieve(2);
-//        PublisherDAO.updateExcluded(lp);
-//        System.out.println(lp);
-//        lp.getAdresses().forEach(adress -> {
-//            System.out.println(adress.getId());
-//        });
-//        lp.setCompanyName("Cerrado, Ipe e Cia LTDA");
-//        PublisherDAO.update(lp);
-//        lp = LegalPersonDAO.retrieve(4);
-//        System.out.println(lp);
-        System.out.println(Language.INGLES.getId());
-        System.out.println(Language.PORTUGUES.getId());
-        System.out.println(Language.CHINES.getId());
-        System.out.println(Language.getById(1));
+        Book b = BookDAO.retrieve(2);
+        BookDAO.updateExcluded(b);
     }
 }

@@ -14,6 +14,7 @@ import model.enums.Language;
 public class BookDAO {
 
     public static int create(Book book) throws SQLException {
+        java.sql.Date dataSql = new java.sql.Date(book.getDatePublication().getTime());
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("INSERT INTO books "
                 + "(name, "
@@ -24,8 +25,11 @@ public class BookDAO {
                 + "isbn13, "
                 + "date_publication, "
                 + "genre, "
-                + "available_quantity) "
-                + "VALUES(?,?,?,?,?,?,?,?,?)",
+                + "available_quantity, "
+                + "date_hour_inclusion, "
+                + "fk_user_who_included, "
+                + "excluded)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
         stm.setString(1, book.getName());
@@ -34,9 +38,12 @@ public class BookDAO {
         stm.setInt(4, book.getLanguage().getId());
         stm.setString(5, book.getIsbn10());
         stm.setString(6, book.getIsbn13());
-        stm.setDate(7, (java.sql.Date) book.getDatePublication());
+        stm.setDate(7, dataSql);
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setBoolean(12, book.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
@@ -64,7 +71,7 @@ public class BookDAO {
                 rs.getString("isbn13"),
                 rs.getDate("date_publication"),
                 Genre.getById(rs.getInt("genre")),
-                rs.getInt("available_qantity")
+                rs.getInt("available_quantity")
         );
     }
 
@@ -87,7 +94,7 @@ public class BookDAO {
                 rs.getString("isbn13"),
                 rs.getDate("date_publication"),
                 Genre.getById(rs.getInt("genre")),
-                rs.getInt("available_qantity")
+                rs.getInt("available_quantity")
         );
     }
 
@@ -109,7 +116,7 @@ public class BookDAO {
                     rs.getString("isbn13"),
                     rs.getDate("date_publication"),
                     Genre.getById(rs.getInt("genre")),
-                    rs.getInt("available_qantity")
+                    rs.getInt("available_quantity")
             ));
         } while (rs.next());
         return aux;
@@ -133,7 +140,7 @@ public class BookDAO {
                     rs.getString("isbn13"),
                     rs.getDate("date_publication"),
                     Genre.getById(rs.getInt("genre")),
-                    rs.getInt("available_qantity")
+                    rs.getInt("available_quantity")
             ));
         } while (rs.next());
         return aux;
@@ -169,7 +176,7 @@ public class BookDAO {
         stm.close();
     }
 
-    public void updateExcluded(Book book) throws SQLException {
+    public static void updateExcluded(Book book) throws SQLException {
         if (book.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }

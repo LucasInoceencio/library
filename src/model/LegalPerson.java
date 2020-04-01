@@ -19,8 +19,8 @@ public class LegalPerson extends Entity {
         this.companyName = companyName;
         this.tradingName = tradingName;
         this.cnpj = cnpj;
-        this.adresses = new ArrayList<>();
         this.email = email;
+        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
 

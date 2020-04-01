@@ -37,20 +37,24 @@ public class AuthorDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         author.setId(rs.getInt("pk_author"));
-        author.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.create(adress, author.getId(), 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        author.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.create(phone, author.getId(), 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.create(adress, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!author.getPhones().isEmpty()) {
+            author.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.create(phone, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         return author.getId();
     }
 
@@ -177,20 +181,24 @@ public class AuthorDAO {
         if (author.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        author.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.update(phone, author.getId(), 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        author.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.update(adress, author.getId(), 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!author.getPhones().isEmpty()) {
+            author.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.update(phone, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.update(adress, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE authors SET "
                 + "name=?, "
@@ -213,20 +221,24 @@ public class AuthorDAO {
         if (author.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        author.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.updateExcluded(phone, 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        author.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.updateExcluded(adress, 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!author.getPhones().isEmpty()) {
+            author.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.updateExcluded(phone, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.updateExcluded(adress, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE authors SET "
                 + "excluded=?, "
@@ -246,20 +258,24 @@ public class AuthorDAO {
         if (author.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        author.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.delete(phone, 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        author.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.delete(adress, 1);
-            } catch (SQLException ex) {
-                Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!author.getPhones().isEmpty()) {
+            author.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.delete(phone, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.delete(adress, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("DELETE FROM authors WHERE pk_author=?");
         stm.setInt(1, author.getId());

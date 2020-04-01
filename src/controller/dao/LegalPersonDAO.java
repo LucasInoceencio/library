@@ -39,20 +39,24 @@ public class LegalPersonDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         legalPerson.setId(rs.getInt("pk_legal_person"));
-        legalPerson.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.create(adress, legalPerson.getId(), 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        legalPerson.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.create(phone, legalPerson.getId(), 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.create(adress, legalPerson.getId(), 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.create(phone, legalPerson.getId(), 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         return legalPerson.getId();
     }
 
@@ -183,20 +187,24 @@ public class LegalPersonDAO {
         if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        legalPerson.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.update(phone, legalPerson.getId(), 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        legalPerson.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.update(adress, legalPerson.getId(), 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.update(phone, legalPerson.getId(), 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.update(adress, legalPerson.getId(), 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "company_name=?, "
@@ -221,20 +229,24 @@ public class LegalPersonDAO {
         if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        legalPerson.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.updateExcluded(phone, 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        legalPerson.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.updateExcluded(adress, 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.updateExcluded(phone, 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.updateExcluded(adress, 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE legal_persons SET "
                 + "excluded=?, "
@@ -254,20 +266,24 @@ public class LegalPersonDAO {
         if (legalPerson.getId() == 0) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
-        legalPerson.getPhones().forEach(phone -> {
-            try {
-                PhoneDAO.delete(phone, 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        legalPerson.getAdresses().forEach(adress -> {
-            try {
-                AdressDAO.delete(adress, 2);
-            } catch (SQLException ex) {
-                Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        if (!legalPerson.getPhones().isEmpty()) {
+            legalPerson.getPhones().forEach(phone -> {
+                try {
+                    PhoneDAO.delete(phone, 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!legalPerson.getAdresses().isEmpty()) {
+            legalPerson.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.delete(adress, 2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("DELETE FROM legal_persons WHERE pk_legal_person=?");
         stm.setInt(1, legalPerson.getId());

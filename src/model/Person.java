@@ -17,8 +17,8 @@ public class Person extends Entity {
         super(idPerson);
         this.name = name;
         this.cpf = cpf;
-        this.adresses = new ArrayList<>();
         this.email = email;
+        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
 
@@ -26,19 +26,23 @@ public class Person extends Entity {
         super();
         this.name = name;
         this.cpf = cpf;
-        this.adresses = new ArrayList<>();
         this.email = email;
+        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
     
     public Person(int idPerson, String name) {
         super(idPerson);
         this.name = name;
+        this.adresses = new ArrayList<>();
+        this.phones = new ArrayList<>();
     }
 
     public Person(String name) {
         super();
         this.name = name;
+        this.adresses = new ArrayList<>();
+        this.phones = new ArrayList<>();
     }
 
     public String getName() {
