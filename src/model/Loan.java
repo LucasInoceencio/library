@@ -16,25 +16,39 @@ public class Loan extends Entity {
     private Date deliveryDate;
     private Double lateFee;
     private LoanStatus status;
-    private ArrayList<Integer> idsBorrowedsBooks;
 
-    public Loan() {
-        super();
+    public Loan(int idLoan, int numberRenewals, Date deliveryDate, LoanStatus status) {
+        super(idLoan);
+        this.numberRenewals = numberRenewals;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
         this.books = new ArrayList<>();
-        this.numberRenewals = 0;
-        this.deliveryDate = calcDeliveryDate();
-        this.status = LoanStatus.ATIVO;
-        this.idsBorrowedsBooks = new ArrayList<>();
+    }
+    
+    public Loan(int numberRenewals, Date deliveryDate, LoanStatus status) {
+        super();
+        this.numberRenewals = numberRenewals;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.books = new ArrayList<>();
+    }
+    
+    public Loan(int idLoan, Person person, int numberRenewals, Date deliveryDate, LoanStatus status) {
+        super(idLoan);
+        this.person = person;
+        this.numberRenewals = numberRenewals;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.books = new ArrayList<>();
     }
 
-    public Loan(Person person) {
+    public Loan(Person person, int numberRenewals, Date deliveryDate, LoanStatus status) {
         super();
-        this.books = new ArrayList<>();
         this.person = person;
-        this.numberRenewals = 0;
-        this.deliveryDate = calcDeliveryDate();
-        this.status = LoanStatus.ATIVO;
-        this.idsBorrowedsBooks = new ArrayList<>();
+        this.numberRenewals = numberRenewals;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.books = new ArrayList<>();
     }
 
     public Person getPerson() {
@@ -80,10 +94,6 @@ public class Loan extends Entity {
     public void setStatus(LoanStatus status) {
         this.status = status;
     }
-    
-    public ArrayList<Integer> getIdsBorrowedsBooks() {
-        return idsBorrowedsBooks;
-    }
 
     public void addBook(Book book) {
         books.add(book);
@@ -94,14 +104,6 @@ public class Loan extends Entity {
         books.remove(book);
         book.increaseAvailableQuantity();
     }
-    
-    public void addIdBorrowedBook(int id) {
-        idsBorrowedsBooks.add(id);
-    }
-
-    public void removeIdBorrowedBook(int id) {
-        idsBorrowedsBooks.remove(id);
-    }
 
     public Date calcDeliveryDate() {
         Date currentDate = new Date();
@@ -109,7 +111,6 @@ public class Loan extends Entity {
         cal.setTime(currentDate);
         cal.add(Calendar.HOUR_OF_DAY, deliveryTime);
         Date deliveryDate = cal.getTime();
-        System.out.println(deliveryDate);
         return deliveryDate;
     }
 

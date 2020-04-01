@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Book;
 import model.Loan;
 import model.dao.DBConfig;
@@ -32,5 +33,29 @@ public class BorrowedBooksDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         return rs.getInt("pk_borrowed_book");
+    }
+    
+    public static ArrayList<Integer> retrieveAllForEntityPerson(int fkEntityPerson) throws SQLException {
+        ArrayList<Integer> aux = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM borrowed_books WHERE fk_loan=" + fkEntityPerson);
+        if (!rs.next()) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        do {
+            aux.add(rs.getInt("fk_book"));
+        } while (rs.next());
+        return aux;
+    }
+    
+    public static void delete(Integer fkLoan) throws SQLException {
+        if (fkLoan == 0) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stm = conn.prepareStatement("DELETE FROM borrowed_books WHERE fk_loan=?");
+        stm.setInt(1, fkLoan);
+        stm.execute();
+        stm.close();
     }
 }

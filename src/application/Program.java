@@ -39,7 +39,7 @@ public class Program {
 //        BookDAO.create(b1);
 //        System.out.println(b1);
 
-        Book b = BookDAO.retrieve(2);
-        BookDAO.updateExcluded(b);
+//        Book b = BookDAO.retrieve(2);
+//        BookDAO.updateExcluded(b);
     }
 }
