@@ -1,5 +1,8 @@
 package model;
 
+import dao.UserDAO;
+import java.sql.SQLException;
+
 public class User extends Entity {
 
     private String username;
@@ -52,6 +55,11 @@ public class User extends Entity {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+    
+    public static boolean logar(String username, String password) throws SQLException {
+        User user = UserDAO.retrieveByUser(username);
+        return user.getUsername().equals(username) && user.getPassword().equals(password);
     }
 
     @Override

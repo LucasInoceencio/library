@@ -100,6 +100,22 @@ public class UserDAO {
         } while (rs.next());
         return aux;
     }
+    
+    public static User retrieveByUser(String username) throws SQLException {
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM users WHERE username=?");
+        stm.setString(1, username);
+        stm.execute();
+        ResultSet rs = stm.getResultSet();
+        if (!rs.next()) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        return new User(
+                rs.getInt("pk_user"),
+                rs.getString("username"),
+                rs.getString("password_user")
+        );
+    }
 
     public static void update(User user) throws SQLException {
         if (user.getId() == 0) {
