@@ -50,6 +50,44 @@ public class BookDAO {
         book.setId(rs.getInt("pk_book"));
         return book.getId();
     }
+    
+    public static int createOnlyBook(Book book) throws SQLException {
+        java.sql.Date dateSql = new java.sql.Date(book.getDatePublication().getTime());
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement stm = conn.prepareStatement("INSERT INTO books "
+                + "(name, "
+                + "fk_author, "
+                + "fk_publisher, "
+                + "language, "
+                + "isbn10, "
+                + "isbn13, "
+                + "date_publication, "
+                + "genre, "
+                + "available_quantity, "
+                + "date_hour_inclusion, "
+                + "fk_user_who_included, "
+                + "excluded)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
+        );
+        stm.setString(1, book.getName());
+        stm.setInt(2, book.getAuthor().getId());
+        stm.setInt(3, book.getPublisher().getId());
+        stm.setInt(4, book.getLanguage().getId());
+        stm.setString(5, book.getIsbn10());
+        stm.setString(6, book.getIsbn13());
+        stm.setDate(7, dateSql);
+        stm.setInt(8, book.getGenre().getId());
+        stm.setInt(9, book.getAvailableQuantity());
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setBoolean(12, book.isExcluded());
+        stm.execute();
+        ResultSet rs = stm.getGeneratedKeys();
+        rs.next();
+        book.setId(rs.getInt("pk_book"));
+        return book.getId();
+    }
 
     public static Book retrieveExcluded(int pkBook, boolean excluded) throws SQLException {
         Connection conn = DBConnection.getConnection();

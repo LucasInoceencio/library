@@ -3,12 +3,10 @@ package controller;
 import application.BookFX;
 import application.MainFX;
 import dao.BookDAO;
+import dao.LoanDAO;
+import dao.PersonDAO;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -22,26 +20,30 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Author;
 import model.Book;
+import model.Loan;
+import model.Person;
 import model.Publisher;
 
 public class MainViewController implements Initializable {
 
+    // General Properties
     @FXML
-    private AnchorPane apMain;
+    private Button btnMyProfile;
 
     @FXML
-    private TabPane tpMain;
+    void actionMyProfile(ActionEvent event) {
 
+    }
+
+    //Properties tab Book
     @FXML
     private Tab tBook;
 
@@ -71,6 +73,12 @@ public class MainViewController implements Initializable {
 
     @FXML
     private TableColumn<Book, Integer> tcBookAvailableQuantity;
+
+    @FXML
+    private TableColumn<?, ?> tcBookGenre;
+
+    @FXML
+    private TableColumn<?, ?> tcBookLanguage;
 
     @FXML
     private Button btnAddBook;
@@ -104,51 +112,117 @@ public class MainViewController implements Initializable {
         findBooks();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    // Properties tab Loan
+    @FXML
+    private TableView<Loan> tvLoans;
 
-        btnFindBooks.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                findBooks();
-            }
-        });
+    @FXML
+    private TableColumn<Loan, Integer> tcLoanId;
 
-        btnDeleteBook.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                deleteBook();
-            }
-        });
-        
-        btnAddBook.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                createBook();
-            }
-        });
-        
-        btnEditBook.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                editBook();
-            }
-        });
+    @FXML
+    private TableColumn<Person, String> tcLoanPerson;
 
-        System.out.println("initialize");
-        tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcBookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-        tcBookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-        tcBookDatePublication.setCellValueFactory(new PropertyValueFactory<>("datePublication"));
-        tcBookIsbn10.setCellValueFactory(new PropertyValueFactory<>("isbn10"));
-        tcBookIsbn13.setCellValueFactory(new PropertyValueFactory<>("isbn13"));
-        tcBookAvailableQuantity.setCellValueFactory(new PropertyValueFactory<>("availableQuantity"));
-        try {
-            ArrayList<Book> booksList = BookDAO.retrieveAllExcluded(false);
-            tvBooks.setItems(FXCollections.observableArrayList(booksList));
-            tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    @FXML
+    private TableColumn<Loan, Integer> tcLoanNumberRenewals;
+
+    @FXML
+    private TableColumn<Loan, Date> tcLoanDeliveryDate;
+
+    @FXML
+    private TableColumn<Loan, Double> tcLoanLateFee;
+
+    @FXML
+    private TableColumn<?, ?> tcLoanStatus;
+
+    @FXML
+    private Button btnAddLoan;
+
+    @FXML
+    private Button btnEditLoan;
+
+    @FXML
+    private Button btnDeleteLoan;
+
+    @FXML
+    private Button btnFindLoans;
+
+    @FXML
+    private Button btnEndLoan;
+
+    @FXML
+    void actionAddLoan(ActionEvent event) {
+
     }
 
+    @FXML
+    void actionEditLoan(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionEndLoan(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionDeleteLoan(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionFindLoans(ActionEvent event) {
+
+    }
+
+    // Properties tab Person
+    @FXML
+    private TableView<Person> tvPersons;
+
+    @FXML
+    private TableColumn<Person, Integer> tcPersonId;
+
+    @FXML
+    private TableColumn<Person, String> tcPersonName;
+
+    @FXML
+    private TableColumn<Person, String> tcPersonCpf;
+
+    @FXML
+    private TableColumn<Person, String> tcPersonEmail;
+
+    @FXML
+    private Button btnAddPerson;
+
+    @FXML
+    private Button btnDeletePerson;
+
+    @FXML
+    private Button btnEditPerson;
+
+    @FXML
+    private Button btnFindPerson;
+
+    @FXML
+    void actionAddPerson(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionDeletePerson(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionEditPerson(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionFindPersons(ActionEvent event) {
+
+    }
+
+    // Logic Books
     public void deleteBook() {
         if (tvBooks.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -183,7 +257,7 @@ public class MainViewController implements Initializable {
 
     public void findBooks() {
         try {
-            ArrayList<Book> booksList = BookDAO.retrieveAll();
+            ArrayList<Book> booksList = BookDAO.retrieveAllExcluded(false);
             tvBooks.setItems(FXCollections.observableArrayList(booksList));
             tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
@@ -209,8 +283,85 @@ public class MainViewController implements Initializable {
         book.start(new Stage());
     }
 
+    // Logic Loan
+    
+    // Logic Person
+    
+    // General methods
     public void close() {
         MainFX.getStage().close();
     }
-    
+
+    // Initialize
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        btnFindBooks.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                findBooks();
+            }
+        });
+
+        btnDeleteBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                deleteBook();
+            }
+        });
+
+        btnAddBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createBook();
+            }
+        });
+
+        btnEditBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                editBook();
+            }
+        });
+
+        tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcBookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        tcBookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        tcBookDatePublication.setCellValueFactory(new PropertyValueFactory<>("datePublication"));
+        tcBookIsbn10.setCellValueFactory(new PropertyValueFactory<>("isbn10"));
+        tcBookIsbn13.setCellValueFactory(new PropertyValueFactory<>("isbn13"));
+        tcBookGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        tcBookLanguage.setCellValueFactory(new PropertyValueFactory<>("language"));
+        tcBookAvailableQuantity.setCellValueFactory(new PropertyValueFactory<>("availableQuantity"));
+        try {
+            ArrayList<Book> booksList = BookDAO.retrieveAllExcluded(false);
+            tvBooks.setItems(FXCollections.observableArrayList(booksList));
+            tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        tcLoanId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcLoanPerson.setCellValueFactory(new PropertyValueFactory<>("person"));
+        tcLoanNumberRenewals.setCellValueFactory(new PropertyValueFactory<>("numberRenewals"));
+        tcLoanDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+        tcLoanLateFee.setCellValueFactory(new PropertyValueFactory<>("lateFee"));
+        tcLoanStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        try {
+            ArrayList<Loan> loansList = LoanDAO.retrieveAllExcluded(false);
+            tvLoans.setItems(FXCollections.observableArrayList(loansList));
+            tvLoans.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        tcPersonId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcPersonName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcPersonEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tcPersonCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+        try {
+            ArrayList<Person> personsList = PersonDAO.retrieveAllExcluded(false);
+            tvPersons.setItems(FXCollections.observableArrayList(personsList));
+            tvPersons.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

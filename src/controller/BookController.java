@@ -92,7 +92,6 @@ public class BookController implements Initializable {
     void actionSave(ActionEvent event) {
         if (verifyArguments()) {
             newBook();
-            close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -157,7 +156,6 @@ public class BookController implements Initializable {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 if (verifyArguments()) {
                     newBook();
-                    close();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
@@ -215,6 +213,7 @@ public class BookController implements Initializable {
             try {
                 newBook.setId(book.getId());
                 BookDAO.update(newBook);
+                close();
             } catch (SQLException ex) {
                 Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
                 Alert alertDAO = new Alert(Alert.AlertType.ERROR);
@@ -225,7 +224,7 @@ public class BookController implements Initializable {
             }
         } else {
             try {
-                BookDAO.create(newBook);
+                BookDAO.createOnlyBook(newBook);
             } catch (SQLException ex) {
                 Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
                 Alert alertDAO = new Alert(Alert.AlertType.ERROR);

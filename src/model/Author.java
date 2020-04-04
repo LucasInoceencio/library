@@ -14,4 +14,9 @@ public class Author extends Person {
         super(name);
     }
 
+    @Override
+    public String toString() {
+        return super.getName();
+    }
+
 }

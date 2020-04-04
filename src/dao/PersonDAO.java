@@ -142,6 +142,7 @@ public class PersonDAO {
             auxphones.forEach(phone -> {
                 temp.addPhone(phone);
             });
+            aux.add(temp);
         } while (rs.next());
         return aux;
     }

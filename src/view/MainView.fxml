@@ -9,11 +9,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="834.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="834.0" prefWidth="1858.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
     <children>
-        <TabPane fx:id="tpMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="1080.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0" tabMinWidth="200.0">
+        <TabPane fx:id="tpMain" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="776.0" prefWidth="1858.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0" tabMinWidth="200.0">
             <tabs>
-                <Tab fx:id="tBook" text="Livros">
+                <Tab text="Livros">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="779.0" prefWidth="1920.0">
                             <children>
@@ -26,7 +26,7 @@
                                 <Button fx:id="btnEditBook" layoutX="186.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEditBook" prefHeight="42.0" prefWidth="120.0" text="Editar Livro" />
                                 <Button fx:id="btnDeleteBook" layoutX="330.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeleteBook" prefHeight="42.0" prefWidth="120.0" text="Deletar Livro" />
                                 <Button fx:id="btnFindBooks" layoutX="475.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindBooks" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
-                                <TableView fx:id="tvBooks" layoutY="110.0" prefHeight="686.0" prefWidth="1920.0">
+                                <TableView fx:id="tvBooks" layoutY="110.0" prefHeight="686.0" prefWidth="1858.0">
                                     <columns>
                                         <TableColumn fx:id="tcBookId" prefWidth="75.0" text="Id" />
                                         <TableColumn fx:id="tcBookName" prefWidth="250.0" text="Nome" />
@@ -36,6 +36,8 @@
                                         <TableColumn fx:id="tcBookIsbn10" prefWidth="100.0" text="ISBN 10" />
                                         <TableColumn fx:id="tcBookIsbn13" prefWidth="100.0" text="ISBN 13" />
                                         <TableColumn fx:id="tcBookAvailableQuantity" prefWidth="140.0" text="Quantidade Disponível" />
+                                        <TableColumn fx:id="tcBookGenre" prefWidth="75.0" text="Gênero" />
+                                        <TableColumn fx:id="tcBookLanguage" prefWidth="75.0" text="Idioma" />
                                     </columns>
                                 </TableView>
                             </children>
@@ -44,20 +46,59 @@
                 </Tab>
                 <Tab text="Empréstimos">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="771.0" prefWidth="1920.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="771.0" prefWidth="1920.0">
+                            <children>
+                                <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interações" wrappingWidth="110.0380859375">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Button fx:id="btnAddLoan" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddLoan" prefHeight="42.0" prefWidth="120.0" text="Realizar Empréstimo" />
+                                <Button fx:id="btnEditLoan" layoutX="186.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEditLoan" prefHeight="42.0" prefWidth="120.0" text="Editar Empréstimo" />
+                                <Button fx:id="btnDeleteLoan" layoutX="330.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeleteLoan" prefHeight="42.0" prefWidth="129.0" text="Deletar Empréstimo" />
+                                <Button fx:id="btnFindLoans" layoutX="633.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindLoans" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
+                                <TableView fx:id="tvLoans" layoutY="110.0" prefHeight="686.0" prefWidth="1858.0">
+                                    <columns>
+                                        <TableColumn fx:id="tcLoanId" prefWidth="75.0" text="Id" />
+                                        <TableColumn fx:id="tcLoanPerson" prefWidth="75.0" text="Pessoa" />
+                                        <TableColumn fx:id="tcLoanNumberRenewals" prefWidth="117.0" text="Nº de Renovações" />
+                                        <TableColumn fx:id="tcLoanDeliveryDate" prefWidth="108.0" text="Data de Entrega" />
+                                        <TableColumn fx:id="tcLoanLateFee" prefWidth="119.0" text="Multa por atraso" />
+                                        <TableColumn fx:id="tcLoanStatus" prefWidth="87.0" text="Status" />
+                                    </columns>
+                                </TableView>
+                                <Button fx:id="btnEndLoan" layoutX="483.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEndLoan" prefHeight="42.0" prefWidth="130.0" text="Encerrar Empréstimo" />
+                            </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="Pessoas">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="794.0" prefWidth="1920.0" />
-                    </content>
-                </Tab>
-                <Tab text="Perfil">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="771.0" prefWidth="1920.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="794.0" prefWidth="1920.0">
+                            <children>
+                                <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interações" wrappingWidth="110.0380859375">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Button fx:id="btnAddPerson" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddPerson" prefHeight="42.0" prefWidth="120.0" text="Adicionar Pessoa" />
+                                <Button fx:id="btnEditPerson" layoutX="186.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEditPerson" prefHeight="42.0" prefWidth="120.0" text="Editar Pessoa" />
+                                <Button fx:id="btnDeletePerson" layoutX="330.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeletePerson" prefHeight="42.0" prefWidth="120.0" text="Deletar Pessoa" />
+                                <Button fx:id="btnFindPerson" layoutX="475.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindPersons" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
+                                <TableView fx:id="tvPersons" layoutY="110.0" prefHeight="686.0" prefWidth="1858.0">
+                                    <columns>
+                                        <TableColumn fx:id="tcPersonId" prefWidth="75.0" text="Id" />
+                                        <TableColumn fx:id="tcPersonName" prefWidth="75.0" text="Nome" />
+                                        <TableColumn fx:id="tcPersonCpf" prefWidth="75.0" text="CPF" />
+                                        <TableColumn fx:id="tcPersonEmail" prefWidth="75.0" text="Email" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
             </tabs>
         </TabPane>
+        <Button fx:id="btnMyProfile" layoutX="1740.0" layoutY="26.0" mnemonicParsing="false" onAction="#actionMyProfile" text="Meu Perfil" />
     </children>
 </AnchorPane>

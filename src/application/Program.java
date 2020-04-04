@@ -27,9 +27,10 @@ public class Program {
 //        Date d1 = Date.from(Instant.parse("2012-06-01T00:00:00Z"));
 //        Phone p1 = new Phone("64", "990907656");
 //        Adress a1 = new Adress("Av Cirilo Lopes de Morais", 15, "Centro", "Shopping Tropical", "75680001", "Caldas Novas", "Goias");
-//        Author at1 = new Author("Ray Bradbury");
+//        Person at1 = new Person("Fernando Monteiro", "05896587945", "fernandomont@gmail.com");
 //        at1.addAdress(a1);
 //        at1.addPhone(p1);
+//        PersonDAO.create(at1);
 //        
 //        Phone p2 = new Phone("64", "35658978");
 //        Adress a2 = new Adress("Av das Nacoes", 1002, "Itaguai III", "Piso 5", "75690000", "Caldas Novas", "Goias");
@@ -42,15 +43,15 @@ public class Program {
 //        BookDAO.create(b1);
 //        System.out.println(b1);
 
-        ArrayList<Book> b = BookDAO.retrieveAll();
-        System.out.println(b);
+//          Loan l = LoanDAO.retrieve(1);
 //        Person p = PersonDAO.retrieve(1);
 //        Loan l = new Loan(p);
 //        l.addBook(b);
 //        LoanDAO.create(l);
 //        BookDAO.updateExcluded(b);
-
 //        Loan l = LoanDAO.retrieve(3);
 //        System.out.println(l);
+//        ArrayList<Person> aux = PersonDAO.retrieveAllExcluded(false);
+//        System.out.println(aux);
     }
 }
