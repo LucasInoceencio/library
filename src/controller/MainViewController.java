@@ -5,6 +5,10 @@ import application.MainFX;
 import dao.BookDAO;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -82,7 +86,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     void actionAddBook(ActionEvent event) {
-
+        createBook();
     }
 
     @FXML
@@ -114,6 +118,18 @@ public class MainViewController implements Initializable {
                 deleteBook();
             }
         });
+        
+        btnAddBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createBook();
+            }
+        });
+        
+        btnEditBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                editBook();
+            }
+        });
 
         System.out.println("initialize");
         tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -125,7 +141,7 @@ public class MainViewController implements Initializable {
         tcBookIsbn13.setCellValueFactory(new PropertyValueFactory<>("isbn13"));
         tcBookAvailableQuantity.setCellValueFactory(new PropertyValueFactory<>("availableQuantity"));
         try {
-            ArrayList<Book> booksList = BookDAO.retrieveAll();
+            ArrayList<Book> booksList = BookDAO.retrieveAllExcluded(false);
             tvBooks.setItems(FXCollections.observableArrayList(booksList));
             tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
@@ -135,27 +151,27 @@ public class MainViewController implements Initializable {
 
     public void deleteBook() {
         if (tvBooks.getSelectionModel().isEmpty()) {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("Atenção");
-            a.setHeaderText("Nenhum item escolhido.");
-            a.setContentText("É necessário escolher um livro para deletar.");
-            a.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher um livro para deletar.");
+            alert.showAndWait();
         } else {
-            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-            a.setTitle("Cuidado");
-            a.setHeaderText("Essa ação é irreversível.");
-            a.setContentText("Realmente deseja excluir de forma definitiva esse livro?");
-            if (a.showAndWait().get() == ButtonType.OK) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cuidado");
+            alert.setHeaderText("Essa ação é irreversível.");
+            alert.setContentText("Realmente deseja excluir de forma definitiva esse livro?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
                 Book b = tvBooks.getSelectionModel().getSelectedItem();
                 try {
                     BookDAO.updateExcluded(b);
                 } catch (SQLException ex) {
                     Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-                    Alert c = new Alert(Alert.AlertType.ERROR);
-                    c.setTitle("Erro");
-                    c.setHeaderText("Erro ao excluir livro");
-                    c.setContentText(ex.getMessage());
-                    c.showAndWait();
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("Erro ao excluir livro.");
+                    alertDAO.setContentText(ex.getMessage());
+                    alertDAO.showAndWait();
                 }
                 tvBooks.getSelectionModel().clearSelection();
                 tvBooks.getItems().clear();
@@ -188,7 +204,13 @@ public class MainViewController implements Initializable {
         }
     }
 
+    public void createBook() {
+        BookFX book = new BookFX(null);
+        book.start(new Stage());
+    }
+
     public void close() {
         MainFX.getStage().close();
     }
+    
 }

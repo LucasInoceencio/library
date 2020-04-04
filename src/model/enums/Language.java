@@ -1,5 +1,7 @@
 package model.enums;
 
+import java.util.ArrayList;
+
 public enum Language {
     INGLES(1),
     PORTUGUES(2),
@@ -24,6 +26,14 @@ public enum Language {
             }
         }
         return null;
+    }
+    
+    public static ArrayList<Language> getAll() {
+        ArrayList<Language> aux = new ArrayList<>();
+        for (Language e : values()) {
+            aux.add(e);
+        }
+        return aux;
     }
 
 }

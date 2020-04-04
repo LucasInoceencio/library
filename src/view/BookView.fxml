@@ -9,42 +9,43 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="651.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookController">
-   <children>
-      <TextField fx:id="tfName" layoutX="21.0" layoutY="104.0" prefHeight="25.0" prefWidth="556.0" />
-      <Text layoutX="21.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dados do Livro">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Text>
-      <Text layoutX="22.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome *" />
-      <Text layoutX="307.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autor *" />
-      <ComboBox fx:id="cbAuthor" layoutX="306.0" layoutY="183.0" prefHeight="25.0" prefWidth="233.0" />
-      <Button fx:id="btnAddAuthor" layoutX="549.0" layoutY="183.0" mnemonicParsing="false" onAction="#actionAddAuthor" text="+" />
-      <Text layoutX="22.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editora *" />
-      <ComboBox fx:id="cbPublisher" layoutX="21.0" layoutY="184.0" prefHeight="25.0" prefWidth="233.0" />
-      <Button fx:id="btnAddPublisher" layoutX="264.0" layoutY="184.0" mnemonicParsing="false" onAction="#actionAddPublisher" text="+" />
-      <DatePicker fx:id="dpDatePublication" layoutX="22.0" layoutY="464.0" prefHeight="25.0" prefWidth="121.0" />
-      <Text layoutX="23.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data de Publicação *" />
-      <TextField fx:id="tfisbn10" layoutX="22.0" layoutY="271.0" prefHeight="25.0" prefWidth="269.0" />
-      <Text layoutX="23.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ISBN 10 *" />
-      <TextField fx:id="isbn13" layoutX="306.0" layoutY="270.0" prefHeight="25.0" prefWidth="269.0" />
-      <Text layoutX="307.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ISBN 13 *" />
-      <Text layoutX="22.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Idioma *" />
-      <ComboBox fx:id="cbLanguage" layoutX="21.0" layoutY="360.0" prefHeight="25.0" prefWidth="269.0" />
-      <Text layoutX="309.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gênero *" />
-      <ComboBox fx:id="cbGenre" layoutX="308.0" layoutY="360.0" prefHeight="25.0" prefWidth="269.0" />
-      <Text layoutX="309.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade Disponível *" />
-      <TextField fx:id="tfAvailableQuantity" layoutX="308.0" layoutY="464.0" prefHeight="25.0" prefWidth="121.0" />
-      <Button fx:id="btnCancel" layoutX="168.0" layoutY="551.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="48.0" prefWidth="121.0" text="Cancelar" textFill="RED">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnSave" layoutX="320.0" layoutY="551.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="48.0" prefWidth="121.0" text="Salvar" textFill="#009a31">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Text layoutX="14.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Os itens com * são obrigatórios." />
-   </children>
+    <children>
+      
+        <Text layoutX="21.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dados do Livro">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Text>
+        <Text layoutX="22.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome *" />
+        <TextField fx:id="tfName" layoutX="21.0" layoutY="104.0" prefHeight="25.0" prefWidth="556.0" />
+        <Text layoutX="22.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editora *" />
+        <ComboBox fx:id="cbPublisher" layoutX="21.0" layoutY="184.0" prefHeight="25.0" prefWidth="233.0" />
+        <Button fx:id="btnAddPublisher" layoutX="264.0" layoutY="184.0" mnemonicParsing="false" onAction="#actionAddPublisher" text="+" />
+        <Text layoutX="307.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autor *" />
+        <ComboBox fx:id="cbAuthor" layoutX="306.0" layoutY="183.0" prefHeight="25.0" prefWidth="233.0" />
+        <Button fx:id="btnAddAuthor" layoutX="549.0" layoutY="183.0" mnemonicParsing="false" onAction="#actionAddAuthor" text="+" />
+        <Text layoutX="23.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ISBN 10 *" />
+        <TextField fx:id="tfIsbn10" layoutX="22.0" layoutY="271.0" prefHeight="25.0" prefWidth="269.0" />
+        <Text layoutX="307.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ISBN 13 *" />
+        <TextField fx:id="tfIsbn13" layoutX="306.0" layoutY="270.0" prefHeight="25.0" prefWidth="269.0" />
+        <Text layoutX="22.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Idioma *" />
+        <ComboBox fx:id="cbLanguage" layoutX="21.0" layoutY="360.0" prefHeight="25.0" prefWidth="269.0" />
+        <Text layoutX="309.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gênero *" />
+        <ComboBox fx:id="cbGenre" layoutX="308.0" layoutY="360.0" prefHeight="25.0" prefWidth="269.0" />
+        <Text layoutX="23.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data de Publicação *" />
+        <DatePicker fx:id="dpDatePublication" layoutX="22.0" layoutY="464.0" prefHeight="25.0" prefWidth="121.0" />
+        <Text layoutX="309.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade Disponível *" />
+        <TextField fx:id="tfAvailableQuantity" layoutX="308.0" layoutY="464.0" prefHeight="25.0" prefWidth="121.0" />
+        <Button fx:id="btnCancel" layoutX="168.0" layoutY="551.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="48.0" prefWidth="121.0" text="Cancelar" textFill="RED">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnSave" layoutX="320.0" layoutY="551.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="48.0" prefWidth="121.0" text="Salvar" textFill="#009a31">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Text layoutX="14.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Os itens com * são obrigatórios." />
+    </children>
 </AnchorPane>

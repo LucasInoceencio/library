@@ -155,12 +155,14 @@ public class BookDAO {
                 + "name=?, "
                 + "fk_author=?, "
                 + "fk_publisher=?, "
-                + "language=?"
+                + "language=?, "
                 + "isbn10=?, "
                 + "isbn13=?, "
                 + "date_publication=?, "
                 + "genre=?, "
-                + "available_quantity=? "
+                + "available_quantity=?, "
+                + "date_hour_alteration=?, "
+                + "fk_user_who_altered=? "
                 + "WHERE pk_book=?");
         stm.setString(1, book.getName());
         stm.setInt(2, book.getAuthor().getId());
@@ -171,7 +173,9 @@ public class BookDAO {
         stm.setDate(7, (java.sql.Date) book.getDatePublication());
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
-        stm.setInt(10, book.getId());
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setInt(12, book.getId());
         stm.execute();
         stm.close();
     }
@@ -205,4 +209,5 @@ public class BookDAO {
         stm.execute();
         stm.close();
     }
+    
 }

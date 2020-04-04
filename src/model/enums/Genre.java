@@ -1,5 +1,7 @@
 package model.enums;
 
+import java.util.ArrayList;
+
 public enum Genre {
     ROMANCE(1),
     FICCAO_CIENTIFICA(2),
@@ -25,6 +27,14 @@ public enum Genre {
             }
         }
         return null;
+    }
+    
+    public static ArrayList<Genre> getAll() {
+        ArrayList<Genre> aux = new ArrayList<>();
+        for (Genre e : values()) {
+            aux.add(e);
+        }
+        return aux;
     }
 
 }
