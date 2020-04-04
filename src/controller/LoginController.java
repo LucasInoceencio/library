@@ -19,7 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.User;
 
-public class LoginViewController implements Initializable {
+public class LoginController implements Initializable {
 
     @FXML
     private TextField tfUser;
@@ -103,7 +103,7 @@ public class LoginViewController implements Initializable {
     }
 
     public void errorLogin(Exception ex) {
-        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro!");
         alert.setHeaderText("Erro ao realizar o login.");

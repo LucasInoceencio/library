@@ -1,5 +1,6 @@
 package controller;
 
+import application.AuthorFX;
 import application.BookFX;
 import dao.AuthorDAO;
 import dao.BookDAO;
@@ -26,6 +27,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import model.Author;
 import model.Book;
 import model.Publisher;
@@ -80,7 +82,7 @@ public class BookController implements Initializable {
 
     @FXML
     void actionAddAuthor(ActionEvent event) {
-
+        newAuthor();
     }
 
     @FXML
@@ -168,7 +170,7 @@ public class BookController implements Initializable {
 
         btnAddAuthor.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-
+                newAuthor();
             }
         });
     }
@@ -195,6 +197,11 @@ public class BookController implements Initializable {
 
     public void close() {
         BookFX.getStage().close();
+    }
+    
+    public void newAuthor() {
+        AuthorFX author = new AuthorFX();
+        author.start(new Stage());
     }
 
     public void newBook() {
@@ -237,14 +244,11 @@ public class BookController implements Initializable {
     }
 
     public boolean verifyArguments() {
-        if (tfName.getText().equals("") || cbPublisher.getSelectionModel().getSelectedItem() == null
+        return !(tfName.getText().equals("") || cbPublisher.getSelectionModel().getSelectedItem() == null
                 || cbAuthor.getSelectionModel().getSelectedItem() == null || tfIsbn10.getText().equals("")
                 || tfIsbn13.getText().equals("") || cbLanguage.getSelectionModel().getSelectedItem() == null
                 || cbGenre.getSelectionModel().getSelectedItem() == null || dpDatePublication.getValue() == null
-                || tfAvailableQuantity.getText().equals("")) {
-            return false;
-        }
-        return true;
+                || tfAvailableQuantity.getText().equals(""));
     }
 
     public LocalDate convertToLocalDate(java.util.Date aux) {

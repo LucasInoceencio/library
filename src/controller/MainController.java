@@ -32,7 +32,7 @@ import model.Loan;
 import model.Person;
 import model.Publisher;
 
-public class MainViewController implements Initializable {
+public class MainController implements Initializable {
 
     // General Properties
     @FXML
@@ -240,7 +240,7 @@ public class MainViewController implements Initializable {
                 try {
                     BookDAO.updateExcluded(b);
                 } catch (SQLException ex) {
-                    Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alertDAO = new Alert(Alert.AlertType.ERROR);
                     alertDAO.setTitle("Erro");
                     alertDAO.setHeaderText("Erro ao excluir livro.");
@@ -261,7 +261,7 @@ public class MainViewController implements Initializable {
             tvBooks.setItems(FXCollections.observableArrayList(booksList));
             tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -334,7 +334,7 @@ public class MainViewController implements Initializable {
             tvBooks.setItems(FXCollections.observableArrayList(booksList));
             tvBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         tcLoanId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -348,7 +348,7 @@ public class MainViewController implements Initializable {
             tvLoans.setItems(FXCollections.observableArrayList(loansList));
             tvLoans.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         tcPersonId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -360,7 +360,7 @@ public class MainViewController implements Initializable {
             tvPersons.setItems(FXCollections.observableArrayList(personsList));
             tvPersons.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
