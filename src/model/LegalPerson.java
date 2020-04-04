@@ -91,7 +91,7 @@ public class LegalPerson extends Entity {
 
     @Override
     public String toString() {
-        return "LegalPerson{" + "companyName=" + companyName + ", tradingName=" + tradingName + ", cnpj=" + cnpj + ", phones=" + phones + ", adresses=" + adresses + ", email=" + email + '}';
+        return companyName;
     }
 
 }

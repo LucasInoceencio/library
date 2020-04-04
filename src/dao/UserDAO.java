@@ -108,7 +108,7 @@ public class UserDAO {
         stm.execute();
         ResultSet rs = stm.getResultSet();
         if (!rs.next()) {
-            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+            throw new SQLException("Usuário não encontrado na base de dados!");
         }
         return new User(
                 rs.getInt("pk_user"),

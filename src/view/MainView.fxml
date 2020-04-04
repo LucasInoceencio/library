@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="controller.MainViewController">
-   <children>
-      <Text layoutX="200.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main View" wrappingWidth="189.13671875" />
-   </children>
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="834.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+    <children>
+        <TabPane fx:id="tpMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="1080.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0" tabMinWidth="200.0">
+            <tabs>
+                <Tab fx:id="tBook" text="Livros">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="779.0" prefWidth="1920.0">
+                            <children>
+                                <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interações" wrappingWidth="110.0380859375">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Button fx:id="btnAddBook" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddBook" prefHeight="42.0" prefWidth="120.0" text="Adicionar Livro" />
+                                <Button fx:id="btnEditBook" layoutX="186.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEditBook" prefHeight="42.0" prefWidth="120.0" text="Editar Livro" />
+                                <Button fx:id="btnDeleteBook" layoutX="330.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeleteBook" prefHeight="42.0" prefWidth="120.0" text="Deletar Livro" />
+                                <Button fx:id="btnFindBooks" layoutX="475.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindBooks" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
+                                <TableView fx:id="tvBooks" layoutY="110.0" prefHeight="686.0" prefWidth="1920.0">
+                                    <columns>
+                                        <TableColumn fx:id="tcBookId" prefWidth="75.0" text="Id" />
+                                        <TableColumn fx:id="tcBookName" prefWidth="250.0" text="Nome" />
+                                        <TableColumn fx:id="tcBookAuthor" prefWidth="250.0" text="Autor" />
+                                        <TableColumn fx:id="tcBookPublisher" prefWidth="250.0" text="Editora" />
+                                        <TableColumn fx:id="tcBookDatePublication" prefWidth="116.0" text="Data de Publicação" />
+                                        <TableColumn fx:id="tcBookIsbn10" prefWidth="100.0" text="ISBN 10" />
+                                        <TableColumn fx:id="tcBookIsbn13" prefWidth="100.0" text="ISBN 13" />
+                                        <TableColumn fx:id="tcBookAvailableQuantity" prefWidth="140.0" text="Quantidade Disponível" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Empréstimos">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="771.0" prefWidth="1920.0" />
+                    </content>
+                </Tab>
+                <Tab text="Pessoas">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="794.0" prefWidth="1920.0" />
+                    </content>
+                </Tab>
+                <Tab text="Perfil">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="771.0" prefWidth="1920.0" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>

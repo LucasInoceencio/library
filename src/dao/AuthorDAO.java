@@ -70,21 +70,8 @@ public class AuthorDAO {
         }
         Author aux = new Author(
                 rs.getInt("pk_author"),
-                rs.getString("name"),
-                rs.getString("cpf"),
-                rs.getString("email")
+                rs.getString("name")
         );
-        ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkAuthor, 1);
-        auxAdresses.forEach(adress -> {
-            aux.addAdress(adress);
-        });
-
-        ArrayList<Phone> auxPhones = new ArrayList<>();
-        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkAuthor, 1);
-        auxPhones.forEach(phone -> {
-            aux.addPhone(phone);
-        });
         return aux;
     }
 
@@ -99,21 +86,8 @@ public class AuthorDAO {
         }
         Author aux = new Author(
                 rs.getInt("pk_author"),
-                rs.getString("name"),
-                rs.getString("cpf"),
-                rs.getString("email")
+                rs.getString("name")
         );
-        ArrayList<Adress> auxAdresses = new ArrayList<>();
-        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkAuthor, 1);
-        auxAdresses.forEach(adress -> {
-            aux.addAdress(adress);
-        });
-
-        ArrayList<Phone> auxPhones = new ArrayList<>();
-        auxPhones = PhoneDAO.retrieveAllForEntityPerson(pkAuthor, 1);
-        auxPhones.forEach(phone -> {
-            aux.addPhone(phone);
-        });
         return aux;
     }
 
@@ -127,21 +101,8 @@ public class AuthorDAO {
         do {
             Author temp = new Author(
                     rs.getInt("pk_author"),
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("email")
+                    rs.getString("name")
             );
-            ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 1);
-            auxAdresses.forEach(adress -> {
-                temp.addAdress(adress);
-            });
-
-            ArrayList<Phone> auxPhones = new ArrayList<>();
-            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 1);
-            auxPhones.forEach(phone -> {
-                temp.addPhone(phone);
-            });
             aux.add(temp);
         } while (rs.next());
         return aux;
@@ -157,21 +118,8 @@ public class AuthorDAO {
         do {
             Author temp = new Author(
                     rs.getInt("pk_author"),
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("email")
+                    rs.getString("name")
             );
-            ArrayList<Adress> auxAdresses = new ArrayList<>();
-            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 1);
-            auxAdresses.forEach(adress -> {
-                temp.addAdress(adress);
-            });
-
-            ArrayList<Phone> auxPhones = new ArrayList<>();
-            auxPhones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 1);
-            auxPhones.forEach(phone -> {
-                temp.addPhone(phone);
-            });
             aux.add(temp);
         } while (rs.next());
         return aux;

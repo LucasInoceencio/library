@@ -95,7 +95,7 @@ public class Person extends Entity {
 
     @Override
     public String toString() {
-        return "Person{" + "name=" + name + ", cpf=" + cpf + ", phones=" + phones + ", adresses=" + adresses + ", email=" + email + '}';
+        return name;
     }
 
 }

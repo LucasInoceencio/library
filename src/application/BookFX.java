@@ -1,6 +1,11 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package application;
 
+import controller.BookController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,19 +15,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Book;
 
-public class MainFX extends Application {
+/**
+ *
+ * @author Lucas
+ */
+public class BookFX extends Application {
 
     private static Stage stage;
+
+    public BookFX() {
+    }
+
+    public BookFX(Book book) {
+        BookController.setBook(book);
+    }
 
     @Override
     public void start(Stage stage) {
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/BookView.fxml"));
             Scene scene = new Scene(root);
-            stage.setTitle("Biblioteca");
-            stage.setMaximized(false);
+            stage.setTitle("Livro");
             stage.setScene(scene);
             stage.show();
             setStage(stage);
@@ -40,7 +56,7 @@ public class MainFX extends Application {
     }
 
     public static void setStage(Stage stage) {
-        MainFX.stage = stage;
+        BookFX.stage = stage;
     }
 
 }

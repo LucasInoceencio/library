@@ -2,6 +2,7 @@ package model;
 
 import dao.UserDAO;
 import java.sql.SQLException;
+import jdbc.DBConfig;
 
 public class User extends Entity {
 
@@ -59,6 +60,7 @@ public class User extends Entity {
     
     public static boolean logar(String username, String password) throws SQLException {
         User user = UserDAO.retrieveByUser(username);
+        DBConfig.idUserLogged = user.getId();
         return user.getUsername().equals(username) && user.getPassword().equals(password);
     }
 

@@ -37,12 +37,6 @@ public class LoginViewController implements Initializable {
         }
     }
 
-    @FXML
-    void exit(ActionEvent event) {
-        clearView();
-        close();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnEnter.setOnKeyPressed((KeyEvent e) -> {
@@ -55,8 +49,18 @@ public class LoginViewController implements Initializable {
             }
         });
 
+        tfUser.setOnKeyPressed((KeyEvent e) -> {
+            if (!pfPassword.getText().isEmpty() && e.getCode() == KeyCode.ENTER) {
+                try {
+                    logar();
+                } catch (SQLException ex) {
+                    errorLogin(ex);
+                }
+            }
+        });
+        
         pfPassword.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+            if (e.getCode() == KeyCode.ENTER) {
                 try {
                     logar();
                 } catch (SQLException ex) {
@@ -82,10 +86,10 @@ public class LoginViewController implements Initializable {
 
     public void logar() throws SQLException {
         if (verifyLogin()) {
-            MainFX mainFX = new MainFX();
+            MainFX main = new MainFX();
             close();
             try {
-                mainFX.start(new Stage());
+                main.start(new Stage());
             } catch (Exception ex) {
                 errorLogin(ex);
             }

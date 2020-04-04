@@ -8,6 +8,7 @@ import dao.PersonDAO;
 import dao.PublisherDAO;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import model.Adress;
 import model.Author;
@@ -41,14 +42,15 @@ public class Program {
 //        BookDAO.create(b1);
 //        System.out.println(b1);
 
-//        Book b = BookDAO.retrieve(2);
+        ArrayList<Book> b = BookDAO.retrieveAll();
+        System.out.println(b);
 //        Person p = PersonDAO.retrieve(1);
 //        Loan l = new Loan(p);
 //        l.addBook(b);
 //        LoanDAO.create(l);
 //        BookDAO.updateExcluded(b);
 
-        Loan l = LoanDAO.retrieve(3);
-        System.out.println(l);
+//        Loan l = LoanDAO.retrieve(3);
+//        System.out.println(l);
     }
 }
