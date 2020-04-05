@@ -198,6 +198,8 @@ public class PublisherController implements Initializable {
         Adress auxAdress = newAdress();
         if (publisher != null) {
             auxPublisher.setId(publisher.getId());
+            auxPhone.setId(PhoneDAO.retrieveForEntityPerson(publisher.getId(), 4).getId());
+            auxAdress.setId(AdressDAO.retrieveForEntityPerson(publisher.getId(), 4).getId());
             PublisherDAO.update(auxPublisher);
             PhoneDAO.update(auxPhone, auxPublisher.getId(), 4);
             AdressDAO.update(auxAdress, auxPublisher.getId(), 4);
@@ -229,18 +231,20 @@ public class PublisherController implements Initializable {
     }
 
     public boolean verifyArgumentsPhone() {
-        return !(tfDdd.getText().equals("") || tfNumber.getText().equals(""));
+        return !(tfDdd.getText().equals("") || tfNumber.getText().equals("") 
+                || tfDdd.getText().length() > 2 || tfNumber.getText().length() > 9);
     }
 
     public boolean verifyArgumentsPublisher() {
         return !(tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
-                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
+                || tfCnpj.getText().equals("") || tfEmail.getText().equals("") 
+                || tfCnpj.getText().length() > 14);
     }
 
     public boolean verifyArgumentsAdress() {
         return !(tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
                 || tfCity.getText().equals("") || tfState.getText().equals("") 
-                || tfNumberAdress.getText().equals(""));
+                || tfNumberAdress.getText().equals("") || tfCep.getText().length() > 8);
     }
 
     public boolean verifyAllArguments() {

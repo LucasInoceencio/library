@@ -3,9 +3,11 @@ package controller;
 import application.BookFX;
 import application.MainFX;
 import application.PersonFX;
+import application.PublisherFX;
 import dao.BookDAO;
 import dao.LoanDAO;
 import dao.PersonDAO;
+import dao.PublisherDAO;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -232,6 +234,57 @@ public class MainController implements Initializable {
         findPersons();
     }
 
+    //Tab Publishers
+    @FXML
+    private TableView<Publisher> tvPublishers;
+
+    @FXML
+    private TableColumn<Publisher, String> tcPublisherId;
+
+    @FXML
+    private TableColumn<Publisher, String> tcPublisherCompanyName;
+
+    @FXML
+    private TableColumn<Publisher, String> tcPublisherTradingName;
+
+    @FXML
+    private TableColumn<Publisher, String> tcPublisherCnpj;
+
+    @FXML
+    private TableColumn<Publisher, String> tcPublisherEmail;
+
+    @FXML
+    private Button btnAddPublisher;
+
+    @FXML
+    private Button btnEditPublisher;
+
+    @FXML
+    private Button btnDeletePublisher;
+
+    @FXML
+    private Button btnFindPublisher;
+
+    @FXML
+    void actionAddPublisher(ActionEvent event) {
+        createPublisher();
+    }
+
+    @FXML
+    void actionDeletePublisher(ActionEvent event) {
+        deletePublisher();
+    }
+
+    @FXML
+    void actionEditPublisher(ActionEvent event) {
+        editPublisher();
+    }
+
+    @FXML
+    void actionFindPublisher(ActionEvent event) {
+        findPublishers();
+    }
+
     // Logic Books
     public void createBook() {
         BookFX book = new BookFX(null);
@@ -381,6 +434,75 @@ public class MainController implements Initializable {
         }
     }
 
+    //Logic Publisher
+    public void createPublisher() {
+        PublisherFX publisher = new PublisherFX(null);
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            findPublishers();
+        });
+        publisher.start(stage);
+    }
+    
+    public void deletePublisher() {
+        if (tvPublishers.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher uma editora para deletar.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cuidado");
+            alert.setHeaderText("Essa ação é irreversível.");
+            alert.setContentText("Realmente deseja excluir de forma definitiva essa editora?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                Publisher p = tvPublishers.getSelectionModel().getSelectedItem();
+                try {
+                    PublisherDAO.updateExcluded(p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("Erro ao excluir editora.");
+                    alertDAO.setContentText(ex.getMessage());
+                    alertDAO.showAndWait();
+                }
+                tvPublishers.getSelectionModel().clearSelection();
+                tvPublishers.getItems().clear();
+                tvPublishers.refresh();
+                findPublishers();
+            }
+        }
+    }
+    
+    public void editPublisher() {
+        if (tvPublishers.getSelectionModel().getSelectedItem() != null) {
+            PublisherFX person = new PublisherFX(tvPublishers.getSelectionModel().getSelectedItem());
+            Stage stage = new Stage();
+            stage.setOnCloseRequest((WindowEvent we) -> {
+                findPublishers();
+            });
+            person.start(stage);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção!");
+            alert.setHeaderText("Escolha uma editora para editar.");
+            alert.setContentText("É necessário escolher uma editora para realizar a edição!");
+            alert.show();
+        }
+    }
+
+    public void findPublishers() {
+        try {
+            ArrayList<Publisher> publishersList = PublisherDAO.retrieveAllExcluded(false);
+            tvPublishers.setItems(FXCollections.observableArrayList(publishersList));
+            tvPublishers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     // General methods
     public void close() {
         MainFX.getStage().close();
@@ -434,6 +556,29 @@ public class MainController implements Initializable {
         });
 
         //Loan
+        //Publisher
+        btnAddPublisher.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createPublisher();
+            }
+        });
+        btnDeletePublisher.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                deletePublisher();
+            }
+        });
+        btnEditPublisher.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                editPublisher();
+            }
+        });
+        btnFindPublisher.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                findPublishers();
+            }
+        });
+        
+        //Init
         tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcBookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -474,6 +619,19 @@ public class MainController implements Initializable {
             ArrayList<Person> personsList = PersonDAO.retrieveAllExcluded(false);
             tvPersons.setItems(FXCollections.observableArrayList(personsList));
             tvPersons.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        tcPublisherId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcPublisherCompanyName.setCellValueFactory(new PropertyValueFactory<>("companyName"));
+        tcPublisherTradingName.setCellValueFactory(new PropertyValueFactory<>("tradingName"));
+        tcPublisherCnpj.setCellValueFactory(new PropertyValueFactory<>("cnpj"));
+        tcPublisherEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        try {
+            ArrayList<Publisher> publishersList = PublisherDAO.retrieveAllExcluded(false);
+            tvPublishers.setItems(FXCollections.observableArrayList(publishersList));
+            tvPublishers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }

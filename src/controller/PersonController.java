@@ -220,18 +220,19 @@ public class PersonController implements Initializable {
     }
 
     public boolean verifyArgumentsPhone() {
-        return !(tfDdd.getText().equals("") || tfNumber.getText().equals(""));
+        return !(tfDdd.getText().equals("") || tfNumber.getText().equals("") 
+                || tfDdd.getText().length() > 2 || tfNumber.getText().length() > 9);
     }
 
     public boolean verifyArgumentsPublisher() {
-        return !(tfName.getText().equals("")
-                || tfCpf.getText().equals("") || tfEmail.getText().equals(""));
+        return !(tfName.getText().equals("") || tfCpf.getText().equals("") 
+                || tfEmail.getText().equals("") || tfCpf.getText().length() > 11);
     }
 
     public boolean verifyArgumentsAdress() {
         return !(tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
                 || tfCity.getText().equals("") || tfState.getText().equals("") 
-                || tfNumberAdress.getText().equals(""));
+                || tfNumberAdress.getText().equals("") || tfCep.getText().length() > 8);
     }
 
     public boolean verifyAllArguments() {
