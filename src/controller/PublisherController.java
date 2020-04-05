@@ -87,7 +87,37 @@ public class PublisherController implements Initializable {
 
     @FXML
     void actionSave(ActionEvent event) {
-        if (verifyAllArguments()) {
+        if (verifyAllArgumentsFielded()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
+            alert.showAndWait();
+        } else if (verifyLengthCnpj()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo CNPJ não pode conter mais do que 14 caracteres.");
+            alert.showAndWait();
+        } else if (verifyLengthDdd()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo DDD não pode conter mais do que 2 caracteres.");
+            alert.showAndWait();
+        } else if (verifyLengthNumberPhone()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo número não pode conter mais do que 9 caracteres.");
+            alert.showAndWait();
+        } else if (verifyLengthCep()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo CEP não pode conter mais do que 8 caracteres.");
+            alert.showAndWait();
+        } else {
             try {
                 createEntities();
                 Stage stage = (Stage) btnSave.getScene().getWindow();
@@ -101,12 +131,6 @@ public class PublisherController implements Initializable {
                 alert.setContentText(ex.getMessage());
                 alert.showAndWait();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Erro ao preencher dados.");
-            alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
-            alert.showAndWait();
         }
     }
 
@@ -120,7 +144,37 @@ public class PublisherController implements Initializable {
 
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                if (verifyAllArguments()) {
+                if (verifyAllArgumentsFielded()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
+                    alert.showAndWait();
+                } else if (verifyLengthCnpj()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo CNPJ não pode conter mais do que 14 caracteres.");
+                    alert.showAndWait();
+                } else if (verifyLengthDdd()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo DDD não pode conter mais do que 2 caracteres.");
+                    alert.showAndWait();
+                } else if (verifyLengthNumberPhone()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo número não pode conter mais do que 9 caracteres.");
+                    alert.showAndWait();
+                } else if (verifyLengthCep()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo CEP não pode conter mais do que 8 caracteres.");
+                    alert.showAndWait();
+                } else {
                     try {
                         createEntities();
                         Stage stage = (Stage) btnSave.getScene().getWindow();
@@ -134,16 +188,10 @@ public class PublisherController implements Initializable {
                         alert.setContentText(ex.getMessage());
                         alert.showAndWait();
                     }
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Erro ao preencher dados.");
-                    alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
-                    alert.showAndWait();
                 }
             }
         });
-        
+
         if (publisher != null) {
             try {
                 initPublisher();
@@ -183,7 +231,7 @@ public class PublisherController implements Initializable {
     public Adress newAdress() {
         return new Adress(
                 tfPublicPlace.getText(),
-                tfNumberAdress == null ? 0 :Integer.parseInt(tfNumberAdress.getText()),
+                tfNumberAdress == null ? 0 : Integer.parseInt(tfNumberAdress.getText()),
                 tfNeighborhood.getText(),
                 tfComplement.getText(),
                 tfCep.getText(),
@@ -209,7 +257,7 @@ public class PublisherController implements Initializable {
             AdressDAO.create(auxAdress, auxPublisher.getId(), 4);
         }
     }
-    
+
     public void initPublisher() throws SQLException {
         Phone auxPhone = PhoneDAO.retrieveForEntityPerson(publisher.getId(), 4);
         Adress auxAdress = AdressDAO.retrieveForEntityPerson(publisher.getId(), 4);
@@ -231,23 +279,37 @@ public class PublisherController implements Initializable {
     }
 
     public boolean verifyArgumentsPhone() {
-        return !(tfDdd.getText().equals("") || tfNumber.getText().equals("") 
-                || tfDdd.getText().length() > 2 || tfNumber.getText().length() > 9);
+        return (tfDdd.getText().equals("") || tfNumber.getText().equals(""));
     }
 
     public boolean verifyArgumentsPublisher() {
-        return !(tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
-                || tfCnpj.getText().equals("") || tfEmail.getText().equals("") 
-                || tfCnpj.getText().length() > 14);
+        return (tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
+                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
     }
 
     public boolean verifyArgumentsAdress() {
-        return !(tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
-                || tfCity.getText().equals("") || tfState.getText().equals("") 
-                || tfNumberAdress.getText().equals("") || tfCep.getText().length() > 8);
+        return (tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
+                || tfCity.getText().equals("") || tfState.getText().equals("")
+                || tfNumberAdress.getText().equals(""));
     }
 
-    public boolean verifyAllArguments() {
+    public boolean verifyLengthDdd() {
+        return (tfDdd.getText().length() > 2);
+    }
+
+    public boolean verifyLengthNumberPhone() {
+        return (tfNumber.getText().length() > 9);
+    }
+
+    public boolean verifyLengthCnpj() {
+        return (tfCnpj.getText().length() > 14);
+    }
+
+    public boolean verifyLengthCep() {
+        return (tfCep.getText().length() > 8);
+    }
+
+    public boolean verifyAllArgumentsFielded() {
         return (verifyArgumentsAdress() && verifyArgumentsPhone() && verifyArgumentsPublisher());
     }
 }
