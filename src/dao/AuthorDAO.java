@@ -35,8 +35,14 @@ public class AuthorDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         author.setId(rs.getInt("pk_author"));
-        if (author.getAdress() != null) {
-            AdressDAO.create(author.getAdress(), author.getId(), 1);
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.create(adress, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         if (!author.getPhones().isEmpty()) {
             author.getPhones().forEach(phone -> {
@@ -130,8 +136,14 @@ public class AuthorDAO {
                 }
             });
         }
-        if (author.getAdress() != null) {
-            AdressDAO.update(author.getAdress(), author.getId(), 1);
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.update(adress, author.getId(), 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE authors SET "
@@ -164,8 +176,14 @@ public class AuthorDAO {
                 }
             });
         }
-        if (author.getAdress() != null) {
-            AdressDAO.updateExcluded(author.getAdress(), 1);
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.updateExcluded(adress, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE authors SET "
@@ -195,8 +213,14 @@ public class AuthorDAO {
                 }
             });
         }
-        if (author.getAdress() != null) {
-            AdressDAO.delete(author.getAdress(), 1);
+        if (!author.getAdresses().isEmpty()) {
+            author.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.delete(adress, 1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("DELETE FROM authors WHERE pk_author=?");

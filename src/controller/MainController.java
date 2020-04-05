@@ -2,6 +2,7 @@ package controller;
 
 import application.BookFX;
 import application.MainFX;
+import application.PersonFX;
 import dao.BookDAO;
 import dao.LoanDAO;
 import dao.PersonDAO;
@@ -26,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Author;
 import model.Book;
 import model.Loan;
@@ -150,6 +152,9 @@ public class MainController implements Initializable {
     private Button btnEndLoan;
 
     @FXML
+    private Button btnRenewLoan;
+
+    @FXML
     void actionAddLoan(ActionEvent event) {
 
     }
@@ -171,6 +176,11 @@ public class MainController implements Initializable {
 
     @FXML
     void actionFindLoans(ActionEvent event) {
+
+    }
+
+    @FXML
+    void actionRenewLoan(ActionEvent event) {
 
     }
 
@@ -204,25 +214,34 @@ public class MainController implements Initializable {
 
     @FXML
     void actionAddPerson(ActionEvent event) {
-
+        createPerson();
     }
 
     @FXML
     void actionDeletePerson(ActionEvent event) {
-
+        deletePerson();
     }
 
     @FXML
     void actionEditPerson(ActionEvent event) {
-
+        editPerson();
     }
 
     @FXML
     void actionFindPersons(ActionEvent event) {
-
+        findPersons();
     }
 
     // Logic Books
+    public void createBook() {
+        BookFX book = new BookFX(null);
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            findBooks();
+        });
+        book.start(stage);
+    }
+
     public void deleteBook() {
         if (tvBooks.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -268,7 +287,11 @@ public class MainController implements Initializable {
     public void editBook() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             BookFX book = new BookFX(tvBooks.getSelectionModel().getSelectedItem());
-            book.start(new Stage());
+            Stage stage = new Stage();
+            stage.setOnCloseRequest((WindowEvent we) -> {
+                findBooks();
+            });
+            book.start(stage);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção!");
@@ -278,15 +301,86 @@ public class MainController implements Initializable {
         }
     }
 
-    public void createBook() {
-        BookFX book = new BookFX(null);
-        book.start(new Stage());
+    // Logic Loan
+    public void findLoans() {
+        try {
+            ArrayList<Loan> loansList = LoanDAO.retrieveAllExcluded(false);
+            tvLoans.setItems(FXCollections.observableArrayList(loansList));
+            tvLoans.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    // Logic Loan
-    
     // Logic Person
-    
+    public void createPerson() {
+        PersonFX person = new PersonFX(null);
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            findPersons();
+        });
+        person.start(stage);
+    }
+
+    public void deletePerson() {
+        if (tvPersons.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher uma pessoa para deletar.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cuidado");
+            alert.setHeaderText("Essa ação é irreversível.");
+            alert.setContentText("Realmente deseja excluir de forma definitiva essa pessoa?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                Person p = tvPersons.getSelectionModel().getSelectedItem();
+                try {
+                    PersonDAO.updateExcluded(p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("Erro ao excluir pessoa.");
+                    alertDAO.setContentText(ex.getMessage());
+                    alertDAO.showAndWait();
+                }
+                tvPersons.getSelectionModel().clearSelection();
+                tvPersons.getItems().clear();
+                tvPersons.refresh();
+                findPersons();
+            }
+        }
+    }
+
+    public void editPerson() {
+        if (tvPersons.getSelectionModel().getSelectedItem() != null) {
+            PersonFX person = new PersonFX(tvPersons.getSelectionModel().getSelectedItem());
+            Stage stage = new Stage();
+            stage.setOnCloseRequest((WindowEvent we) -> {
+                findPersons();
+            });
+            person.start(stage);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção!");
+            alert.setHeaderText("Escolha uma pessoa para editar.");
+            alert.setContentText("É necessário escolher uma pessoa para realizar a edição!");
+            alert.show();
+        }
+    }
+
+    public void findPersons() {
+        try {
+            ArrayList<Person> personsList = PersonDAO.retrieveAllExcluded(false);
+            tvPersons.setItems(FXCollections.observableArrayList(personsList));
+            tvPersons.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     // General methods
     public void close() {
         MainFX.getStage().close();
@@ -295,30 +389,51 @@ public class MainController implements Initializable {
     // Initialize
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Book
+        btnAddBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createBook();
+            }
+        });
+        btnDeleteBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                deleteBook();
+            }
+        });
+        btnEditBook.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                editBook();
+            }
+        });
         btnFindBooks.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 findBooks();
             }
         });
 
-        btnDeleteBook.setOnKeyPressed((KeyEvent e) -> {
+        //Person
+        btnAddPerson.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                deleteBook();
+                createPerson();
+            }
+        });
+        btnDeletePerson.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                deletePerson();
+            }
+        });
+        btnEditPerson.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                editPerson();
+            }
+        });
+        btnFindPerson.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                findPersons();
             }
         });
 
-        btnAddBook.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                createBook();
-            }
-        });
-
-        btnEditBook.setOnKeyPressed((KeyEvent e) -> {
-            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                editBook();
-            }
-        });
-
+        //Loan
         tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcBookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -350,7 +465,7 @@ public class MainController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         tcPersonId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcPersonName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcPersonEmail.setCellValueFactory(new PropertyValueFactory<>("email"));

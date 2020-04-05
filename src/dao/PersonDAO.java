@@ -11,6 +11,7 @@ import model.Person;
 import model.Phone;
 import jdbc.DBConfig;
 import jdbc.DBConnection;
+import model.Adress;
 
 public class PersonDAO {
 
@@ -36,8 +37,14 @@ public class PersonDAO {
         ResultSet rs = stm.getGeneratedKeys();
         rs.next();
         person.setId(rs.getInt("pk_person"));
-        if (person.getAdress() != null) {
-            AdressDAO.create(person.getAdress(), person.getId(), 3);
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.create(adress, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         if (!person.getPhones().isEmpty()) {
             person.getPhones().forEach(phone -> {
@@ -67,7 +74,11 @@ public class PersonDAO {
                 rs.getString("cpf"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieveForEntityPerson(pkPerson, 3));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPerson, 3);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
 
         ArrayList<Phone> auxphones = new ArrayList<>();
         auxphones = PhoneDAO.retrieveAllForEntityPerson(pkPerson, 3);
@@ -92,7 +103,11 @@ public class PersonDAO {
                 rs.getString("cpf"),
                 rs.getString("email")
         );
-        aux.setAdress(AdressDAO.retrieveForEntityPerson(pkPerson, 3));
+        ArrayList<Adress> auxAdresses = new ArrayList<>();
+        auxAdresses = AdressDAO.retrieveAllForEntityPerson(pkPerson, 3);
+        auxAdresses.forEach(adress -> {
+            aux.addAdress(adress);
+        });
 
         ArrayList<Phone> auxphones = new ArrayList<>();
         auxphones = PhoneDAO.retrieveAllForEntityPerson(pkPerson, 3);
@@ -116,7 +131,11 @@ public class PersonDAO {
                     rs.getString("cpf"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieveForEntityPerson(temp.getId(), 3));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 3);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
 
             ArrayList<Phone> auxphones = new ArrayList<>();
             auxphones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 3);
@@ -142,7 +161,11 @@ public class PersonDAO {
                     rs.getString("cpf"),
                     rs.getString("email")
             );
-            temp.setAdress(AdressDAO.retrieveForEntityPerson(temp.getId(), 3));
+            ArrayList<Adress> auxAdresses = new ArrayList<>();
+            auxAdresses = AdressDAO.retrieveAllForEntityPerson(temp.getId(), 3);
+            auxAdresses.forEach(adress -> {
+                temp.addAdress(adress);
+            });
 
             ArrayList<Phone> auxphones = new ArrayList<>();
             auxphones = PhoneDAO.retrieveAllForEntityPerson(temp.getId(), 3);
@@ -166,8 +189,14 @@ public class PersonDAO {
                 }
             });
         }
-        if (person.getAdress() != null) {
-            AdressDAO.update(person.getAdress(), person.getId(), 3);
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.update(adress, person.getId(), 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE persons SET "
@@ -200,8 +229,14 @@ public class PersonDAO {
                 }
             });
         }
-        if (person.getAdress() != null) {
-            AdressDAO.updateExcluded(person.getAdress(), 3);
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.updateExcluded(adress, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE persons SET "
@@ -231,8 +266,14 @@ public class PersonDAO {
                 }
             });
         }
-        if (person.getAdress() != null) {
-            AdressDAO.delete(person.getAdress(), 3);
+        if (!person.getAdresses().isEmpty()) {
+            person.getAdresses().forEach(adress -> {
+                try {
+                    AdressDAO.delete(adress, 3);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LegalPersonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("DELETE FROM persons WHERE pk_person=?");

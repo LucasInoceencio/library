@@ -103,6 +103,20 @@ public class PhoneDAO {
         );
     }
 
+    public static Phone retrieveForEntityPerson(int fkEntityPerson, int table) throws SQLException {
+        String[] finalValues = valuesForConsultInDB(table);
+        Connection conn = DBConnection.getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM " + finalValues[2] + " WHERE " + finalValues[1] + "=" + fkEntityPerson);
+        if (!rs.next()) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        return new Phone(
+                rs.getInt(finalValues[0]),
+                rs.getString("ddd"),
+                rs.getString("phone")
+        );
+    }
+
     public static ArrayList<Phone> retrieveAllExcluded(int table, boolean excluded) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         ArrayList<Phone> aux = new ArrayList<>();

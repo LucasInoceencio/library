@@ -1,17 +1,17 @@
 package controller;
 
-import application.PublisherFX;
+import application.PersonFX;
 import dao.AdressDAO;
+import dao.PersonDAO;
 import dao.PhoneDAO;
-import dao.PublisherDAO;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -20,32 +20,29 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Adress;
+import model.Person;
 import model.Phone;
-import model.Publisher;
 
-public class PublisherController implements Initializable {
+public class PersonController implements Initializable {
 
-    private static Publisher publisher;
+    private static Person person;
 
-    public static Publisher getPublisher() {
-        return publisher;
+    public static Person getPerson() {
+        return person;
     }
 
-    public static void setPublisher(Publisher publisher) {
-        PublisherController.publisher = publisher;
+    public static void setPerson(Person person) {
+        PersonController.person = person;
     }
 
     @FXML
-    private TextField tfCompanyName;
+    private TextField tfName;
 
     @FXML
-    private TextField tfTradingName;
+    private TextField tfCpf;
 
     @FXML
     private TextField tfEmail;
-
-    @FXML
-    private TextField tfCnpj;
 
     @FXML
     private TextField tfDdd;
@@ -143,12 +140,11 @@ public class PublisherController implements Initializable {
                 }
             }
         });
-        
-        if (publisher != null) {
+
+        if (person != null) {
             try {
-                initPublisher();
+                initPerson();
             } catch (SQLException ex) {
-                Logger.getLogger(PublisherController.class.getName()).log(Level.SEVERE, null, ex);
                 Logger.getLogger(PersonController.class.getName()).log(Level.SEVERE, null, ex);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro");
@@ -157,18 +153,12 @@ public class PublisherController implements Initializable {
                 alert.showAndWait();
             }
         }
-
     }
 
-    public void close() {
-        PublisherFX.getStage().close();
-    }
-
-    public Publisher newPublisher() {
-        return new Publisher(
-                tfCompanyName.getText(),
-                tfTradingName.getText(),
-                tfCnpj.getText(),
+    public Person newPerson() {
+        return new Person(
+                tfName.getText(),
+                tfCpf.getText(),
                 tfEmail.getText()
         );
     }
@@ -193,28 +183,29 @@ public class PublisherController implements Initializable {
     }
 
     public void createEntities() throws SQLException {
-        Publisher auxPublisher = newPublisher();
+        Person auxPerson = newPerson();
         Phone auxPhone = newPhone();
         Adress auxAdress = newAdress();
-        if (publisher != null) {
-            auxPublisher.setId(publisher.getId());
-            PublisherDAO.update(auxPublisher);
-            PhoneDAO.update(auxPhone, auxPublisher.getId(), 4);
-            AdressDAO.update(auxAdress, auxPublisher.getId(), 4);
+        if (person != null) {
+            auxPerson.setId(person.getId());
+            auxPhone.setId(PhoneDAO.retrieveForEntityPerson(person.getId(), 3).getId());
+            auxAdress.setId(AdressDAO.retrieveForEntityPerson(person.getId(), 3).getId());
+            PersonDAO.update(auxPerson);
+            PhoneDAO.update(auxPhone, auxPerson.getId(), 3);
+            AdressDAO.update(auxAdress, auxPerson.getId(), 3);
         } else {
-            PublisherDAO.create(auxPublisher);
-            PhoneDAO.create(auxPhone, auxPublisher.getId(), 4);
-            AdressDAO.create(auxAdress, auxPublisher.getId(), 4);
+            PersonDAO.create(auxPerson);
+            PhoneDAO.create(auxPhone, auxPerson.getId(), 3);
+            AdressDAO.create(auxAdress, auxPerson.getId(), 3);
         }
     }
-    
-    public void initPublisher() throws SQLException {
-        Phone auxPhone = PhoneDAO.retrieveForEntityPerson(publisher.getId(), 4);
-        Adress auxAdress = AdressDAO.retrieveForEntityPerson(publisher.getId(), 4);
-        tfCompanyName.setText(publisher.getCompanyName());
-        tfTradingName.setText(publisher.getTradingName());
-        tfCnpj.setText(publisher.getCnpj());
-        tfEmail.setText(publisher.getEmail());
+
+    public void initPerson() throws SQLException {
+        Phone auxPhone = PhoneDAO.retrieveForEntityPerson(person.getId(), 3);
+        Adress auxAdress = AdressDAO.retrieveForEntityPerson(person.getId(), 3);
+        tfName.setText(person.getName());
+        tfCpf.setText(person.getCpf());
+        tfEmail.setText(person.getEmail());
         tfDdd.setText(auxPhone.getDdd());
         tfNumber.setText(auxPhone.getNumber());
         tfPublicPlace.setText(auxAdress.getPublicPlace());
@@ -233,8 +224,8 @@ public class PublisherController implements Initializable {
     }
 
     public boolean verifyArgumentsPublisher() {
-        return !(tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
-                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
+        return !(tfName.getText().equals("")
+                || tfCpf.getText().equals("") || tfEmail.getText().equals(""));
     }
 
     public boolean verifyArgumentsAdress() {
@@ -245,5 +236,9 @@ public class PublisherController implements Initializable {
 
     public boolean verifyAllArguments() {
         return (verifyArgumentsAdress() && verifyArgumentsPhone() && verifyArgumentsPublisher());
+    }
+
+    public void close() {
+        PersonFX.getStage().close();
     }
 }

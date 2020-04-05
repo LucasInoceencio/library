@@ -70,6 +70,7 @@ public class LoanDAO {
                 PersonDAO.retrieve(rs.getInt("fk_person")),
                 rs.getInt("number_renewals"),
                 rs.getDate("delivery_date"),
+                rs.getDate("delivered_date"),
                 rs.getDouble("late_fee"),
                 LoanStatus.getById(rs.getInt("status"))
         );
@@ -100,6 +101,7 @@ public class LoanDAO {
                 PersonDAO.retrieve(rs.getInt("fk_person")),
                 rs.getInt("number_renewals"),
                 rs.getDate("delivery_date"),
+                rs.getDate("delivered_date"),
                 rs.getDouble("late_fee"),
                 LoanStatus.getById(rs.getInt("status"))
         );
@@ -129,6 +131,7 @@ public class LoanDAO {
                     PersonDAO.retrieve(rs.getInt("fk_person")),
                     rs.getInt("number_renewals"),
                     rs.getDate("delivery_date"),
+                    rs.getDate("delivered_date"),
                     rs.getDouble("late_fee"),
                     LoanStatus.getById(rs.getInt("status"))
             );
@@ -160,6 +163,7 @@ public class LoanDAO {
                     PersonDAO.retrieve(rs.getInt("fk_person")),
                     rs.getInt("number_renewals"),
                     rs.getDate("delivery_date"),
+                    rs.getDate("delivered_date"),
                     rs.getDouble("late_fee"),
                     LoanStatus.getById(rs.getInt("status"))
             );
@@ -183,11 +187,13 @@ public class LoanDAO {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         java.sql.Date dateSql = new java.sql.Date(loan.getDeliveryDate().getTime());
+        java.sql.Date dateSql2 = new java.sql.Date(loan.getDeliveredDate().getTime());
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE loans SET "
                 + "fk_person=?, "
                 + "number_renewals=?, "
                 + "delivery_date=?, "
+                + "delivered_date=?, "
                 + "late_fee=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
@@ -195,10 +201,11 @@ public class LoanDAO {
         stm.setInt(1, loan.getPerson().getId());
         stm.setInt(2, loan.getNumberRenewals());
         stm.setDate(3, dateSql);
-        stm.setDouble(4, loan.getLateFee());
-        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(6, DBConfig.idUserLogged);
-        stm.setInt(7, loan.getId());
+        stm.setDate(4, dateSql2);
+        stm.setDouble(5, loan.getLateFee());
+        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(7, DBConfig.idUserLogged);
+        stm.setInt(8, loan.getId());
         stm.execute();
         stm.close();
     }
