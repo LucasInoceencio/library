@@ -7,7 +7,7 @@ public class Person extends Entity {
     private String name;
     private String cpf;
     private ArrayList<Phone> phones;
-    private ArrayList<Adress> adresses;
+    private Adress adress;
     private String email;
 
     public Person() {
@@ -18,7 +18,6 @@ public class Person extends Entity {
         this.name = name;
         this.cpf = cpf;
         this.email = email;
-        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
 
@@ -27,21 +26,18 @@ public class Person extends Entity {
         this.name = name;
         this.cpf = cpf;
         this.email = email;
-        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
     
     public Person(int idPerson, String name) {
         super(idPerson);
         this.name = name;
-        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
 
     public Person(String name) {
         super();
         this.name = name;
-        this.adresses = new ArrayList<>();
         this.phones = new ArrayList<>();
     }
 
@@ -65,8 +61,12 @@ public class Person extends Entity {
         return phones;
     }
 
-    public ArrayList<Adress> getAdresses() {
-        return adresses;
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
     }
 
     public String getEmail() {
@@ -83,14 +83,6 @@ public class Person extends Entity {
 
     public void removePhone(Phone phone) {
         phones.remove(phone);
-    }
-
-    public void addAdress(Adress adress) {
-        adresses.add(adress);
-    }
-
-    public void removeAdress(Adress adress) {
-        adresses.remove(adress);
     }
 
     @Override

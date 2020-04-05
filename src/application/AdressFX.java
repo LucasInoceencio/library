@@ -1,6 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package application;
 
-import controller.PublisherController;
+import static application.PublisherFX.setStage;
+import controller.AdressController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,26 +15,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Publisher;
+import model.Adress;
 
-public class PublisherFX extends Application {
+/**
+ *
+ * @author Lucas
+ */
+public class AdressFX extends Application {
     
     private static Stage stage;
     
-    public PublisherFX() {
+    public AdressFX() {
     }
     
-    public PublisherFX(Publisher publisher) {
-        PublisherController.setPublisher(publisher);
+    public AdressFX(Adress adress) {
+        AdressController.setAdress(adress);
     }
     
     @Override
     public void start(Stage stage) {
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/view/PublisherView.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/AdressView.fxml"));
             Scene scene = new Scene(root);
-            stage.setTitle("Editora");
+            stage.setTitle("Endereço");
             stage.setScene(scene);
             stage.show();
             setStage(stage);
@@ -37,7 +47,7 @@ public class PublisherFX extends Application {
         }
     }
     
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         launch(args);
     }
     
@@ -46,7 +56,6 @@ public class PublisherFX extends Application {
     }
     
     public static void setStage(Stage stage) {
-        PublisherFX.stage = stage;
+        AdressFX.stage = stage;
     }
-    
 }

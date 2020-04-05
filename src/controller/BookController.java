@@ -130,7 +130,7 @@ public class BookController implements Initializable {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alertDAO = new Alert(Alert.AlertType.ERROR);
             alertDAO.setTitle("Erro");
-            alertDAO.setHeaderText("Erro ao buscar autores.");
+            alertDAO.setHeaderText("Erro ao buscar editoras.");
             alertDAO.setContentText(ex.getMessage());
             alertDAO.showAndWait();
         }
@@ -212,7 +212,7 @@ public class BookController implements Initializable {
     }
 
     public void newPublisher() {
-        PublisherFX publisher = new PublisherFX();
+        PublisherFX publisher = new PublisherFX(null);
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
             refreshPublishers();

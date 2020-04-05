@@ -1,34 +1,35 @@
+
 package application;
 
-import controller.PublisherController;
+import controller.PhoneController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Publisher;
+import model.Phone;
 
-public class PublisherFX extends Application {
+public class PhoneFX extends Application {
     
     private static Stage stage;
     
-    public PublisherFX() {
+    public PhoneFX() {
     }
     
-    public PublisherFX(Publisher publisher) {
-        PublisherController.setPublisher(publisher);
+    public PhoneFX(Phone phone) {
+        PhoneController.setPhone(phone);
     }
     
-    @Override
     public void start(Stage stage) {
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/view/PublisherView.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/PhoneView.fxml"));
             Scene scene = new Scene(root);
-            stage.setTitle("Editora");
+            stage.setTitle("Telefone");
             stage.setScene(scene);
             stage.show();
             setStage(stage);
@@ -46,7 +47,7 @@ public class PublisherFX extends Application {
     }
     
     public static void setStage(Stage stage) {
-        PublisherFX.stage = stage;
+        PhoneFX.stage = stage;
     }
     
 }

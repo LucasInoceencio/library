@@ -123,6 +123,25 @@ public class AdressDAO {
         );
     }
 
+    public static Adress retrieveForEntityPerson(int fkEntityPerson, int table) throws SQLException {
+        String[] finalValues = valuesForConsultInDB(table);
+        Connection conn = DBConnection.getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM " + finalValues[2] + " WHERE " + finalValues[1] + "=" + fkEntityPerson);
+        if (!rs.next()) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        return new Adress(
+                rs.getInt(finalValues[0]),
+                rs.getString("public_place"),
+                rs.getInt("number"),
+                rs.getString("neighborhood"),
+                rs.getString("complement"),
+                rs.getString("cep"),
+                rs.getString("city"),
+                rs.getString("state")
+        );
+    }
+
     public static ArrayList<Adress> retrieveAllExcluded(int table, boolean excluded) throws SQLException {
         String[] finalValues = valuesForConsultInDB(table);
         ArrayList<Adress> aux = new ArrayList<>();
