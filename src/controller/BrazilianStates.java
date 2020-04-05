@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 
 public class BrazilianStates {
 
-    public static final ObservableList ESTADOS = FXCollections.observableArrayList(
+    public static final ObservableList STATES = FXCollections.observableArrayList(
             "AC",
             "AL",
             "AP",

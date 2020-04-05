@@ -97,6 +97,9 @@ public class BookController implements Initializable {
     void actionSave(ActionEvent event) {
         if (verifyArguments()) {
             newBook();
+            Stage stage = (Stage) btnSave.getScene().getWindow();
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            stage.close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -161,6 +164,9 @@ public class BookController implements Initializable {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 if (verifyArguments()) {
                     newBook();
+                    Stage stage = (Stage) btnSave.getScene().getWindow();
+                    stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                    stage.close();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
@@ -207,6 +213,7 @@ public class BookController implements Initializable {
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
             refreshAuthors();
+
         });
         author.start(stage);
     }

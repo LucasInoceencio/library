@@ -1,10 +1,11 @@
 package controller;
 
 import application.PublisherFX;
+import dao.AdressDAO;
+import dao.PhoneDAO;
 import dao.PublisherDAO;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,11 +14,12 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Adress;
 import model.Phone;
 import model.Publisher;
@@ -25,55 +27,43 @@ import model.Publisher;
 public class PublisherController implements Initializable {
 
     @FXML
-    private TextField tfCompanyame;
+    private TextField tfCompanyName;
 
     @FXML
     private TextField tfTradingName;
 
     @FXML
-    private TextField tfCnpj;
-
-    @FXML
     private TextField tfEmail;
 
     @FXML
-    private TableView<Phone> tvPhones;
+    private TextField tfCnpj;
 
     @FXML
-    private TableColumn<Phone, String> tcPhoneId;
+    private TextField tfDdd;
 
     @FXML
-    private TableColumn<Phone, String> tcPhoneDdd;
+    private TextField tfNumber;
 
     @FXML
-    private TableColumn<Phone, String> tcPhoneNumber;
+    private TextField tfPublicPlace;
 
     @FXML
-    private TableView<Adress> tvAdresses;
+    private TextField tfNmberAdress;
 
     @FXML
-    private TableColumn<Adress, String> tcAdressId;
+    private TextField tfComplement;
 
     @FXML
-    private TableColumn<Adress, String> tcAdressPublicPlace;
+    private TextField tfCep;
 
     @FXML
-    private TableColumn<Adress, String> tcAdressNumber;
+    private TextField tfNeighborhood;
 
     @FXML
-    private TableColumn<Adress, String> tcAdressNeighborhood;
+    private TextField tfCity;
 
     @FXML
-    private TableColumn<Adress, String> tcAdressComplement;
-
-    @FXML
-    private TableColumn<Adress, String> tcAdressCep;
-
-    @FXML
-    private TableColumn<Adress, String> tcAdressCity;
-
-    @FXML
-    private TableColumn<Adress, String> tcAdressState;
+    private TextField tfState;
 
     @FXML
     private Button btnCancel;
@@ -82,61 +72,33 @@ public class PublisherController implements Initializable {
     private Button btnSave;
 
     @FXML
-    private Button btnEditPhone;
-
-    @FXML
-    private Button btnAddPhone;
-
-    @FXML
-    private Button btnDeletePhone;
-
-    @FXML
-    private Button btnEditAdress;
-
-    @FXML
-    private Button btnAddAdress;
-
-    @FXML
-    private Button btnDeleteAdress;
-
-    @FXML
-    void actionAddAdress(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionAddPhone(ActionEvent event) {
-
-    }
-
-    @FXML
     void actionCancel(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionDeleteAdress(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionDeletePhone(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionEditAdress(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionEditPhone(ActionEvent event) {
-
+        close();
     }
 
     @FXML
     void actionSave(ActionEvent event) {
-
+        if (verifyAllArguments()) {
+            try {
+                createEntities();
+                Stage stage = (Stage) btnSave.getScene().getWindow();
+                stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                stage.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PublisherController.class.getName()).log(Level.SEVERE, null, ex);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao comunicar com o banco de dados.");
+                alert.setContentText(ex.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
+            alert.showAndWait();
+        }
     }
 
     @Override
@@ -146,6 +108,7 @@ public class PublisherController implements Initializable {
                 close();
             }
         });
+
     }
 
     private static Publisher publisher;
@@ -162,68 +125,65 @@ public class PublisherController implements Initializable {
         PublisherFX.getStage().close();
     }
 
-    public boolean verifyGeneralArguments() {
-        return !(tfCompanyame.getText().equals("") || tfTradingName.getText().equals("")
-                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
-    }
-
-    public void createPublisher() {
-        Publisher newPublisher = new Publisher(
-                tfCompanyame.getText(),
+    public Publisher newPublisher() {
+        return new Publisher(
+                tfCompanyName.getText(),
                 tfTradingName.getText(),
                 tfCnpj.getText(),
                 tfEmail.getText()
         );
-        if (tvPhones.getItems() != null) {
-            tvPhones.getItems().forEach(phone -> {
-                Phone aux = new Phone(
-                        tcPhoneDdd.getText(),
-                        tcPhoneNumber.getText()
-                );
-                newPublisher.addPhone(aux);
-            });
-        }
-        if (tvAdresses.getItems() != null) {
-            tvAdresses.getItems().forEach(adress -> {
-                Adress aux = new Adress(
-                        tcAdressPublicPlace.getText(),
-                        Integer.parseInt(tcAdressNumber.getText()),
-                        tcAdressNeighborhood.getText(),
-                        tcAdressComplement.getText(),
-                        tcAdressCep.getText(),
-                        tcAdressCity.getText(),
-                        tcAdressState.getText()
-                );
-                newPublisher.addAdress(adress);
-            });
-        }
-        if (publisher != null) {
-            try {
-                PublisherDAO.update(newPublisher);
-                newPublisher.setId(publisher.getId());
-                close();
-            } catch (SQLException ex) {
-                Logger.getLogger(PublisherController.class.getName()).log(Level.SEVERE, null, ex);
-                Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
-                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
-                alertDAO.setTitle("Erro");
-                alertDAO.setHeaderText("Erro ao atualizar a editora.");
-                alertDAO.setContentText(ex.getMessage());
-                alertDAO.showAndWait();
-            }
-        } else {
-            try {
-                PublisherDAO.create(newPublisher);
-            } catch (SQLException ex) {
-                Logger.getLogger(PublisherController.class.getName()).log(Level.SEVERE, null, ex);
-                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
-                alertDAO.setTitle("Erro");
-                alertDAO.setHeaderText("Erro ao criar a editora.");
-                alertDAO.setContentText(ex.getMessage());
-                alertDAO.showAndWait();
-            }
+    }
 
+    public Phone newPhone() {
+        return new Phone(
+                tfDdd.getText(),
+                tfNumber.getText()
+        );
+    }
+
+    public Adress newAdress() {
+        return new Adress(
+                tfPublicPlace.getText(),
+                Integer.parseInt(tfNmberAdress.getText()),
+                tfNeighborhood.getText(),
+                tfComplement.getText(),
+                tfCep.getText(),
+                tfCity.getText(),
+                tfState.getText()
+        );
+    }
+
+    public void createEntities() throws SQLException {
+        Publisher auxPublisher = newPublisher();
+        Phone auxPhone = newPhone();
+        Adress auxAdress = newAdress();
+        if (publisher != null) {
+            auxPublisher.setId(publisher.getId());
+            PublisherDAO.update(auxPublisher);
+            PhoneDAO.update(auxPhone, auxPublisher.getId(), 4);
+            AdressDAO.update(auxAdress, auxPublisher.getId(), 4);
+        } else {
+            PublisherDAO.create(auxPublisher);
+            PhoneDAO.create(auxPhone, auxPublisher.getId(), 4);
+            AdressDAO.create(auxAdress, auxPublisher.getId(), 4);
         }
     }
 
+    public boolean verifyArgumentsPhone() {
+        return !(tfDdd.getText().equals("") || tfNumber.getText().equals(""));
+    }
+
+    public boolean verifyArgumentsPublisher() {
+        return !(tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
+                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
+    }
+
+    public boolean verifyArgumentsAdress() {
+        return !(tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
+                || tfCity.getText().equals("") || tfState.getText().equals(""));
+    }
+
+    public boolean verifyAllArguments() {
+        return (verifyArgumentsAdress() && verifyArgumentsPhone() && verifyArgumentsPublisher());
+    }
 }

@@ -225,7 +225,7 @@ public class MainController implements Initializable {
     // Logic Books
     public void deleteBook() {
         if (tvBooks.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
             alert.setHeaderText("Nenhum item escolhido.");
             alert.setContentText("É necessário escolher um livro para deletar.");
