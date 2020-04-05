@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PublisherController">
-    
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PublisherController">
+   <children>
+      <Text layoutX="48.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dados da Editora">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="48.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Razão Social" />
+      <TextField fx:id="tfCompanyame" layoutX="48.0" layoutY="136.0" prefHeight="25.0" prefWidth="421.0" />
+      <Text layoutX="541.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Fantasia" />
+      <TextField fx:id="tfTradingName" layoutX="541.0" layoutY="137.0" prefHeight="25.0" prefWidth="421.0" />
+      <Text layoutX="48.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CNPJ" />
+      <TextField fx:id="tfCnpj" layoutX="48.0" layoutY="219.0" prefHeight="25.0" prefWidth="421.0" />
+      <Text layoutX="541.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+      <TextField fx:id="tfEmail" layoutX="541.0" layoutY="220.0" prefHeight="25.0" prefWidth="421.0" />
+      <Text layoutX="48.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DDD" />
+      <TextField fx:id="tfFirstNumber" layoutX="136.0" layoutY="325.0" prefHeight="25.0" prefWidth="333.0" />
+      <Text layoutX="48.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefones">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <TextField fx:id="tfFirstDdd" layoutX="47.0" layoutY="325.0" prefHeight="25.0" prefWidth="57.0" />
+      <Text layoutX="136.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Número" />
+      <Text layoutX="540.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DDD" />
+      <TextField fx:id="tfNeighborhood" layoutX="629.0" layoutY="447.0" prefHeight="25.0" prefWidth="333.0" />
+      <TextField fx:id="tfSecondDdd" layoutX="540.0" layoutY="325.0" prefHeight="25.0" prefWidth="57.0" />
+      <Text layoutX="629.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bairro" />
+      <Text layoutX="50.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Endereço">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <TextField fx:id="tfPublicPlace" layoutX="47.0" layoutY="447.0" prefHeight="25.0" prefWidth="421.0" />
+      <Text layoutX="50.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logradouro" />
+      <Text layoutX="541.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Número" />
+      <TextField fx:id="tfNumberAdress" layoutX="541.0" layoutY="447.0" prefHeight="25.0" prefWidth="57.0" />
+      <TextField fx:id="tfComplement" layoutX="48.0" layoutY="519.0" prefHeight="25.0" prefWidth="258.0" />
+      <Text layoutX="51.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complemento" />
+      <TextField fx:id="tfCity" layoutX="541.0" layoutY="520.0" prefHeight="25.0" prefWidth="268.0" />
+      <Text layoutX="544.0" layoutY="506.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cidade" />
+      <ComboBox fx:id="cbState" layoutX="824.0" layoutY="520.0" prefHeight="25.0" prefWidth="138.0" />
+      <Text layoutX="825.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" />
+      <Text layoutX="332.0" layoutY="508.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CEP" />
+      <TextField fx:id="tfCep" layoutX="331.0" layoutY="520.0" prefHeight="25.0" prefWidth="138.0" />
+      <TextField fx:id="tfSecondNumber" layoutX="629.0" layoutY="325.0" prefHeight="25.0" prefWidth="333.0" />
+      <Text layoutX="629.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Número" />
+      <Button fx:id="btnCancel" layoutX="348.0" layoutY="608.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="48.0" prefWidth="122.0" text="Cancelar" textFill="RED">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="btnSave" layoutX="544.0" layoutY="608.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="48.0" prefWidth="122.0" text="Salvar" textFill="#009a31">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+   </children>
 </AnchorPane>

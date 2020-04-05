@@ -13,9 +13,9 @@
       <TextField fx:id="tfUser" layoutX="139.0" layoutY="131.0" promptText="usuarioteste" />
       <Text layoutX="143.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha" />
       <PasswordField fx:id="pfPassword" layoutX="139.0" layoutY="194.0" />
-      <Button fx:id="btnEnter" layoutX="139.0" layoutY="236.0" mnemonicParsing="false" onAction="#enter" prefHeight="25.0" prefWidth="149.0" text="Entrar" textFill="#00a832">
+      <Button fx:id="btnEnter" layoutX="139.0" layoutY="236.0" mnemonicParsing="false" onAction="#enter" prefHeight="25.0" prefWidth="149.0" text="Entrar" textFill="#009a31">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Button>
    </children>

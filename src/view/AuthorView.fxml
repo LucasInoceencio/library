@@ -15,8 +15,14 @@
         </Text>
         <Text layoutX="40.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome *" />
         <TextField fx:id="tfName" layoutX="40.0" layoutY="110.0" prefHeight="25.0" prefWidth="498.0" />
-        <Button fx:id="btnCancel" layoutX="123.0" layoutY="194.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="41.0" prefWidth="110.0" text="Cancelar" />
-        <Button fx:id="btnSave" layoutX="314.0" layoutY="194.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="41.0" prefWidth="110.0" text="Salvar" />
+        <Button fx:id="btnCancel" layoutX="123.0" layoutY="194.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="41.0" prefWidth="110.0" text="Cancelar" textFill="RED">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+        <Button fx:id="btnSave" layoutX="314.0" layoutY="194.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="41.0" prefWidth="110.0" text="Salvar" textFill="#009a31">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
         <Text layoutX="40.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Os campso com * são obrigatórios." />
     </children>
 </AnchorPane>

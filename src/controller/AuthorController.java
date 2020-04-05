@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Author;
 
 public class AuthorController implements Initializable {
@@ -37,6 +39,9 @@ public class AuthorController implements Initializable {
     void actionSave(ActionEvent event) {
         if (verifyArguments()) {
             createAuthor();
+            Stage stage = (Stage) btnSave.getScene().getWindow();
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            stage.close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -58,6 +63,9 @@ public class AuthorController implements Initializable {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 if (verifyArguments()) {
                     createAuthor();
+                    Stage stage = (Stage) btnSave.getScene().getWindow();
+                    stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                    stage.close();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
@@ -77,7 +85,6 @@ public class AuthorController implements Initializable {
         Author author = new Author(tfName.getText());
         try {
             AuthorDAO.create(author);
-            close();
         } catch (SQLException ex) {
             Logger.getLogger(AuthorController.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);

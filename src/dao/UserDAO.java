@@ -16,7 +16,7 @@ public class UserDAO {
         PreparedStatement stm = conn.prepareStatement("INSERT INTO users "
                 + "(username, "
                 + "password_user, "
-                + "person, "
+                + "fk_person, "
                 + "date_hour_inclusion, "
                 + "fk_user_who_included, "
                 + "excluded) "
@@ -125,7 +125,7 @@ public class UserDAO {
         PreparedStatement stm = conn.prepareStatement("UPDATE users SET "
                 + "username=?, "
                 + "password=?, "
-                + "person=?, "
+                + "fk_person=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE pk_user=?");

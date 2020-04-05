@@ -94,7 +94,7 @@ public class AuthorDAO {
     public static ArrayList<Author> retrieveAllExcluded(boolean excluded) throws SQLException {
         ArrayList<Author> aux = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
-        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM authors WHERE excluded=?");
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM authors WHERE excluded=" + excluded);
         if (!rs.next()) {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }

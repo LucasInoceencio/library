@@ -2,6 +2,7 @@ package controller;
 
 import application.AuthorFX;
 import application.BookFX;
+import application.PublisherFX;
 import dao.AuthorDAO;
 import dao.BookDAO;
 import dao.PublisherDAO;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -28,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Author;
 import model.Book;
 import model.Publisher;
@@ -77,7 +80,7 @@ public class BookController implements Initializable {
 
     @FXML
     void actionAddPublisher(ActionEvent event) {
-
+        newPublisher();
     }
 
     @FXML
@@ -109,7 +112,7 @@ public class BookController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
-            ObservableList<Author> authorList = FXCollections.observableArrayList(AuthorDAO.retrieveAll());
+            ObservableList<Author> authorList = FXCollections.observableArrayList(AuthorDAO.retrieveAllExcluded(false));
             cbAuthor.setItems(authorList);
         } catch (SQLException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,7 +124,7 @@ public class BookController implements Initializable {
         }
 
         try {
-            ObservableList<Publisher> publisherList = FXCollections.observableArrayList(PublisherDAO.retrieveAll());
+            ObservableList<Publisher> publisherList = FXCollections.observableArrayList(PublisherDAO.retrieveAllExcluded(false));
             cbPublisher.setItems(publisherList);
         } catch (SQLException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,7 +153,7 @@ public class BookController implements Initializable {
 
         btnAddPublisher.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-
+                newPublisher();
             }
         });
 
@@ -198,10 +201,51 @@ public class BookController implements Initializable {
     public void close() {
         BookFX.getStage().close();
     }
-    
+
     public void newAuthor() {
         AuthorFX author = new AuthorFX();
-        author.start(new Stage());
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            refreshAuthors();
+        });
+        author.start(stage);
+    }
+
+    public void newPublisher() {
+        PublisherFX publisher = new PublisherFX();
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            refreshPublishers();
+        });
+        publisher.start(stage);
+    }
+
+    public void refreshPublishers() {
+        try {
+            ObservableList<Publisher> publisherList = FXCollections.observableArrayList(PublisherDAO.retrieveAllExcluded(false));
+            cbPublisher.setItems(publisherList);
+        } catch (SQLException ex) {
+            Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+            alertDAO.setTitle("Erro");
+            alertDAO.setHeaderText("Erro ao buscar autores.");
+            alertDAO.setContentText(ex.getMessage());
+            alertDAO.showAndWait();
+        }
+    }
+
+    public void refreshAuthors() {
+        try {
+            ObservableList<Author> authorList = FXCollections.observableArrayList(AuthorDAO.retrieveAllExcluded(false));
+            cbAuthor.setItems(authorList);
+        } catch (SQLException ex) {
+            Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+            alertDAO.setTitle("Erro");
+            alertDAO.setHeaderText("Erro ao buscar autores.");
+            alertDAO.setContentText(ex.getMessage());
+            alertDAO.showAndWait();
+        }
     }
 
     public void newBook() {
