@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import model.Cryptography;
 import model.User;
 
 public class LoginController implements Initializable {
@@ -72,8 +73,9 @@ public class LoginController implements Initializable {
         });
     }
 
-    private boolean verifyLogin() throws SQLException {
-        return User.logar(tfUser.getText(), pfPassword.getText());
+    private boolean correctPassword() throws SQLException {
+        String hash = new Cryptography().createHash(pfPassword.getText());
+        return User.logar(tfUser.getText(), hash);
     }
 
     private void close() {
@@ -81,7 +83,7 @@ public class LoginController implements Initializable {
     }
 
     private void logar() throws SQLException {
-        if (verifyLogin()) {
+        if (correctPassword()) {
             MainFX main = new MainFX();
             close();
             try {

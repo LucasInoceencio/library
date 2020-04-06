@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import jdbc.DBConfig;
+import model.Cryptography;
 import model.User;
 
 public class ProfileController implements Initializable {
@@ -132,33 +133,47 @@ public class ProfileController implements Initializable {
             alert.show();
         } else {
             User user;
-            try {
-                user = UserDAO.retrieve(DBConfig.idUserLogged);
-                user.setPassword(pfNewPassword.getText());
-                UserDAO.update(user);
-                close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+            String hash = new Cryptography().createHash(pfCurrentPassword.getText());
+            if (hash != null) {
+                try {
+                    user = UserDAO.retrieve(DBConfig.idUserLogged);
+                    user.setPassword(hash);
+                    UserDAO.update(user);
+                    close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro!");
+                    alert.setHeaderText("Erro ao comunicar com o banco de dados.");
+                    alert.setContentText(ex.getMessage());
+                    alert.show();
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Erro ao comunicar com o banco de dados.");
-                alert.setContentText(ex.getMessage());
-                alert.show();
+                    alert.setTitle("Erro!");
+                    alert.setHeaderText("Erro de senha.");
+                    alert.setContentText("Erro ao criptografar a senha!");
+                    alert.show();
             }
+
         }
     }
 
     private boolean verifyNewPassword() {
         return (pfNewPassword.getText().equals(pfConfirmNewPassword.getText()));
     }
-    
+
     private boolean mandatoryFieldsNotFilled() {
-        return (pfCurrentPassword.getText().equals("") || pfNewPassword.getText().equals("") 
+        return (pfCurrentPassword.getText().equals("") || pfNewPassword.getText().equals("")
                 || pfConfirmNewPassword.getText().equals(""));
     }
 
     private boolean logar() throws SQLException {
-        return User.logar(tfUser.getText(), pfCurrentPassword.getText());
+        String hash = new Cryptography().createHash(pfCurrentPassword.getText());
+        if (hash != null) {
+            return User.logar(tfUser.getText(), hash);
+        }
+        return false;
     }
 
     private void close() {
