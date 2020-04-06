@@ -84,31 +84,31 @@ public class PersonController implements Initializable {
 
     @FXML
     void actionSave(ActionEvent event) {
-        if (verifyAllArgumentsFielded()) {
+        if (allArgumentsWereFilled()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
             alert.showAndWait();
-        } else if (verifyLengthCnpj()) {
+        } else if (cpfExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo CPF não pode conter mais do que 11 caracteres.");
             alert.showAndWait();
-        } else if (verifyLengthDdd()) {
+        } else if (dddExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo DDD não pode conter mais do que 2 caracteres.");
             alert.showAndWait();
-        } else if (verifyLengthNumberPhone()) {
+        } else if (numberPhoneExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo número não pode conter mais do que 9 caracteres.");
             alert.showAndWait();
-        } else if (verifyLengthCep()) {
+        } else if (cepExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
@@ -141,31 +141,31 @@ public class PersonController implements Initializable {
 
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                if (verifyAllArgumentsFielded()) {
+                if (allArgumentsWereFilled()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
                     alert.showAndWait();
-                } else if (verifyLengthCnpj()) {
+                } else if (cpfExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo CPF não pode conter mais do que 11 caracteres.");
                     alert.showAndWait();
-                } else if (verifyLengthDdd()) {
+                } else if (dddExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo DDD não pode conter mais do que 2 caracteres.");
                     alert.showAndWait();
-                } else if (verifyLengthNumberPhone()) {
+                } else if (numberPhoneExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo número não pode conter mais do que 9 caracteres.");
                     alert.showAndWait();
-                } else if (verifyLengthCep()) {
+                } else if (cepExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
@@ -267,39 +267,39 @@ public class PersonController implements Initializable {
         tfState.setText(auxAdress.getState());
     }
 
-    private boolean verifyArgumentsPhone() {
+    private boolean mandatoryFieldsPhoneNotFilled() {
         return (tfDdd.getText().equals("") || tfNumber.getText().equals(""));
     }
 
-    private boolean verifyArgumentsPublisher() {
+    private boolean mandatoryFieldsPersonNotFilled() {
         return (tfName.getText().equals("") || tfCpf.getText().equals("")
                 || tfEmail.getText().equals(""));
     }
 
-    private boolean verifyArgumentsAdress() {
+    private boolean mandatoryFieldsAdressNotFilled() {
         return (tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
                 || tfCity.getText().equals("") || tfState.getText().equals("")
                 || tfNumberAdress.getText().equals(""));
     }
 
-    private boolean verifyLengthDdd() {
+    private boolean dddExceededSize() {
         return (tfDdd.getText().length() > 2);
     }
 
-    private boolean verifyLengthNumberPhone() {
+    private boolean numberPhoneExceededSize() {
         return (tfNumber.getText().length() > 9);
     }
 
-    private boolean verifyLengthCnpj() {
+    private boolean cpfExceededSize() {
         return (tfCpf.getText().length() > 11);
     }
 
-    private boolean verifyLengthCep() {
+    private boolean cepExceededSize() {
         return (tfCep.getText().length() > 8);
     }
 
-    private boolean verifyAllArgumentsFielded() {
-        return (verifyArgumentsAdress() && verifyArgumentsPhone() && verifyArgumentsPublisher());
+    private boolean allArgumentsWereFilled() {
+        return (mandatoryFieldsAdressNotFilled() && mandatoryFieldsPhoneNotFilled() && mandatoryFieldsPersonNotFilled());
     }
 
     private void close() {

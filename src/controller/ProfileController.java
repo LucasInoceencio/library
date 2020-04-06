@@ -112,7 +112,7 @@ public class ProfileController implements Initializable {
     }
 
     private void alterPassword() throws SQLException {
-        if (verifyFields()) {
+        if (mandatoryFieldsNotFilled()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro!");
             alert.setHeaderText("Erro ao preencher campos.");
@@ -152,7 +152,7 @@ public class ProfileController implements Initializable {
         return (pfNewPassword.getText().equals(pfConfirmNewPassword.getText()));
     }
     
-    private boolean verifyFields() {
+    private boolean mandatoryFieldsNotFilled() {
         return (pfCurrentPassword.getText().equals("") || pfNewPassword.getText().equals("") 
                 || pfConfirmNewPassword.getText().equals(""));
     }

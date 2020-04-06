@@ -138,7 +138,7 @@ public class Book extends Entity {
 
     @Override
     public String toString() {
-        return "Book{" + "name=" + name + ", author=" + author + ", publisher=" + publisher + ", language=" + language + ", isbn10=" + isbn10 + ", isbn13=" + isbn13 + ", datePublication=" + datePublication + ", genre=" + genre + ", availableQuantity=" + availableQuantity + '}';
+        return name;
     }
 
 }

@@ -104,19 +104,19 @@ public class BookController implements Initializable {
 
     @FXML
     void actionSave(ActionEvent event) {
-        if (verifyArguments()) {
+        if (mandatoryFieldsBookNotFilled()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
             alert.showAndWait();
-        } else if (verifyLengthIsbn10()) {
+        } else if (isbn10ExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo ISBN10 não pode ter mais do que 10 caracteres.");
             alert.showAndWait();
-        } else if (verifyLengthIsbn13()) {
+        } else if (isbn13ExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
@@ -181,19 +181,19 @@ public class BookController implements Initializable {
 
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                if (verifyArguments()) {
+                if (mandatoryFieldsBookNotFilled()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
                     alert.showAndWait();
-                } else if (verifyLengthIsbn10()) {
+                } else if (isbn10ExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo ISBN10 não pode ter mais do que 10 caracteres.");
                     alert.showAndWait();
-                } else if (verifyLengthIsbn13()) {
+                } else if (isbn13ExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
@@ -317,7 +317,7 @@ public class BookController implements Initializable {
         }
     }
 
-    private boolean verifyArguments() {
+    private boolean mandatoryFieldsBookNotFilled() {
         return (tfName.getText().equals("") || cbPublisher.getSelectionModel().getSelectedItem() == null
                 || cbAuthor.getSelectionModel().getSelectedItem() == null || tfIsbn10.getText().equals("")
                 || tfIsbn13.getText().equals("") || cbLanguage.getSelectionModel().getSelectedItem() == null
@@ -325,11 +325,11 @@ public class BookController implements Initializable {
                 || tfAvailableQuantity.getText().equals(""));
     }
 
-    private boolean verifyLengthIsbn10() {
+    private boolean isbn10ExceededSize() {
         return (tfIsbn10.getText().length() > 10);
     }
 
-    private boolean verifyLengthIsbn13() {
+    private boolean isbn13ExceededSize() {
         return (tfIsbn13.getText().length() > 13);
     }
 

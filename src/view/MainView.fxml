@@ -53,10 +53,10 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Text>
-                                <Button fx:id="btnAddLoan" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddLoan" prefHeight="42.0" prefWidth="126.0" text="Realizar Empréstimo" />
-                                <Button fx:id="btnEditLoan" layoutX="177.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEditLoan" prefHeight="42.0" prefWidth="120.0" text="Editar Empréstimo" />
-                                <Button fx:id="btnDeleteLoan" layoutX="307.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeleteLoan" prefHeight="42.0" prefWidth="129.0" text="Deletar Empréstimo" />
-                                <Button fx:id="btnFindLoans" layoutX="726.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindLoans" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
+                                <Button fx:id="btnAddLoan" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddLoan" prefHeight="42.0" prefWidth="126.0" text="Novo Empréstimo" />
+                                <Button fx:id="btnViewLoan" layoutX="177.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionViewLoan" prefHeight="42.0" prefWidth="137.0" text="Visualizar Empréstimo" />
+                                <Button fx:id="btnDeleteLoan" layoutX="324.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionDeleteLoan" prefHeight="42.0" prefWidth="129.0" text="Deletar Empréstimo" />
+                                <Button fx:id="btnFindLoans" layoutX="743.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindLoans" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
                                 <TableView fx:id="tvLoans" layoutY="110.0" prefHeight="686.0" prefWidth="1858.0">
                                     <columns>
                                         <TableColumn fx:id="tcLoanId" prefWidth="75.0" text="Id" />
@@ -67,8 +67,8 @@
                                         <TableColumn fx:id="tcLoanStatus" prefWidth="87.0" text="Status" />
                                     </columns>
                                 </TableView>
-                                <Button fx:id="btnEndLoan" layoutX="446.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEndLoan" prefHeight="42.0" prefWidth="130.0" text="Encerrar Empréstimo" />
-                        <Button fx:id="btnRenewLoan" layoutX="586.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionRenewLoan" prefHeight="42.0" prefWidth="130.0" text="Renovar Empréstimo" />
+                                <Button fx:id="btnEndLoan" layoutX="463.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEndLoan" prefHeight="42.0" prefWidth="130.0" text="Encerrar Empréstimo" />
+                        <Button fx:id="btnRenewLoan" layoutX="603.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionRenewLoan" prefHeight="42.0" prefWidth="130.0" text="Renovar Empréstimo" />
                             </children>
                         </AnchorPane>
                     </content>

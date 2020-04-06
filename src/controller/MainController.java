@@ -1,6 +1,7 @@
 package controller;
 
 import application.BookFX;
+import application.LoanFX;
 import application.MainFX;
 import application.PersonFX;
 import application.ProfileFX;
@@ -36,6 +37,8 @@ import model.Book;
 import model.Loan;
 import model.Person;
 import model.Publisher;
+import model.enums.Genre;
+import model.enums.Language;
 
 public class MainController implements Initializable {
 
@@ -80,10 +83,10 @@ public class MainController implements Initializable {
     private TableColumn<Book, Integer> tcBookAvailableQuantity;
 
     @FXML
-    private TableColumn<?, ?> tcBookGenre;
+    private TableColumn<Genre, ?> tcBookGenre;
 
     @FXML
-    private TableColumn<?, ?> tcBookLanguage;
+    private TableColumn<Language, ?> tcBookLanguage;
 
     @FXML
     private Button btnAddBook;
@@ -143,7 +146,7 @@ public class MainController implements Initializable {
     private Button btnAddLoan;
 
     @FXML
-    private Button btnEditLoan;
+    private Button btnViewLoan;
 
     @FXML
     private Button btnDeleteLoan;
@@ -159,12 +162,7 @@ public class MainController implements Initializable {
 
     @FXML
     void actionAddLoan(ActionEvent event) {
-
-    }
-
-    @FXML
-    void actionEditLoan(ActionEvent event) {
-
+        createLoan();
     }
 
     @FXML
@@ -179,12 +177,17 @@ public class MainController implements Initializable {
 
     @FXML
     void actionFindLoans(ActionEvent event) {
-
+        findLoans();
     }
 
     @FXML
     void actionRenewLoan(ActionEvent event) {
 
+    }
+
+    @FXML
+    void actionViewLoan(ActionEvent event) {
+        viewLoan();
     }
 
     // Properties tab Person
@@ -285,7 +288,7 @@ public class MainController implements Initializable {
     void actionFindPublisher(ActionEvent event) {
         findPublishers();
     }
-    
+
     //General Logic
     private void myProfile() {
         ProfileFX profile = new ProfileFX(null);
@@ -363,6 +366,15 @@ public class MainController implements Initializable {
     }
 
     // Logic Loan
+    private void createLoan() {
+        LoanFX loan = new LoanFX(null);
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            findLoans();
+        });
+        loan.start(stage);
+    }
+
     private void findLoans() {
         try {
             ArrayList<Loan> loansList = LoanDAO.retrieveAllExcluded(false);
@@ -370,6 +382,23 @@ public class MainController implements Initializable {
             tvLoans.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void viewLoan() {
+        if (tvLoans.getSelectionModel().getSelectedItem() != null) {
+            LoanFX loan = new LoanFX(tvLoans.getSelectionModel().getSelectedItem());
+            Stage stage = new Stage();
+            stage.setOnCloseRequest((WindowEvent we) -> {
+                findLoans();
+            });
+            loan.start(stage);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção!");
+            alert.setHeaderText("Escolha um empréstimo para visualizar.");
+            alert.setContentText("É necessário escolher um empréstimo para realizar a visualização!");
+            alert.show();
         }
     }
 
@@ -451,7 +480,7 @@ public class MainController implements Initializable {
         });
         publisher.start(stage);
     }
-    
+
     private void deletePublisher() {
         if (tvPublishers.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -483,7 +512,7 @@ public class MainController implements Initializable {
             }
         }
     }
-    
+
     private void editPublisher() {
         if (tvPublishers.getSelectionModel().getSelectedItem() != null) {
             PublisherFX person = new PublisherFX(tvPublishers.getSelectionModel().getSelectedItem());
@@ -525,7 +554,7 @@ public class MainController implements Initializable {
                 myProfile();
             }
         });
-        
+
         //Book
         btnAddBook.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
@@ -571,6 +600,24 @@ public class MainController implements Initializable {
         });
 
         //Loan
+        btnAddLoan.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createLoan();
+            }
+        });
+
+        btnFindLoans.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                findLoans();
+            }
+        });
+        
+        btnViewLoan.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                viewLoan();
+            }
+        });
+
         //Publisher
         btnAddPublisher.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
@@ -592,7 +639,7 @@ public class MainController implements Initializable {
                 findPublishers();
             }
         });
-        
+
         //Init
         tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
