@@ -39,6 +39,7 @@ import model.Person;
 import model.Publisher;
 import model.enums.Genre;
 import model.enums.Language;
+import model.enums.LoanStatus;
 
 public class MainController implements Initializable {
 
@@ -134,8 +135,8 @@ public class MainController implements Initializable {
     private TableColumn<Loan, Integer> tcLoanNumberRenewals;
 
     @FXML
-    private TableColumn<Loan, String> tcLoanDeliveryDate;
-    
+    private TableColumn<Loan, Date> tcLoanDeliveryDate;
+
     @FXML
     private TableColumn<Loan, Date> tcLoanDeliveredDate;
 
@@ -143,7 +144,7 @@ public class MainController implements Initializable {
     private TableColumn<Loan, Double> tcLoanLateFee;
 
     @FXML
-    private TableColumn<?, ?> tcLoanStatus;
+    private TableColumn<LoanStatus, String> tcLoanStatus;
 
     @FXML
     private Button btnAddLoan;
@@ -185,7 +186,7 @@ public class MainController implements Initializable {
 
     @FXML
     void actionRenewLoan(ActionEvent event) {
-
+        renewLoan();
     }
 
     @FXML
@@ -468,6 +469,42 @@ public class MainController implements Initializable {
         }
     }
 
+    private void renewLoan() {
+        if (tvLoans.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher um empréstimo para renovar.");
+            alert.showAndWait();
+        } else if (tvLoans.getSelectionModel().getSelectedItem().getStatus().toString().equalsIgnoreCase("ENCERRADO")) {
+            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+            alertDAO.setTitle("Erro");
+            alertDAO.setHeaderText("O empréstimo está encerrado.");
+            alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
+            alertDAO.showAndWait();
+        } else {
+            if (tvLoans.getSelectionModel().getSelectedItem().renewLoan()) {
+                try {
+                    LoanDAO.update(tvLoans.getSelectionModel().getSelectedItem());
+                    findLoans();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                    alertDAO.setContentText(ex.getMessage());
+                    alertDAO.showAndWait();
+                }
+            } else {
+                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                alertDAO.setTitle("Erro");
+                alertDAO.setHeaderText("O empréstimo está encerrado.");
+                alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
+                alertDAO.showAndWait();
+            }
+        }
+    }
+
     private void viewLoan() {
         if (tvLoans.getSelectionModel().getSelectedItem() != null) {
             LoanFX loan = new LoanFX(tvLoans.getSelectionModel().getSelectedItem());
@@ -709,7 +746,7 @@ public class MainController implements Initializable {
 
         btnRenewLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-
+                renewLoan();
             }
         });
 

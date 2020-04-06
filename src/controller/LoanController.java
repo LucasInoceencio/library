@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -29,103 +30,103 @@ import model.Loan;
 import model.Person;
 
 public class LoanController implements Initializable {
-    
+
     private static Loan loan;
-    
+
     public static Loan getLoan() {
         return loan;
     }
-    
+
     public static void setLoan(Loan loan) {
         LoanController.loan = loan;
     }
-    
+
     @FXML
     private ComboBox<Person> cbPerson;
-    
+
     @FXML
     private Button btnAddPerson;
-    
+
     @FXML
     private TextField tfStatus;
-    
+
     @FXML
     private TextField tfDeliveryDate;
-    
+
     @FXML
     private TextField tfNumberRenewals;
-    
+
     @FXML
     private TextField tfLateFee;
-    
+
     @FXML
     private TextField tfDeliveredDate;
-    
+
     @FXML
     private ComboBox<Book> cbFirstBook;
-    
+
     @FXML
     private ComboBox<Book> cbSecondBook;
-    
+
     @FXML
     private ComboBox<Book> cbThirdBook;
-    
+
     @FXML
     private Button btnFirstClear;
-    
+
     @FXML
     private Button btnSecondClear;
-    
+
     @FXML
     private Button btnThirdClear;
-    
+
     @FXML
     private Button btnCancel;
-    
+
     @FXML
     private Button btnSave;
-    
+
     @FXML
     private Button btnEndLoan;
-    
+
     @FXML
     private Button btnRenewLoan;
-    
+
     @FXML
     void actionAddPerson(ActionEvent event) {
         createPerson();
     }
-    
+
     @FXML
     void actionCancel(ActionEvent event) {
         close();
     }
-    
+
     @FXML
     void actionEndLoan(ActionEvent event) {
-        
+        endLoan();
     }
-    
+
     @FXML
     void actionFirstClear(ActionEvent event) {
         clearFirstBook();
     }
-    
+
     @FXML
     void actionRenewLoan(ActionEvent event) {
-        
+        renewLoan();
     }
-    
+
     @FXML
     void actionSave(ActionEvent event) {
         createLoan();
     }
-    
+
     @FXML
     void actionSecondClear(ActionEvent event) {
         clearSecondBook();
     }
-    
+
     @FXML
     void actionThirdClear(ActionEvent event) {
         clearThirdBook();
@@ -139,49 +140,49 @@ public class LoanController implements Initializable {
                 createLoan();
             }
         });
-        
+
         btnCancel.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 close();
             }
         });
-        
+
         btnRenewLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                
+                renewLoan();
             }
         });
-        
+
         btnEndLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                
+                endLoan();
             }
         });
-        
+
         btnFirstClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearFirstBook();
             }
         });
-        
+
         btnSecondClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearSecondBook();
             }
         });
-        
+
         btnThirdClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearThirdBook();
             }
         });
-        
+
         btnAddPerson.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 createPerson();
             }
         });
-        
+
         if (loan == null) {
             btnRenewLoan.setDisable(true);
             btnEndLoan.setDisable(true);
@@ -197,7 +198,7 @@ public class LoanController implements Initializable {
             btnSecondClear.setDisable(true);
             btnThirdClear.setDisable(true);
         }
-        
+
         try {
             ObservableList<Person> personsList = FXCollections.observableArrayList(PersonDAO.retrieveAllExcluded(false));
             cbPerson.setItems(personsList);
@@ -209,7 +210,7 @@ public class LoanController implements Initializable {
             alertDAO.setContentText(ex.getMessage());
             alertDAO.showAndWait();
         }
-        
+
         try {
             ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcluded(false));
             cbFirstBook.setItems(booksList);
@@ -256,7 +257,75 @@ public class LoanController implements Initializable {
             }
         }
     }
-    
+
+    private void endLoan() {
+        if (loan != null) {
+            if (loan.getStatus().toString().equalsIgnoreCase("ENCERRADO")) {
+                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                alertDAO.setTitle("Erro");
+                alertDAO.setHeaderText("O empréstimo está encerrado.");
+                alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+                alertDAO.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Cuidado");
+                alert.setHeaderText("Essa ação é irreversível.");
+                alert.setContentText("Realmente deseja encerrar de forma definitiva esse empréstimo?");
+                if (alert.showAndWait().get() == ButtonType.OK) {
+                    if (loan.endLoan()) {
+                        try {
+                            LoanDAO.update(loan);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                            alertDAO.setTitle("Erro");
+                            alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                            alertDAO.setContentText(ex.getMessage());
+                            alertDAO.showAndWait();
+                        }
+                    } else {
+                        Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                        alertDAO.setTitle("Erro");
+                        alertDAO.setHeaderText("O empréstimo está encerrado.");
+                        alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+                        alertDAO.showAndWait();
+                    }
+                }
+            }
+        }
+    }
+
+    private void renewLoan() {
+        if (loan != null) {
+            if (loan.getStatus().toString().equalsIgnoreCase("ENCERRADO")) {
+                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                alertDAO.setTitle("Erro");
+                alertDAO.setHeaderText("O empréstimo está encerrado.");
+                alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
+                alertDAO.showAndWait();
+            } else {
+                if (loan.renewLoan()) {
+                    try {
+                        LoanDAO.update(loan);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                        Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                        alertDAO.setTitle("Erro");
+                        alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                        alertDAO.setContentText(ex.getMessage());
+                        alertDAO.showAndWait();
+                    }
+                } else {
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("O empréstimo está encerrado.");
+                    alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
+                    alertDAO.showAndWait();
+                }
+            }
+        }
+    }
+
     private void createPerson() {
         PersonFX person = new PersonFX(null);
         Stage stage = new Stage();
@@ -265,7 +334,7 @@ public class LoanController implements Initializable {
         });
         person.start(stage);
     }
-    
+
     private void initLoan() {
         cbPerson.getSelectionModel().select(loan.getPerson());
         tfDeliveryDate.setText(String.valueOf(loan.getDeliveryDate()));
@@ -302,15 +371,17 @@ public class LoanController implements Initializable {
             default:
                 break;
         }
-        
+
     }
-    
+
     private void refreshPersons() {
         try {
             ObservableList<Person> personsList = FXCollections.observableArrayList(PersonDAO.retrieveAllExcluded(false));
             cbPerson.setItems(personsList);
+
         } catch (SQLException ex) {
-            Logger.getLogger(LoanController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoanController.class
+                    .getName()).log(Level.SEVERE, null, ex);
             Alert alertDAO = new Alert(Alert.AlertType.ERROR);
             alertDAO.setTitle("Erro");
             alertDAO.setHeaderText("Erro ao buscar pessoas.");
@@ -318,25 +389,27 @@ public class LoanController implements Initializable {
             alertDAO.showAndWait();
         }
     }
-    
+
     private void refreshBooks() {
         try {
             ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcluded(false));
             cbFirstBook.setItems(booksList);
             cbSecondBook.setItems(booksList);
             cbThirdBook.setItems(booksList);
+
         } catch (SQLException ex) {
-            Logger.getLogger(LoanController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoanController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private boolean mandatoryFieldsNotFilled() {
         if (cbPerson.getSelectionModel().isEmpty() || cbFirstBook.getSelectionModel().isEmpty()) {
             return true;
         }
         return false;
     }
-    
+
     private ArrayList<Book> chosenBooks() {
         ArrayList<Book> listBooks = new ArrayList<>();
         if (!cbFirstBook.getSelectionModel().isEmpty()) {
@@ -350,7 +423,7 @@ public class LoanController implements Initializable {
         }
         return listBooks;
     }
-    
+
     private boolean containsEqualsBooks() {
         if (cbFirstBook.getSelectionModel().isEmpty() && cbSecondBook.getSelectionModel().isEmpty()) {
             return false;
@@ -379,21 +452,21 @@ public class LoanController implements Initializable {
         }
         return false;
     }
-    
+
     private void close() {
         LoanFX.getStage().close();
     }
-    
+
     private void clearFirstBook() {
         cbFirstBook.getSelectionModel().clearSelection();
     }
-    
+
     private void clearSecondBook() {
         cbSecondBook.getSelectionModel().clearSelection();
     }
-    
+
     private void clearThirdBook() {
         cbThirdBook.getSelectionModel().clearSelection();
     }
-    
+
 }
