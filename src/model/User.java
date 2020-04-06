@@ -13,6 +13,13 @@ public class User extends Entity {
     public User() {
     }
 
+    public User(int idUser, String username, String password, Person person) {
+        super(idUser);
+        this.username = username;
+        this.person = person;
+        this.password = password;
+    }
+    
     public User(int idUser, String username, Person person) {
         super(idUser);
         this.username = username;

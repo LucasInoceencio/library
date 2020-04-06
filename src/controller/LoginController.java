@@ -23,8 +23,10 @@ public class LoginController implements Initializable {
 
     @FXML
     private TextField tfUser;
+    
     @FXML
     private Button btnEnter;
+    
     @FXML
     private PasswordField pfPassword;
 
@@ -58,7 +60,7 @@ public class LoginController implements Initializable {
                 }
             }
         });
-        
+
         pfPassword.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER) {
                 try {
@@ -70,21 +72,15 @@ public class LoginController implements Initializable {
         });
     }
 
-    public boolean verifyLogin() throws SQLException {
-        //return tfUser.getText().equals("admin") && pfPassword.getText().equals("admin20");
+    private boolean verifyLogin() throws SQLException {
         return User.logar(tfUser.getText(), pfPassword.getText());
     }
 
-    public void clearView() {
-        tfUser.clear();
-        pfPassword.clear();
-    }
-
-    public void close() {
+    private void close() {
         LoginFX.getStage().close();
     }
 
-    public void logar() throws SQLException {
+    private void logar() throws SQLException {
         if (verifyLogin()) {
             MainFX main = new MainFX();
             close();
@@ -102,7 +98,7 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void errorLogin(Exception ex) {
+    private void errorLogin(Exception ex) {
         Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro!");

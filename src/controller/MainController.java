@@ -3,6 +3,7 @@ package controller;
 import application.BookFX;
 import application.MainFX;
 import application.PersonFX;
+import application.ProfileFX;
 import application.PublisherFX;
 import dao.BookDAO;
 import dao.LoanDAO;
@@ -44,7 +45,7 @@ public class MainController implements Initializable {
 
     @FXML
     void actionMyProfile(ActionEvent event) {
-
+        myProfile();
     }
 
     //Properties tab Book
@@ -284,9 +285,16 @@ public class MainController implements Initializable {
     void actionFindPublisher(ActionEvent event) {
         findPublishers();
     }
+    
+    //General Logic
+    private void myProfile() {
+        ProfileFX profile = new ProfileFX(null);
+        Stage stage = new Stage();
+        profile.start(stage);
+    }
 
     // Logic Books
-    public void createBook() {
+    private void createBook() {
         BookFX book = new BookFX(null);
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
@@ -295,7 +303,7 @@ public class MainController implements Initializable {
         book.start(stage);
     }
 
-    public void deleteBook() {
+    private void deleteBook() {
         if (tvBooks.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
@@ -327,7 +335,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void findBooks() {
+    private void findBooks() {
         try {
             ArrayList<Book> booksList = BookDAO.retrieveAllExcluded(false);
             tvBooks.setItems(FXCollections.observableArrayList(booksList));
@@ -337,7 +345,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void editBook() {
+    private void editBook() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             BookFX book = new BookFX(tvBooks.getSelectionModel().getSelectedItem());
             Stage stage = new Stage();
@@ -355,7 +363,7 @@ public class MainController implements Initializable {
     }
 
     // Logic Loan
-    public void findLoans() {
+    private void findLoans() {
         try {
             ArrayList<Loan> loansList = LoanDAO.retrieveAllExcluded(false);
             tvLoans.setItems(FXCollections.observableArrayList(loansList));
@@ -366,7 +374,7 @@ public class MainController implements Initializable {
     }
 
     // Logic Person
-    public void createPerson() {
+    private void createPerson() {
         PersonFX person = new PersonFX(null);
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
@@ -375,7 +383,7 @@ public class MainController implements Initializable {
         person.start(stage);
     }
 
-    public void deletePerson() {
+    private void deletePerson() {
         if (tvPersons.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
@@ -407,7 +415,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void editPerson() {
+    private void editPerson() {
         if (tvPersons.getSelectionModel().getSelectedItem() != null) {
             PersonFX person = new PersonFX(tvPersons.getSelectionModel().getSelectedItem());
             Stage stage = new Stage();
@@ -424,7 +432,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void findPersons() {
+    private void findPersons() {
         try {
             ArrayList<Person> personsList = PersonDAO.retrieveAllExcluded(false);
             tvPersons.setItems(FXCollections.observableArrayList(personsList));
@@ -435,7 +443,7 @@ public class MainController implements Initializable {
     }
 
     //Logic Publisher
-    public void createPublisher() {
+    private void createPublisher() {
         PublisherFX publisher = new PublisherFX(null);
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
@@ -444,7 +452,7 @@ public class MainController implements Initializable {
         publisher.start(stage);
     }
     
-    public void deletePublisher() {
+    private void deletePublisher() {
         if (tvPublishers.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
@@ -476,7 +484,7 @@ public class MainController implements Initializable {
         }
     }
     
-    public void editPublisher() {
+    private void editPublisher() {
         if (tvPublishers.getSelectionModel().getSelectedItem() != null) {
             PublisherFX person = new PublisherFX(tvPublishers.getSelectionModel().getSelectedItem());
             Stage stage = new Stage();
@@ -493,7 +501,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void findPublishers() {
+    private void findPublishers() {
         try {
             ArrayList<Publisher> publishersList = PublisherDAO.retrieveAllExcluded(false);
             tvPublishers.setItems(FXCollections.observableArrayList(publishersList));
@@ -504,13 +512,20 @@ public class MainController implements Initializable {
     }
 
     // General methods
-    public void close() {
+    private void close() {
         MainFX.getStage().close();
     }
 
     // Initialize
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //General
+        btnMyProfile.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                myProfile();
+            }
+        });
+        
         //Book
         btnAddBook.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {

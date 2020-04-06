@@ -53,5 +53,8 @@ public class Program {
 //        System.out.println(l);
 //        ArrayList<Person> aux = PersonDAO.retrieveAllExcluded(false);
 //        System.out.println(aux);
+
+            Person a = new Person("admin", "admin", "admin");
+            PersonDAO.create(a);
     }
 }

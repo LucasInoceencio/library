@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -38,6 +37,16 @@ import model.enums.Genre;
 import model.enums.Language;
 
 public class BookController implements Initializable {
+
+    private static Book book;
+
+    public static Book getBook() {
+        return book;
+    }
+
+    public static void setBook(Book book) {
+        BookController.book = book;
+    }
 
     @FXML
     private TextField tfName;
@@ -96,20 +105,30 @@ public class BookController implements Initializable {
     @FXML
     void actionSave(ActionEvent event) {
         if (verifyArguments()) {
-            newBook();
-            Stage stage = (Stage) btnSave.getScene().getWindow();
-            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-            stage.close();
-        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
             alert.showAndWait();
+        } else if (verifyLengthIsbn10()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo ISBN10 não pode ter mais do que 10 caracteres.");
+            alert.showAndWait();
+        } else if (verifyLengthIsbn13()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo ISBN13 não pode ter mais do que 13 caracteres.");
+            alert.showAndWait();
+        } else {
+            newBook();
+            Stage stage = (Stage) btnSave.getScene().getWindow();
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            stage.close();
         }
     }
-
-    private static Book book;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -163,16 +182,28 @@ public class BookController implements Initializable {
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 if (verifyArguments()) {
-                    newBook();
-                    Stage stage = (Stage) btnSave.getScene().getWindow();
-                    stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-                    stage.close();
-                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("Existem dados obrigatórios que não foram preenchidos.");
                     alert.showAndWait();
+                } else if (verifyLengthIsbn10()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo ISBN10 não pode ter mais do que 10 caracteres.");
+                    alert.showAndWait();
+                } else if (verifyLengthIsbn13()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo ISBN13 não pode ter mais do que 13 caracteres.");
+                    alert.showAndWait();
+                } else {
+                    newBook();
+                    Stage stage = (Stage) btnSave.getScene().getWindow();
+                    stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                    stage.close();
                 }
             }
         });
@@ -184,7 +215,7 @@ public class BookController implements Initializable {
         });
     }
 
-    public void initBook() {
+    private void initBook() {
         tfName.setText(book.getName());
         cbAuthor.getSelectionModel().select(book.getAuthor());
         cbPublisher.getSelectionModel().select(book.getPublisher());
@@ -196,19 +227,11 @@ public class BookController implements Initializable {
         dpDatePublication.setValue(convertToLocalDate(book.getDatePublication()));
     }
 
-    public static Book getBook() {
-        return book;
-    }
-
-    public static void setBook(Book book) {
-        BookController.book = book;
-    }
-
-    public void close() {
+    private void close() {
         BookFX.getStage().close();
     }
 
-    public void newAuthor() {
+    private void newAuthor() {
         AuthorFX author = new AuthorFX();
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
@@ -218,7 +241,7 @@ public class BookController implements Initializable {
         author.start(stage);
     }
 
-    public void newPublisher() {
+    private void newPublisher() {
         PublisherFX publisher = new PublisherFX(null);
         Stage stage = new Stage();
         stage.setOnCloseRequest((WindowEvent we) -> {
@@ -227,7 +250,7 @@ public class BookController implements Initializable {
         publisher.start(stage);
     }
 
-    public void refreshPublishers() {
+    private void refreshPublishers() {
         try {
             ObservableList<Publisher> publisherList = FXCollections.observableArrayList(PublisherDAO.retrieveAllExcluded(false));
             cbPublisher.setItems(publisherList);
@@ -241,7 +264,7 @@ public class BookController implements Initializable {
         }
     }
 
-    public void refreshAuthors() {
+    private void refreshAuthors() {
         try {
             ObservableList<Author> authorList = FXCollections.observableArrayList(AuthorDAO.retrieveAllExcluded(false));
             cbAuthor.setItems(authorList);
@@ -255,7 +278,7 @@ public class BookController implements Initializable {
         }
     }
 
-    public void newBook() {
+    private void newBook() {
         Book newBook = new Book(
                 tfName.getText(),
                 cbAuthor.getSelectionModel().getSelectedItem(),
@@ -294,15 +317,23 @@ public class BookController implements Initializable {
         }
     }
 
-    public boolean verifyArguments() {
-        return !(tfName.getText().equals("") || cbPublisher.getSelectionModel().getSelectedItem() == null
+    private boolean verifyArguments() {
+        return (tfName.getText().equals("") || cbPublisher.getSelectionModel().getSelectedItem() == null
                 || cbAuthor.getSelectionModel().getSelectedItem() == null || tfIsbn10.getText().equals("")
                 || tfIsbn13.getText().equals("") || cbLanguage.getSelectionModel().getSelectedItem() == null
                 || cbGenre.getSelectionModel().getSelectedItem() == null || dpDatePublication.getValue() == null
                 || tfAvailableQuantity.getText().equals(""));
     }
 
-    public LocalDate convertToLocalDate(java.util.Date aux) {
+    private boolean verifyLengthIsbn10() {
+        return (tfIsbn10.getText().length() > 10);
+    }
+
+    private boolean verifyLengthIsbn13() {
+        return (tfIsbn13.getText().length() > 13);
+    }
+
+    private LocalDate convertToLocalDate(java.util.Date aux) {
         Instant instant = Instant.ofEpochMilli(aux.getTime());
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         LocalDate localDate = localDateTime.toLocalDate();

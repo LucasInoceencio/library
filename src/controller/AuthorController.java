@@ -77,11 +77,11 @@ public class AuthorController implements Initializable {
         });
     }
 
-    public void close() {
+    private void close() {
         AuthorFX.getStage().close();
     }
 
-    public void createAuthor() {
+    private void createAuthor() {
         Author author = new Author(tfName.getText());
         try {
             AuthorDAO.create(author);
@@ -95,7 +95,7 @@ public class AuthorController implements Initializable {
         }
     }
 
-    public boolean verifyArguments() {
+    private boolean verifyArguments() {
         return !tfName.getText().equals("");
     }
 

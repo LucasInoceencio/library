@@ -203,7 +203,7 @@ public class PersonController implements Initializable {
         }
     }
 
-    public Person newPerson() {
+    private Person newPerson() {
         return new Person(
                 tfName.getText(),
                 tfCpf.getText(),
@@ -211,14 +211,14 @@ public class PersonController implements Initializable {
         );
     }
 
-    public Phone newPhone() {
+    private Phone newPhone() {
         return new Phone(
                 tfDdd.getText(),
                 tfNumber.getText()
         );
     }
 
-    public Adress newAdress() {
+    private Adress newAdress() {
         return new Adress(
                 tfPublicPlace.getText(),
                 tfNumberAdress == null ? 0 : Integer.parseInt(tfNumberAdress.getText()),
@@ -230,7 +230,7 @@ public class PersonController implements Initializable {
         );
     }
 
-    public void createEntities() throws SQLException {
+    private void createEntities() throws SQLException {
         Person auxPerson = newPerson();
         Phone auxPhone = newPhone();
         Adress auxAdress = newAdress();
@@ -248,7 +248,7 @@ public class PersonController implements Initializable {
         }
     }
 
-    public void initPerson() throws SQLException {
+    private void initPerson() throws SQLException {
         Phone auxPhone = PhoneDAO.retrieveForEntityPerson(person.getId(), 3);
         Adress auxAdress = AdressDAO.retrieveForEntityPerson(person.getId(), 3);
         tfName.setText(person.getName());
@@ -267,42 +267,42 @@ public class PersonController implements Initializable {
         tfState.setText(auxAdress.getState());
     }
 
-    public boolean verifyArgumentsPhone() {
+    private boolean verifyArgumentsPhone() {
         return (tfDdd.getText().equals("") || tfNumber.getText().equals(""));
     }
 
-    public boolean verifyArgumentsPublisher() {
+    private boolean verifyArgumentsPublisher() {
         return (tfName.getText().equals("") || tfCpf.getText().equals("")
                 || tfEmail.getText().equals(""));
     }
 
-    public boolean verifyArgumentsAdress() {
+    private boolean verifyArgumentsAdress() {
         return (tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
                 || tfCity.getText().equals("") || tfState.getText().equals("")
                 || tfNumberAdress.getText().equals(""));
     }
 
-    public boolean verifyLengthDdd() {
+    private boolean verifyLengthDdd() {
         return (tfDdd.getText().length() > 2);
     }
 
-    public boolean verifyLengthNumberPhone() {
+    private boolean verifyLengthNumberPhone() {
         return (tfNumber.getText().length() > 9);
     }
 
-    public boolean verifyLengthCnpj() {
+    private boolean verifyLengthCnpj() {
         return (tfCpf.getText().length() > 11);
     }
 
-    public boolean verifyLengthCep() {
+    private boolean verifyLengthCep() {
         return (tfCep.getText().length() > 8);
     }
 
-    public boolean verifyAllArgumentsFielded() {
+    private boolean verifyAllArgumentsFielded() {
         return (verifyArgumentsAdress() && verifyArgumentsPhone() && verifyArgumentsPublisher());
     }
 
-    public void close() {
+    private void close() {
         PersonFX.getStage().close();
     }
 }

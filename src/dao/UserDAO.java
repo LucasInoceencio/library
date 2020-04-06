@@ -65,7 +65,8 @@ public class UserDAO {
         return new User(
                 rs.getInt("pk_user"),
                 rs.getString("username"),
-                rs.getString("password_user")
+                rs.getString("password_user"),
+                PersonDAO.retrieve(rs.getInt("fk_person"))
         );
     }
 
@@ -113,7 +114,8 @@ public class UserDAO {
         return new User(
                 rs.getInt("pk_user"),
                 rs.getString("username"),
-                rs.getString("password_user")
+                rs.getString("password_user"),
+                PersonDAO.retrieve(rs.getInt("fk_person"))
         );
     }
 
@@ -124,14 +126,14 @@ public class UserDAO {
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE users SET "
                 + "username=?, "
-                + "password=?, "
+                + "password_user=?, "
                 + "fk_person=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE pk_user=?");
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPassword());
-        stm.setInt(3, user.getPersonId());
+        stm.setInt(3, user.getPerson().getId());
         stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
         stm.setInt(5, DBConfig.idUserLogged);
         stm.setInt(6, user.getId());
