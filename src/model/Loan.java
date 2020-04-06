@@ -33,7 +33,7 @@ public class Loan extends Entity {
         this.status = status;
         this.books = new ArrayList<>();
     }
-    
+
     public Loan(int idLoan, Person person, int numberRenewals, Date deliveryDate, Date deliveredDate, Double lateFee, LoanStatus status) {
         super(idLoan);
         this.person = person;
@@ -109,7 +109,7 @@ public class Loan extends Entity {
     public void setDeliveredDate(Date deliveredDate) {
         this.deliveredDate = deliveredDate;
     }
-    
+
     public Double getLateFee() {
         return lateFee;
     }
@@ -138,11 +138,25 @@ public class Loan extends Entity {
 
     public Date calcDeliveryDate() {
         Date currentDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
-        cal.add(Calendar.HOUR_OF_DAY, deliveryTime);
-        Date deliveryDate = cal.getTime();
-        return deliveryDate;
+        Calendar auxCal = Calendar.getInstance();
+        auxCal.setTime(currentDate);
+        auxCal.add(Calendar.HOUR_OF_DAY, deliveryTime);
+        Date auxDeliveryDate;
+        switch (auxCal.get(Calendar.DAY_OF_WEEK)) {
+            case 1:
+                auxCal.add(Calendar.HOUR_OF_DAY, 24);
+                auxDeliveryDate = auxCal.getTime();
+                break;
+            case 7:
+                auxCal.add(Calendar.HOUR_OF_DAY, 48);
+                auxDeliveryDate = auxCal.getTime();
+                break;
+
+            default:
+                auxDeliveryDate = auxCal.getTime();
+                break;
+        }
+        return auxDeliveryDate;
     }
 
     public boolean renewLoan() {

@@ -1,60 +1,42 @@
 package application;
 
-import dao.AuthorDAO;
-import dao.BookDAO;
-import dao.LegalPersonDAO;
-import dao.LoanDAO;
-import dao.PersonDAO;
-import dao.PublisherDAO;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import model.Adress;
-import model.Author;
-import model.Book;
-import model.LegalPerson;
-import model.Loan;
-import model.Person;
-import model.Phone;
-import model.Publisher;
-import model.enums.Genre;
-import model.enums.Language;
 
 public class Program {
 
-    public static void main(String[] args) throws SQLException {
-//        Date d1 = Date.from(Instant.parse("2012-06-01T00:00:00Z"));
-//        Phone p1 = new Phone("64", "990907656");
-//        Adress a1 = new Adress("Av Cirilo Lopes de Morais", 15, "Centro", "Shopping Tropical", "75680001", "Caldas Novas", "Goias");
-//        Person at1 = new Person("Fernando Monteiro", "05896587945", "fernandomont@gmail.com");
-//        at1.addAdress(a1);
-//        at1.addPhone(p1);
-//        PersonDAO.create(at1);
-//        
-//        Phone p2 = new Phone("64", "35658978");
-//        Adress a2 = new Adress("Av das Nacoes", 1002, "Itaguai III", "Piso 5", "75690000", "Caldas Novas", "Goias");
-//        Publisher pu1 = new Publisher("Biblioteca Azul LTDA", "Biblioteca Azul", "25369865000125", "contato@bibliotecaazul.com.br");
-//        pu1.addAdress(a2);
-//        pu1.addPhone(p2);
-//        
-//        Book b1 = new Book("Fahrenheit 451", at1, pu1, Language.PORTUGUES, "8525052248", "9788525052247", d1, Genre.FICCAO_CIENTIFICA, 3);
-//
-//        BookDAO.create(b1);
-//        System.out.println(b1);
+    public static void main(String[] args) throws SQLException, ParseException {
 
-//          Loan l = LoanDAO.retrieve(1);
-//        Person p = PersonDAO.retrieve(1);
-//        Loan l = new Loan(p);
-//        l.addBook(b);
-//        LoanDAO.create(l);
-//        BookDAO.updateExcluded(b);
-//        Loan l = LoanDAO.retrieve(3);
-//        System.out.println(l);
-//        ArrayList<Person> aux = PersonDAO.retrieveAllExcluded(false);
-//        System.out.println(aux);
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
 
-            Person a = new Person("admin", "admin", "admin");
-            PersonDAO.create(a);
+        int deliveryTime = 72;
+        Date currentDate = Date.from(Instant.parse("2020-04-11T20:17:07Z"));
+        Calendar auxCal = Calendar.getInstance();
+        auxCal.setTime(currentDate);
+        auxCal.add(Calendar.HOUR_OF_DAY, deliveryTime);
+        Date auxDeliveryDate;
+        switch (auxCal.get(Calendar.DAY_OF_WEEK)) {
+            case 1:
+                auxCal.add(Calendar.HOUR_OF_DAY, 24);
+                auxDeliveryDate = auxCal.getTime();
+                break;
+            case 7:
+                auxCal.add(Calendar.HOUR_OF_DAY, 48);
+                auxDeliveryDate = auxCal.getTime();
+                break;
+            
+            default:
+                auxDeliveryDate = auxCal.getTime();
+                break;
+        }
+
+        System.out.println("Date: " + currentDate);
+        System.out.println("Calendar: " + auxCal);
+        System.out.println("New Date: " + auxDeliveryDate);
+        System.out.println(auxCal.DAY_OF_WEEK);
     }
 }
