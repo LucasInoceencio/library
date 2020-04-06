@@ -22,6 +22,7 @@ import javafx.stage.WindowEvent;
 import model.Adress;
 import model.Phone;
 import model.Publisher;
+import model.Validator;
 
 public class PublisherController implements Initializable {
 
@@ -99,6 +100,12 @@ public class PublisherController implements Initializable {
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo CNPJ não pode conter mais do que 14 caracteres.");
             alert.showAndWait();
+        } else if (!cnpjIsValid(tfCnpj.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo CNPJ não é válido.");
+            alert.showAndWait();
         } else if (dddExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -155,6 +162,12 @@ public class PublisherController implements Initializable {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo CNPJ não pode conter mais do que 14 caracteres.");
+                    alert.showAndWait();
+                } else if (!cnpjIsValid(tfCnpj.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo CNPJ não é válido.");
                     alert.showAndWait();
                 } else if (dddExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -307,6 +320,10 @@ public class PublisherController implements Initializable {
 
     private boolean cepExceededSize() {
         return (tfCep.getText().length() > 8);
+    }
+
+    private boolean cnpjIsValid(String cnpj) {
+        return Validator.isCNPJ(cnpj);
     }
 
     private boolean allArgumentsWereFilled() {

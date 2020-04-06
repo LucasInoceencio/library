@@ -22,6 +22,7 @@ import javafx.stage.WindowEvent;
 import model.Adress;
 import model.Person;
 import model.Phone;
+import model.Validator;
 
 public class PersonController implements Initializable {
 
@@ -96,6 +97,12 @@ public class PersonController implements Initializable {
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo CPF não pode conter mais do que 11 caracteres.");
             alert.showAndWait();
+        } else if (!cpfIsValid(tfCpf.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo CPF não é válido.");
+            alert.showAndWait();
         } else if (dddExceededSize()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -152,6 +159,12 @@ public class PersonController implements Initializable {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo CPF não pode conter mais do que 11 caracteres.");
+                    alert.showAndWait();
+                } else if (!cpfIsValid(tfCpf.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo CPF não é válido.");
                     alert.showAndWait();
                 } else if (dddExceededSize()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -300,6 +313,10 @@ public class PersonController implements Initializable {
 
     private boolean allArgumentsWereFilled() {
         return (mandatoryFieldsAdressNotFilled() && mandatoryFieldsPhoneNotFilled() && mandatoryFieldsPersonNotFilled());
+    }
+
+    private boolean cpfIsValid(String cpf) {
+        return Validator.isCPF(cpf);
     }
 
     private void close() {
