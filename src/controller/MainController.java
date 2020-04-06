@@ -134,7 +134,10 @@ public class MainController implements Initializable {
     private TableColumn<Loan, Integer> tcLoanNumberRenewals;
 
     @FXML
-    private TableColumn<Loan, Date> tcLoanDeliveryDate;
+    private TableColumn<Loan, String> tcLoanDeliveryDate;
+    
+    @FXML
+    private TableColumn<Loan, Date> tcLoanDeliveredDate;
 
     @FXML
     private TableColumn<Loan, Double> tcLoanLateFee;
@@ -167,12 +170,12 @@ public class MainController implements Initializable {
 
     @FXML
     void actionEndLoan(ActionEvent event) {
-
+        endLoan();
     }
 
     @FXML
     void actionDeleteLoan(ActionEvent event) {
-
+        deleteLoan();
     }
 
     @FXML
@@ -373,6 +376,86 @@ public class MainController implements Initializable {
             findLoans();
         });
         loan.start(stage);
+    }
+
+    private void deleteLoan() {
+        if (tvLoans.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher um empréstimo para deletar.");
+            alert.showAndWait();
+        } else if (tvLoans.getSelectionModel().getSelectedItem().getStatus().toString().equalsIgnoreCase("ATIVO")) {
+            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+            alertDAO.setTitle("Erro");
+            alertDAO.setHeaderText("O empréstimo está ativo.");
+            alertDAO.setContentText("Para deletar um empréstimo é necessário que o mesmo esteja encerrado.");
+            alertDAO.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cuidado");
+            alert.setHeaderText("Essa ação é irreversível.");
+            alert.setContentText("Realmente deseja excluir de forma definitiva esse empréstimo?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                Loan l = tvLoans.getSelectionModel().getSelectedItem();
+                try {
+                    LoanDAO.updateExcluded(l);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("Erro ao excluir empréstimo.");
+                    alertDAO.setContentText(ex.getMessage());
+                    alertDAO.showAndWait();
+                }
+                tvLoans.getSelectionModel().clearSelection();
+                tvLoans.getItems().clear();
+                tvLoans.refresh();
+                findLoans();
+            }
+        }
+    }
+
+    private void endLoan() {
+        if (tvLoans.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Nenhum item escolhido.");
+            alert.setContentText("É necessário escolher um empréstimo para encerrar.");
+            alert.showAndWait();
+        } else if (tvLoans.getSelectionModel().getSelectedItem().getStatus().toString().equalsIgnoreCase("ENCERRADO")) {
+            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+            alertDAO.setTitle("Erro");
+            alertDAO.setHeaderText("O empréstimo está encerrado.");
+            alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+            alertDAO.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cuidado");
+            alert.setHeaderText("Essa ação é irreversível.");
+            alert.setContentText("Realmente deseja encerrar de forma definitiva esse empréstimo?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                if (tvLoans.getSelectionModel().getSelectedItem().endLoan()) {
+                    try {
+                        LoanDAO.update(tvLoans.getSelectionModel().getSelectedItem());
+                        findLoans();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                        Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                        alertDAO.setTitle("Erro");
+                        alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                        alertDAO.setContentText(ex.getMessage());
+                        alertDAO.showAndWait();
+                    }
+                } else {
+                    Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                    alertDAO.setTitle("Erro");
+                    alertDAO.setHeaderText("O empréstimo está encerrado.");
+                    alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+                    alertDAO.showAndWait();
+                }
+            }
+        }
     }
 
     private void findLoans() {
@@ -606,12 +689,30 @@ public class MainController implements Initializable {
             }
         });
 
+        btnEndLoan.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                endLoan();
+            }
+        });
+
+        btnDeleteLoan.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                deleteLoan();
+            }
+        });
+
         btnFindLoans.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 findLoans();
             }
         });
-        
+
+        btnRenewLoan.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+
+            }
+        });
+
         btnViewLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 viewLoan();
@@ -663,6 +764,7 @@ public class MainController implements Initializable {
         tcLoanPerson.setCellValueFactory(new PropertyValueFactory<>("person"));
         tcLoanNumberRenewals.setCellValueFactory(new PropertyValueFactory<>("numberRenewals"));
         tcLoanDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+        tcLoanDeliveredDate.setCellValueFactory(new PropertyValueFactory<>("deliveredDate"));
         tcLoanLateFee.setCellValueFactory(new PropertyValueFactory<>("lateFee"));
         tcLoanStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         try {

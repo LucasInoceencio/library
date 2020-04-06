@@ -133,7 +133,7 @@ public class ProfileController implements Initializable {
             alert.show();
         } else {
             User user;
-            String hash = new Cryptography().createHash(pfCurrentPassword.getText());
+            String hash = new Cryptography().createHash(pfNewPassword.getText());
             if (hash != null) {
                 try {
                     user = UserDAO.retrieve(DBConfig.idUserLogged);

@@ -62,7 +62,8 @@
                                         <TableColumn fx:id="tcLoanId" prefWidth="75.0" text="Id" />
                                         <TableColumn fx:id="tcLoanPerson" prefWidth="75.0" text="Pessoa" />
                                         <TableColumn fx:id="tcLoanNumberRenewals" prefWidth="117.0" text="Nº de Renovações" />
-                                        <TableColumn fx:id="tcLoanDeliveryDate" prefWidth="108.0" text="Data de Entrega" />
+                                        <TableColumn fx:id="tcLoanDeliveryDate" prefWidth="108.0" text="Data Prevista de Entrega" />
+                              <TableColumn fx:id="tcLoanDeliveredDate" prefWidth="75.0" text="Data Efetiva de Entrega" />
                                         <TableColumn fx:id="tcLoanLateFee" prefWidth="119.0" text="Multa por atraso" />
                                         <TableColumn fx:id="tcLoanStatus" prefWidth="87.0" text="Status" />
                                     </columns>

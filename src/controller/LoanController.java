@@ -29,103 +29,103 @@ import model.Loan;
 import model.Person;
 
 public class LoanController implements Initializable {
-
+    
     private static Loan loan;
-
+    
     public static Loan getLoan() {
         return loan;
     }
-
+    
     public static void setLoan(Loan loan) {
         LoanController.loan = loan;
     }
-
+    
     @FXML
     private ComboBox<Person> cbPerson;
-
+    
     @FXML
     private Button btnAddPerson;
-
+    
     @FXML
     private TextField tfStatus;
-
+    
     @FXML
     private TextField tfDeliveryDate;
-
+    
     @FXML
     private TextField tfNumberRenewals;
-
+    
     @FXML
     private TextField tfLateFee;
-
+    
     @FXML
     private TextField tfDeliveredDate;
-
+    
     @FXML
     private ComboBox<Book> cbFirstBook;
-
+    
     @FXML
     private ComboBox<Book> cbSecondBook;
-
+    
     @FXML
     private ComboBox<Book> cbThirdBook;
-
+    
     @FXML
     private Button btnFirstClear;
-
+    
     @FXML
     private Button btnSecondClear;
-
+    
     @FXML
     private Button btnThirdClear;
-
+    
     @FXML
     private Button btnCancel;
-
+    
     @FXML
     private Button btnSave;
-
+    
     @FXML
     private Button btnEndLoan;
-
+    
     @FXML
     private Button btnRenewLoan;
-
+    
     @FXML
     void actionAddPerson(ActionEvent event) {
         createPerson();
     }
-
+    
     @FXML
     void actionCancel(ActionEvent event) {
         close();
     }
-
+    
     @FXML
     void actionEndLoan(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void actionFirstClear(ActionEvent event) {
         clearFirstBook();
     }
-
+    
     @FXML
     void actionRenewLoan(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void actionSave(ActionEvent event) {
         createLoan();
     }
-
+    
     @FXML
     void actionSecondClear(ActionEvent event) {
         clearSecondBook();
     }
-
+    
     @FXML
     void actionThirdClear(ActionEvent event) {
         clearThirdBook();
@@ -139,49 +139,49 @@ public class LoanController implements Initializable {
                 createLoan();
             }
         });
-
+        
         btnCancel.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 close();
             }
         });
-
+        
         btnRenewLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-
+                
             }
         });
-
+        
         btnEndLoan.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-
+                
             }
         });
-
+        
         btnFirstClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearFirstBook();
             }
         });
-
+        
         btnSecondClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearSecondBook();
             }
         });
-
+        
         btnThirdClear.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 clearThirdBook();
             }
         });
-
+        
         btnAddPerson.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
                 createPerson();
             }
         });
-
+        
         if (loan == null) {
             btnRenewLoan.setDisable(true);
             btnEndLoan.setDisable(true);
@@ -197,7 +197,7 @@ public class LoanController implements Initializable {
             btnSecondClear.setDisable(true);
             btnThirdClear.setDisable(true);
         }
-
+        
         try {
             ObservableList<Person> personsList = FXCollections.observableArrayList(PersonDAO.retrieveAllExcluded(false));
             cbPerson.setItems(personsList);
@@ -209,7 +209,7 @@ public class LoanController implements Initializable {
             alertDAO.setContentText(ex.getMessage());
             alertDAO.showAndWait();
         }
-
+        
         try {
             ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcluded(false));
             cbFirstBook.setItems(booksList);
@@ -256,7 +256,7 @@ public class LoanController implements Initializable {
             }
         }
     }
-
+    
     private void createPerson() {
         PersonFX person = new PersonFX(null);
         Stage stage = new Stage();
@@ -265,7 +265,7 @@ public class LoanController implements Initializable {
         });
         person.start(stage);
     }
-
+    
     private void initLoan() {
         cbPerson.getSelectionModel().select(loan.getPerson());
         tfDeliveryDate.setText(String.valueOf(loan.getDeliveryDate()));
@@ -283,23 +283,28 @@ public class LoanController implements Initializable {
             case 2:
                 if (loan.getBooks().get(0) != null) {
                     cbFirstBook.getSelectionModel().select(loan.getBooks().get(0));
-                }   if (loan.getBooks().get(1) != null) {
+                }
+                if (loan.getBooks().get(1) != null) {
                     cbSecondBook.getSelectionModel().select(loan.getBooks().get(1));
-                }   break;
+                }
+                break;
             case 3:
                 if (loan.getBooks().get(0) != null) {
                     cbFirstBook.getSelectionModel().select(loan.getBooks().get(0));
-                }   if (loan.getBooks().get(1) != null) {
+                }
+                if (loan.getBooks().get(1) != null) {
                     cbSecondBook.getSelectionModel().select(loan.getBooks().get(1));
-                }   if (loan.getBooks().get(2) != null) {
+                }
+                if (loan.getBooks().get(2) != null) {
                     cbThirdBook.getSelectionModel().select(loan.getBooks().get(2));
-                }   break;
+                }
+                break;
             default:
                 break;
         }
-
+        
     }
-
+    
     private void refreshPersons() {
         try {
             ObservableList<Person> personsList = FXCollections.observableArrayList(PersonDAO.retrieveAllExcluded(false));
@@ -313,7 +318,7 @@ public class LoanController implements Initializable {
             alertDAO.showAndWait();
         }
     }
-
+    
     private void refreshBooks() {
         try {
             ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcluded(false));
@@ -324,14 +329,14 @@ public class LoanController implements Initializable {
             Logger.getLogger(LoanController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private boolean mandatoryFieldsNotFilled() {
         if (cbPerson.getSelectionModel().isEmpty() || cbFirstBook.getSelectionModel().isEmpty()) {
             return true;
         }
         return false;
     }
-
+    
     private ArrayList<Book> chosenBooks() {
         ArrayList<Book> listBooks = new ArrayList<>();
         if (!cbFirstBook.getSelectionModel().isEmpty()) {
@@ -345,7 +350,7 @@ public class LoanController implements Initializable {
         }
         return listBooks;
     }
-
+    
     private boolean containsEqualsBooks() {
         if (cbFirstBook.getSelectionModel().isEmpty() && cbSecondBook.getSelectionModel().isEmpty()) {
             return false;
@@ -374,21 +379,21 @@ public class LoanController implements Initializable {
         }
         return false;
     }
-
+    
     private void close() {
         LoanFX.getStage().close();
     }
-
+    
     private void clearFirstBook() {
         cbFirstBook.getSelectionModel().clearSelection();
     }
-
+    
     private void clearSecondBook() {
         cbSecondBook.getSelectionModel().clearSelection();
     }
-
+    
     private void clearThirdBook() {
         cbThirdBook.getSelectionModel().clearSelection();
     }
-
+    
 }

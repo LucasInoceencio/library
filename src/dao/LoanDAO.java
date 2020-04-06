@@ -13,7 +13,7 @@ import jdbc.DBConnection;
 import model.enums.LoanStatus;
 
 public class LoanDAO {
-
+    
     public static int create(Loan loan) throws SQLException {
         if (loan.getBooks().size() > 3) {
             throw new IllegalArgumentException("A quantidade máxima (3) de livro por empréstimo foi atingida!");
@@ -195,6 +195,7 @@ public class LoanDAO {
                 + "delivery_date=?, "
                 + "delivered_date=?, "
                 + "late_fee=?, "
+                + "status=?, "
                 + "date_hour_alteration=?, "
                 + "fk_user_who_altered=? "
                 + "WHERE pk_loan=?");
@@ -203,9 +204,10 @@ public class LoanDAO {
         stm.setDate(3, dateSql);
         stm.setDate(4, dateSql2);
         stm.setDouble(5, loan.getLateFee());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
-        stm.setInt(8, loan.getId());
+        stm.setInt(6, loan.getStatus().getId());
+        stm.setTimestamp(7, DBConfig.now(), DBConfig.tzUTC);
+        stm.setInt(8, DBConfig.idUserLogged);
+        stm.setInt(9, loan.getId());
         stm.execute();
         stm.close();
     }
