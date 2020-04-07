@@ -6,10 +6,12 @@ import application.MainFX;
 import application.PersonFX;
 import application.ProfileFX;
 import application.PublisherFX;
+import application.UserFX;
 import dao.BookDAO;
 import dao.LoanDAO;
 import dao.PersonDAO;
 import dao.PublisherDAO;
+import dao.UserDAO;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import model.Book;
 import model.Loan;
 import model.Person;
 import model.Publisher;
+import model.User;
 import model.enums.Genre;
 import model.enums.Language;
 import model.enums.LoanStatus;
@@ -291,6 +294,32 @@ public class MainController implements Initializable {
     @FXML
     void actionFindPublisher(ActionEvent event) {
         findPublishers();
+    }
+
+    //Properties Users
+    @FXML
+    private Button btnAddUser;
+
+    @FXML
+    private Button btnFindUser;
+
+    @FXML
+    private TableView<User> tvUsers;
+
+    @FXML
+    private TableColumn<User, String> tcUserId;
+
+    @FXML
+    private TableColumn<User, String> tcUserUsername;
+
+    @FXML
+    void actionAddUser(ActionEvent event) {
+        createUser();
+    }
+
+    @FXML
+    void actionFindUser(ActionEvent event) {
+        findUsers();
     }
 
     //General Logic
@@ -603,6 +632,15 @@ public class MainController implements Initializable {
     }
 
     //Logic Publisher
+    private void createUser() {
+        UserFX user = new UserFX(null);
+        Stage stage = new Stage();
+        stage.setOnCloseRequest((WindowEvent we) -> {
+            findUsers();
+        });
+        user.start(stage);
+    }
+    
     private void createPublisher() {
         PublisherFX publisher = new PublisherFX(null);
         Stage stage = new Stage();
@@ -666,6 +704,18 @@ public class MainController implements Initializable {
             ArrayList<Publisher> publishersList = PublisherDAO.retrieveAllExcluded(false);
             tvPublishers.setItems(FXCollections.observableArrayList(publishersList));
             tvPublishers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //Logic User
+    private void findUsers() {
+        tcUserId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcUserUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        try {
+            ArrayList<User> usersList = UserDAO.retrieveAllExcluded(false);
+            tvUsers.setItems(FXCollections.observableArrayList(usersList));
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -789,6 +839,19 @@ public class MainController implements Initializable {
             }
         });
 
+        //Users
+        btnAddUser.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                createUser();
+            }
+        });
+
+        btnFindUser.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
+                findUsers();
+            }
+        });
+        
         //Init
         tcBookId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcBookName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -844,6 +907,15 @@ public class MainController implements Initializable {
             ArrayList<Publisher> publishersList = PublisherDAO.retrieveAllExcluded(false);
             tvPublishers.setItems(FXCollections.observableArrayList(publishersList));
             tvPublishers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        tcUserId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcUserUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        try {
+            ArrayList<User> usersList = UserDAO.retrieveAllExcluded(false);
+            tvUsers.setItems(FXCollections.observableArrayList(usersList));
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }

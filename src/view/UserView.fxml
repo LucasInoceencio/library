@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="528.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+   <children>
+      <Text layoutX="40.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dados do Usuário">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="40.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pessoa *" />
+      <Text layoutX="40.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username *" />
+      <TextField fx:id="tfUsername" layoutX="40.0" layoutY="188.0" prefHeight="25.0" prefWidth="348.0" />
+      <ComboBox fx:id="cbPerson" layoutX="40.0" layoutY="123.0" prefHeight="25.0" prefWidth="305.0" />
+      <Button fx:id="btnAddPerson" layoutX="360.0" layoutY="123.0" mnemonicParsing="false" onAction="#actionAddPerson" text="+" />
+      <Text layoutX="42.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha *" />
+      <Text layoutX="42.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirme a senha *" />
+      <PasswordField fx:id="pfPassword" layoutX="40.0" layoutY="260.0" prefHeight="25.0" prefWidth="348.0" />
+      <PasswordField fx:id="pfConfirmPassword" layoutX="42.0" layoutY="334.0" prefHeight="25.0" prefWidth="348.0" />
+      <Button fx:id="btnCancel" layoutX="74.0" layoutY="428.0" mnemonicParsing="false" onAction="#actionCancel" prefHeight="48.0" prefWidth="121.0" text="Cancelar" textFill="RED">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnSave" layoutX="239.0" layoutY="428.0" mnemonicParsing="false" onAction="#actionSave" prefHeight="48.0" prefWidth="121.0" text="Salvar" textFill="#009a31">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Text layoutX="25.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Os campos com * são obrigatórios." />
+   </children>
+</AnchorPane>

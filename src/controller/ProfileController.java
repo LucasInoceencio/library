@@ -160,8 +160,13 @@ public class ProfileController implements Initializable {
     }
 
     private boolean mandatoryFieldsNotFilled() {
-        return (pfCurrentPassword.getText().equals("") || pfNewPassword.getText().equals("")
-                || pfConfirmNewPassword.getText().equals(""));
+        if (pfCurrentPassword.getText().equals("")) {
+            return true;
+        }
+        if (pfNewPassword.getText().equals("")) {
+            return true;
+        }
+        return pfConfirmNewPassword.getText().equals("");
     }
 
     private boolean logar() throws SQLException {

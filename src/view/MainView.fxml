@@ -63,13 +63,13 @@
                                         <TableColumn fx:id="tcLoanPerson" prefWidth="75.0" text="Pessoa" />
                                         <TableColumn fx:id="tcLoanNumberRenewals" prefWidth="117.0" text="Nº de Renovações" />
                                         <TableColumn fx:id="tcLoanDeliveryDate" prefWidth="108.0" text="Data Prevista de Entrega" />
-                              <TableColumn fx:id="tcLoanDeliveredDate" prefWidth="75.0" text="Data Efetiva de Entrega" />
+                                        <TableColumn fx:id="tcLoanDeliveredDate" prefWidth="75.0" text="Data Efetiva de Entrega" />
                                         <TableColumn fx:id="tcLoanLateFee" prefWidth="119.0" text="Multa por atraso" />
                                         <TableColumn fx:id="tcLoanStatus" prefWidth="87.0" text="Status" />
                                     </columns>
                                 </TableView>
                                 <Button fx:id="btnEndLoan" layoutX="463.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionEndLoan" prefHeight="42.0" prefWidth="130.0" text="Encerrar Empréstimo" />
-                        <Button fx:id="btnRenewLoan" layoutX="603.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionRenewLoan" prefHeight="42.0" prefWidth="130.0" text="Renovar Empréstimo" />
+                                <Button fx:id="btnRenewLoan" layoutX="603.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionRenewLoan" prefHeight="42.0" prefWidth="130.0" text="Renovar Empréstimo" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -99,8 +99,8 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-            <Tab text="Editoras">
-              <content>
+                <Tab text="Editoras">
+                    <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="794.0" prefWidth="1920.0">
                             <children>
                                 <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interações" wrappingWidth="110.0380859375">
@@ -124,7 +124,28 @@
                             </children>
                         </AnchorPane>
                     </content>
-            </Tab>
+                </Tab>
+                <Tab text="Usuários">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="794.0" prefWidth="1920.0">
+                            <children>
+                                <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interações" wrappingWidth="110.0380859375">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Button fx:id="btnAddUser" layoutX="41.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionAddUser" prefHeight="42.0" prefWidth="120.0" text="Adicionar Usuário" />
+                                <Button fx:id="btnFindUser" layoutX="175.0" layoutY="56.0" mnemonicParsing="false" onAction="#actionFindUser" prefHeight="42.0" prefWidth="120.0" text="Pesquisar" />
+                                <TableView fx:id="tvUsers" layoutY="110.0" prefHeight="686.0" prefWidth="1858.0">
+                                    <columns>
+                                        <TableColumn fx:id="tcUserId" prefWidth="75.0" text="Id" />
+                                        <TableColumn fx:id="tcUserUsername" prefWidth="298.0" text="Usuário" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
         <Button fx:id="btnMyProfile" layoutX="1740.0" layoutY="26.0" mnemonicParsing="false" onAction="#actionMyProfile" text="Meu Perfil" />
