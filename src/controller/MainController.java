@@ -436,25 +436,36 @@ public class MainController implements Initializable {
             alert.setHeaderText("Essa ação é irreversível.");
             alert.setContentText("Realmente deseja encerrar de forma definitiva esse empréstimo?");
             if (alert.showAndWait().get() == ButtonType.OK) {
-                if (tvLoans.getSelectionModel().getSelectedItem().endLoan()) {
-                    try {
-                        LoanDAO.update(tvLoans.getSelectionModel().getSelectedItem());
-                        findLoans();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    Loan auxLoan = LoanDAO.retrieve(tvLoans.getSelectionModel().getSelectedItem().getId());
+                    if (auxLoan.endLoan()) {
+                        try {
+                            LoanDAO.update(auxLoan);
+                            findLoans();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                            alertDAO.setTitle("Erro");
+                            alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                            alertDAO.setContentText(ex.getMessage());
+                            alertDAO.showAndWait();
+                        }
+                    } else {
                         Alert alertDAO = new Alert(Alert.AlertType.ERROR);
                         alertDAO.setTitle("Erro");
-                        alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
-                        alertDAO.setContentText(ex.getMessage());
+                        alertDAO.setHeaderText("O empréstimo está encerrado.");
+                        alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
                         alertDAO.showAndWait();
                     }
-                } else {
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alertDAO = new Alert(Alert.AlertType.ERROR);
                     alertDAO.setTitle("Erro");
-                    alertDAO.setHeaderText("O empréstimo está encerrado.");
-                    alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+                    alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                    alertDAO.setContentText(ex.getMessage());
                     alertDAO.showAndWait();
                 }
+
             }
         }
     }

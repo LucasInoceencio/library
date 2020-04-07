@@ -212,7 +212,7 @@ public class LoanController implements Initializable {
         }
 
         try {
-            ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcluded(false));
+            ObservableList<Book> booksList = FXCollections.observableArrayList(BookDAO.retrieveAllExcludedAvailable(false));
             cbFirstBook.setItems(booksList);
             cbSecondBook.setItems(booksList);
             cbThirdBook.setItems(booksList);
@@ -241,6 +241,7 @@ public class LoanController implements Initializable {
             );
             chosenBooks().forEach(chosenBook -> {
                 auxLoan.addBook(chosenBook);
+                chosenBook.decreaseAvailableQuantity();
             });
             try {
                 LoanDAO.create(auxLoan);
@@ -272,24 +273,35 @@ public class LoanController implements Initializable {
                 alert.setHeaderText("Essa ação é irreversível.");
                 alert.setContentText("Realmente deseja encerrar de forma definitiva esse empréstimo?");
                 if (alert.showAndWait().get() == ButtonType.OK) {
-                    if (loan.endLoan()) {
-                        try {
-                            LoanDAO.update(loan);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    try {
+                        Loan auxLoan = LoanDAO.retrieve(loan.getId());
+                        if (auxLoan.endLoan()) {
+                            try {
+                                LoanDAO.update(auxLoan);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
+                                alertDAO.setTitle("Erro");
+                                alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                                alertDAO.setContentText(ex.getMessage());
+                                alertDAO.showAndWait();
+                            }
+                        } else {
                             Alert alertDAO = new Alert(Alert.AlertType.ERROR);
                             alertDAO.setTitle("Erro");
-                            alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
-                            alertDAO.setContentText(ex.getMessage());
+                            alertDAO.setHeaderText("O empréstimo está encerrado.");
+                            alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
                             alertDAO.showAndWait();
                         }
-                    } else {
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LoanController.class.getName()).log(Level.SEVERE, null, ex);
                         Alert alertDAO = new Alert(Alert.AlertType.ERROR);
                         alertDAO.setTitle("Erro");
-                        alertDAO.setHeaderText("O empréstimo está encerrado.");
-                        alertDAO.setContentText("Só é possível encerrar empréstimos que estejam com o status Ativo.");
+                        alertDAO.setHeaderText("Erro ao comunicar com banco de dados.");
+                        alertDAO.setContentText(ex.getMessage());
                         alertDAO.showAndWait();
                     }
+
                 }
             }
         }

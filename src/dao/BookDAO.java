@@ -159,6 +159,30 @@ public class BookDAO {
         } while (rs.next());
         return aux;
     }
+    
+    public static ArrayList<Book> retrieveAllExcludedAvailable(boolean excluded) throws SQLException {
+        ArrayList<Book> aux = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM books WHERE available_quantity >0 AND excluded=" + excluded);
+        if (!rs.next()) {
+            throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
+        }
+        do {
+            aux.add(new Book(
+                    rs.getInt("pk_book"),
+                    rs.getString("name"),
+                    AuthorDAO.retrieve(rs.getInt("fk_author")),
+                    PublisherDAO.retrieve(rs.getInt("fk_publisher")),
+                    Language.getById(rs.getInt("language")),
+                    rs.getString("isbn10"),
+                    rs.getString("isbn13"),
+                    rs.getDate("date_publication"),
+                    Genre.getById(rs.getInt("genre")),
+                    rs.getInt("available_quantity")
+            ));
+        } while (rs.next());
+        return aux;
+    }
 
     public static ArrayList<Book> retrieveAll() throws SQLException {
         ArrayList<Book> aux = new ArrayList<>();

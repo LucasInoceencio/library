@@ -13,7 +13,7 @@ import jdbc.DBConnection;
 import model.enums.LoanStatus;
 
 public class LoanDAO {
-    
+
     public static int create(Loan loan) throws SQLException {
         if (loan.getBooks().size() > 3) {
             throw new IllegalArgumentException("A quantidade máxima (3) de livro por empréstimo foi atingida!");
@@ -47,6 +47,15 @@ public class LoanDAO {
             loan.getBooks().forEach(book -> {
                 try {
                     BorrowedBooksDAO.create(loan, book);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        if (!loan.getBooks().isEmpty()) {
+            loan.getBooks().forEach(book -> {
+                try {
+                    BookDAO.update(book);
                 } catch (SQLException ex) {
                     Logger.getLogger(LoanDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -187,7 +196,10 @@ public class LoanDAO {
             throw new SQLException("Objeto não persistido ainda ou com a chave primária não configurada!");
         }
         java.sql.Date dateSql = new java.sql.Date(loan.getDeliveryDate().getTime());
-        java.sql.Date dateSql2 = new java.sql.Date(loan.getDeliveredDate().getTime());
+        java.sql.Date dateSql2 = null;
+        if (loan.getDeliveredDate() != null) {
+            dateSql2 = new java.sql.Date(loan.getDeliveredDate().getTime());
+        }
         Connection conn = DBConnection.getConnection();
         PreparedStatement stm = conn.prepareStatement("UPDATE loans SET "
                 + "fk_person=?, "
@@ -210,6 +222,15 @@ public class LoanDAO {
         stm.setInt(9, loan.getId());
         stm.execute();
         stm.close();
+        if (!loan.getBooks().isEmpty()) {
+            loan.getBooks().forEach(book -> {
+                try {
+                    BookDAO.update(book);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
     }
 
     public static void updateExcluded(Loan loan) throws SQLException {

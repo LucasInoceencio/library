@@ -128,12 +128,10 @@ public class Loan extends Entity {
 
     public void addBook(Book book) {
         books.add(book);
-        book.decreaseAvailableQuantity();
     }
 
     public void removeBook(Book book) {
         books.remove(book);
-        book.increaseAvailableQuantity();
     }
 
     public Date calcDeliveryDate() {
@@ -170,9 +168,19 @@ public class Loan extends Entity {
     }
 
     public void increaseAllAvailableQuantity() {
-        books.forEach((item) -> {
-            item.increaseAvailableQuantity();
-        });
+        if (!this.books.isEmpty()) {
+            this.books.forEach((item) -> {
+                item.increaseAvailableQuantity();
+            });
+        }
+    }
+
+    public void decreaseAllAvailableQuantity() {
+        if (!this.books.isEmpty()) {
+            this.books.forEach((item) -> {
+                item.decreaseAvailableQuantity();
+            });
+        }
     }
 
     public void verifyDeliveryDate() {
