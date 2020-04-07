@@ -146,7 +146,7 @@ public class UserController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro!");
             alert.setHeaderText("Verifique a nova senha.");
-            alert.setContentText("O campo nova senha não é igual ao campo confirmar nova senha.");
+            alert.setContentText("O campo senha não é igual ao campo confirmar senha.");
             alert.show();
         } else {
             User auxUser = new User();
