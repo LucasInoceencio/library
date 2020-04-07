@@ -85,7 +85,7 @@ public class PersonController implements Initializable {
 
     @FXML
     void actionSave(ActionEvent event) {
-        if (allArgumentsWereFilled()) {
+        if (argumentsNotWereFilled()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
@@ -148,7 +148,7 @@ public class PersonController implements Initializable {
 
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                if (allArgumentsWereFilled()) {
+                if (argumentsNotWereFilled()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
@@ -281,18 +281,36 @@ public class PersonController implements Initializable {
     }
 
     private boolean mandatoryFieldsPhoneNotFilled() {
-        return (tfDdd.getText().equals("") || tfNumber.getText().equals(""));
+        if (tfDdd.getText().equals("")) {
+            return true;
+        }
+        return tfNumber.getText().equals("");
     }
 
     private boolean mandatoryFieldsPersonNotFilled() {
-        return (tfName.getText().equals("") || tfCpf.getText().equals("")
-                || tfEmail.getText().equals(""));
+        if (tfName.getText().equals("")) {
+            return true;
+        }
+        if (tfCpf.getText().equals("")) {
+            return true;
+        }
+        return tfEmail.getText().equals("");
     }
 
     private boolean mandatoryFieldsAdressNotFilled() {
-        return (tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
-                || tfCity.getText().equals("") || tfState.getText().equals("")
-                || tfNumberAdress.getText().equals(""));
+        if (tfPublicPlace.getText().equals("")) {
+            return true;
+        }
+        if (tfCep.getText().equals("")) {
+            return true;
+        }
+        if (tfCity.getText().equals("")) {
+            return true;
+        }
+        if (tfState.getText().equals("")) {
+            return true;
+        }
+        return tfNumberAdress.getText().equals("");
     }
 
     private boolean dddExceededSize() {
@@ -311,8 +329,9 @@ public class PersonController implements Initializable {
         return (tfCep.getText().length() > 8);
     }
 
-    private boolean allArgumentsWereFilled() {
-        return (mandatoryFieldsAdressNotFilled() && mandatoryFieldsPhoneNotFilled() && mandatoryFieldsPersonNotFilled());
+    private boolean argumentsNotWereFilled() {
+        return mandatoryFieldsAdressNotFilled() == true || mandatoryFieldsPersonNotFilled() == true 
+                || mandatoryFieldsPhoneNotFilled() == true;
     }
 
     private boolean cpfIsValid(String cpf) {

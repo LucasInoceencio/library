@@ -58,8 +58,8 @@ public class PhoneDAO {
         stm.setString(1, phone.getDdd());
         stm.setString(2, phone.getNumber());
         stm.setInt(3, fkEntityPerson);
-        stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(5, DBConfig.idUserLogged);
+        stm.setTimestamp(4, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(5, DBConfig.userLogged.getId());
         stm.setBoolean(6, phone.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -191,8 +191,8 @@ public class PhoneDAO {
         stm.setString(1, phone.getDdd());
         stm.setString(2, phone.getNumber());
         stm.setInt(3, fkEntityPerson);
-        stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(5, DBConfig.idUserLogged);
+        stm.setTimestamp(4, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(5, DBConfig.userLogged.getId());
         stm.setInt(6, phone.getId());
         stm.execute();
         stm.close();
@@ -213,8 +213,8 @@ public class PhoneDAO {
                 + "WHERE "
                 + finalValues[0] + "=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, phone.getId());
         stm.execute();
         stm.close();

@@ -26,8 +26,8 @@ public class UserDAO {
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPassword());
         stm.setInt(3, user.getPersonId());
-        stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(5, DBConfig.idUserLogged);
+        stm.setTimestamp(4, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(5, DBConfig.userLogged.getId());
         stm.setBoolean(6, user.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -134,8 +134,8 @@ public class UserDAO {
         stm.setString(1, user.getUsername());
         stm.setString(2, user.getPassword());
         stm.setInt(3, user.getPerson().getId());
-        stm.setTimestamp(4, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(5, DBConfig.idUserLogged);
+        stm.setTimestamp(4, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(5, DBConfig.userLogged.getId());
         stm.setInt(6, user.getId());
         stm.execute();
         stm.close();
@@ -152,8 +152,8 @@ public class UserDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_user=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, user.getId());
         stm.execute();
         stm.close();

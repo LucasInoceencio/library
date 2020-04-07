@@ -88,7 +88,7 @@ public class PublisherController implements Initializable {
 
     @FXML
     void actionSave(ActionEvent event) {
-        if (allArgumentsWereFilled()) {
+        if (argumentsNotWereFilled()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao preencher dados.");
@@ -151,7 +151,7 @@ public class PublisherController implements Initializable {
 
         btnSave.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE) {
-                if (allArgumentsWereFilled()) {
+                if (argumentsNotWereFilled()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
@@ -292,18 +292,39 @@ public class PublisherController implements Initializable {
     }
 
     private boolean mandatoryFieldsPhoneNotFilled() {
-        return (tfDdd.getText().equals("") || tfNumber.getText().equals(""));
+        if (tfDdd.getText().equals("")) {
+            return true;
+        }
+        return tfNumber.getText().equals("");
     }
 
     private boolean mandatoryFieldsPublisherNotFilled() {
-        return (tfCompanyName.getText().equals("") || tfTradingName.getText().equals("")
-                || tfCnpj.getText().equals("") || tfEmail.getText().equals(""));
+        if (tfCompanyName.getText().equals("")) {
+            return true;
+        }
+        if (tfTradingName.getText().equals("")) {
+            return true;
+        }
+        if (tfCnpj.getText().equals("")) {
+            return true;
+        }
+        return tfEmail.getText().equals("");
     }
 
     private boolean mandatoryFieldsAdressNotFilled() {
-        return (tfPublicPlace.getText().equals("") || tfCep.getText().equals("")
-                || tfCity.getText().equals("") || tfState.getText().equals("")
-                || tfNumberAdress.getText().equals(""));
+        if (tfPublicPlace.getText().equals("")) {
+            return true;
+        }
+        if (tfCep.getText().equals("")) {
+            return true;
+        }
+        if (tfCity.getText().equals("")) {
+            return true;
+        }
+        if (tfState.getText().equals("")) {
+            return true;
+        }
+        return tfNumberAdress.getText().equals("");
     }
 
     private boolean dddExceededSize() {
@@ -326,7 +347,8 @@ public class PublisherController implements Initializable {
         return Validator.isCNPJ(cnpj);
     }
 
-    private boolean allArgumentsWereFilled() {
-        return (mandatoryFieldsAdressNotFilled() && mandatoryFieldsPhoneNotFilled() && mandatoryFieldsPublisherNotFilled());
+    private boolean argumentsNotWereFilled() {
+        return mandatoryFieldsAdressNotFilled() == true || mandatoryFieldsPublisherNotFilled() == true
+                || mandatoryFieldsPhoneNotFilled() == true;
     }
 }

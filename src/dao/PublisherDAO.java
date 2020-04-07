@@ -32,8 +32,8 @@ public class PublisherDAO {
         stm.setString(2, publisher.getTradingName());
         stm.setString(3, publisher.getCnpj());
         stm.setString(4, publisher.getEmail());
-        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(6, DBConfig.userLogged.getId());
         stm.setBoolean(7, publisher.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -218,8 +218,8 @@ public class PublisherDAO {
         stm.setString(2, publisher.getTradingName());
         stm.setString(3, publisher.getCnpj());
         stm.setString(4, publisher.getEmail());
-        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(6, DBConfig.userLogged.getId());
         stm.setInt(7, publisher.getId());
         stm.execute();
         stm.close();
@@ -254,8 +254,8 @@ public class PublisherDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_publisher=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, publisher.getId());
         stm.execute();
         stm.close();

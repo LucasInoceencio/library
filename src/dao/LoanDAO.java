@@ -36,8 +36,8 @@ public class LoanDAO {
         stm.setDate(3, dateSql);
         stm.setDouble(4, loan.getLateFee());
         stm.setInt(5, loan.getStatus().getId());
-        stm.setTimestamp(6, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(7, DBConfig.idUserLogged);
+        stm.setTimestamp(6, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(7, DBConfig.userLogged.getId());
         stm.setBoolean(8, loan.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -205,8 +205,8 @@ public class LoanDAO {
         stm.setDate(4, dateSql2);
         stm.setDouble(5, loan.getLateFee());
         stm.setInt(6, loan.getStatus().getId());
-        stm.setTimestamp(7, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(8, DBConfig.idUserLogged);
+        stm.setTimestamp(7, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(8, DBConfig.userLogged.getId());
         stm.setInt(9, loan.getId());
         stm.execute();
         stm.close();
@@ -223,8 +223,8 @@ public class LoanDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_loan=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, loan.getId());
         stm.execute();
         stm.close();

@@ -98,17 +98,13 @@ public class ProfileController implements Initializable {
             }
         });
 
-        try {
-            User user = UserDAO.retrieve(DBConfig.idUserLogged);
-            tfId.setText(String.valueOf(user.getId()));
-            tfUser.setText(user.getUsername());
-            if (user.getPerson() == null) {
-                tfName.setText("");
-            } else {
-                user.getPerson().getName();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        User auxUser = DBConfig.userLogged;
+        tfId.setText(String.valueOf(auxUser.getId()));
+        tfUser.setText(auxUser.getUsername());
+        if (auxUser.getPerson() == null) {
+            tfName.setText("");
+        } else {
+            auxUser.getPerson().getName();
         }
     }
 
@@ -132,13 +128,13 @@ public class ProfileController implements Initializable {
             alert.setContentText("A senha atual não confere com a senha cadastrada.");
             alert.show();
         } else {
-            User user;
+            User auxUser;
             String hash = new Cryptography().createHash(pfNewPassword.getText());
             if (hash != null) {
                 try {
-                    user = UserDAO.retrieve(DBConfig.idUserLogged);
-                    user.setPassword(hash);
-                    UserDAO.update(user);
+                    auxUser = DBConfig.userLogged;
+                    auxUser.setPassword(hash);
+                    UserDAO.update(auxUser);
                     close();
                 } catch (SQLException ex) {
                     Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,10 +146,10 @@ public class ProfileController implements Initializable {
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erro!");
-                    alert.setHeaderText("Erro de senha.");
-                    alert.setContentText("Erro ao criptografar a senha!");
-                    alert.show();
+                alert.setTitle("Erro!");
+                alert.setHeaderText("Erro de senha.");
+                alert.setContentText("Erro ao criptografar a senha!");
+                alert.show();
             }
 
         }

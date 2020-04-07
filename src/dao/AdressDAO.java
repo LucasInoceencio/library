@@ -68,8 +68,8 @@ public class AdressDAO {
         stm.setString(6, adress.getCity());
         stm.setString(7, adress.getState());
         stm.setInt(8, fkEntityPerson);
-        stm.setTimestamp(9, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(10, DBConfig.idUserLogged);
+        stm.setTimestamp(9, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(10, DBConfig.userLogged.getId());
         stm.setBoolean(11, adress.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -241,8 +241,8 @@ public class AdressDAO {
         stm.setString(6, adress.getCity());
         stm.setString(7, adress.getState());
         stm.setInt(8, fkEntityPerson);
-        stm.setTimestamp(9, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(10, DBConfig.idUserLogged);
+        stm.setTimestamp(9, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(10, DBConfig.userLogged.getId());
         stm.setInt(11, adress.getId());
         stm.execute();
         stm.close();
@@ -263,8 +263,8 @@ public class AdressDAO {
                 + "WHERE "
                 + finalValues[0] + "=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, adress.getId());
         stm.execute();
         stm.close();

@@ -32,8 +32,8 @@ public class LegalPersonDAO {
         stm.setString(2, legalPerson.getTradingName());
         stm.setString(3, legalPerson.getCnpj());
         stm.setString(4, legalPerson.getEmail());
-        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(6, DBConfig.userLogged.getId());
         stm.setBoolean(7, legalPerson.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -218,8 +218,8 @@ public class LegalPersonDAO {
         stm.setString(2, legalPerson.getTradingName());
         stm.setString(3, legalPerson.getCnpj());
         stm.setString(4, legalPerson.getEmail());
-        stm.setTimestamp(5, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(6, DBConfig.idUserLogged);
+        stm.setTimestamp(5, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(6, DBConfig.userLogged.getId());
         stm.setInt(7, legalPerson.getId());
         stm.execute();
         stm.close();
@@ -254,8 +254,8 @@ public class LegalPersonDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_legal_person=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, legalPerson.getId());
         stm.execute();
         stm.close();

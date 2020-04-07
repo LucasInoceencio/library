@@ -41,8 +41,8 @@ public class BookDAO {
         stm.setDate(7, dateSql);
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
-        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(11, DBConfig.userLogged.getId());
         stm.setBoolean(12, book.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -79,8 +79,8 @@ public class BookDAO {
         stm.setDate(7, dateSql);
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
-        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(11, DBConfig.userLogged.getId());
         stm.setBoolean(12, book.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
@@ -211,8 +211,8 @@ public class BookDAO {
         stm.setDate(7, (java.sql.Date) book.getDatePublication());
         stm.setInt(8, book.getGenre().getId());
         stm.setInt(9, book.getAvailableQuantity());
-        stm.setTimestamp(10, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(11, DBConfig.idUserLogged);
+        stm.setTimestamp(10, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(11, DBConfig.userLogged.getId());
         stm.setInt(12, book.getId());
         stm.execute();
         stm.close();
@@ -229,8 +229,8 @@ public class BookDAO {
                 + "fk_user_who_deleted=? "
                 + "WHERE pk_book=?");
         stm.setBoolean(1, true);
-        stm.setTimestamp(2, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(3, DBConfig.idUserLogged);
+        stm.setTimestamp(2, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(3, DBConfig.userLogged.getId());
         stm.setInt(4, book.getId());
         stm.execute();
         stm.close();

@@ -29,7 +29,7 @@ public class PersonFX extends Application {
         try {
             root = FXMLLoader.load(getClass().getResource("/view/PersonView.fxml"));
             Scene scene = new Scene(root);
-            stage.setTitle("Editora");
+            stage.setTitle("Pessoa");
             stage.setScene(scene);
             stage.show();
             setStage(stage);

@@ -26,8 +26,8 @@ public class BorrowedBooksDAO {
         );
         stm.setInt(1, loan.getId());
         stm.setInt(2, book.getId());
-        stm.setTimestamp(3, DBConfig.now(), DBConfig.tzUTC);
-        stm.setInt(4, DBConfig.idUserLogged);
+        stm.setTimestamp(3, DBConfig.now(), DBConfig.TZ_UTC);
+        stm.setInt(4, DBConfig.userLogged.getId());
         stm.setBoolean(5, loan.isExcluded());
         stm.execute();
         ResultSet rs = stm.getGeneratedKeys();
