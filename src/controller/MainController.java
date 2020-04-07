@@ -488,11 +488,17 @@ public class MainController implements Initializable {
             alert.setContentText("É necessário escolher um empréstimo para renovar.");
             alert.showAndWait();
         } else if (tvLoans.getSelectionModel().getSelectedItem().getStatus().toString().equalsIgnoreCase("ENCERRADO")) {
-            Alert alertDAO = new Alert(Alert.AlertType.ERROR);
-            alertDAO.setTitle("Erro");
-            alertDAO.setHeaderText("O empréstimo está encerrado.");
-            alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
-            alertDAO.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("O empréstimo está encerrado.");
+            alert.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
+            alert.showAndWait();
+        } else if (tvLoans.getSelectionModel().getSelectedItem().getNumberRenewals() >= 2) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Não é possível renovar o empréstimo.");
+            alert.setContentText("Quantidade máxima de renovações atingidas.");
+            alert.showAndWait();
         } else {
             if (tvLoans.getSelectionModel().getSelectedItem().renewLoan()) {
                 try {
@@ -506,12 +512,6 @@ public class MainController implements Initializable {
                     alertDAO.setContentText(ex.getMessage());
                     alertDAO.showAndWait();
                 }
-            } else {
-                Alert alertDAO = new Alert(Alert.AlertType.ERROR);
-                alertDAO.setTitle("Erro");
-                alertDAO.setHeaderText("O empréstimo está encerrado.");
-                alertDAO.setContentText("Só é possível renovar empréstimos que estejam com o status Ativo.");
-                alertDAO.showAndWait();
             }
         }
     }

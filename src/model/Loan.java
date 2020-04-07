@@ -163,7 +163,6 @@ public class Loan extends Entity {
             this.deliveryDate = calcDeliveryDate();
             return true;
         }
-        System.out.println("Quantidade máxima de renovações atingida!");
         return false;
     }
 

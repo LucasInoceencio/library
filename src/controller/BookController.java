@@ -122,6 +122,12 @@ public class BookController implements Initializable {
             alert.setHeaderText("Erro ao preencher dados.");
             alert.setContentText("O campo ISBN13 não pode ter mais do que 13 caracteres.");
             alert.showAndWait();
+        } else if (availableQuantityIsNegative()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao preencher dados.");
+            alert.setContentText("O campo quantidade não pode ser negativo ou zerado.");
+            alert.showAndWait();
         } else {
             newBook();
             Stage stage = (Stage) btnSave.getScene().getWindow();
@@ -198,6 +204,12 @@ public class BookController implements Initializable {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao preencher dados.");
                     alert.setContentText("O campo ISBN13 não pode ter mais do que 13 caracteres.");
+                    alert.showAndWait();
+                } else if (availableQuantityIsNegative()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao preencher dados.");
+                    alert.setContentText("O campo quantidade não pode ser negativo ou zerado.");
                     alert.showAndWait();
                 } else {
                     newBook();
@@ -331,6 +343,10 @@ public class BookController implements Initializable {
 
     private boolean isbn13ExceededSize() {
         return (tfIsbn13.getText().length() > 13);
+    }
+
+    private boolean availableQuantityIsNegative() {
+        return Integer.parseInt(tfAvailableQuantity.getText()) < 0;
     }
 
     private LocalDate convertToLocalDate(java.util.Date aux) {
